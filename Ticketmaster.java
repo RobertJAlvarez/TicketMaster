@@ -2,7 +2,6 @@
  * Name: Robert Alvarez
  * Date: October 23rd, 2022
  * Instructor: Dr. Mejia
- * Programming Assignment 4
  * Lab description: Ticketmaster is a software that allows that using csv files as databases let users use the
  * system as either customers or administrator. Customers can buy seats for events and administrators can run
  * statistics for event, make events, run ticket summaries and process automatic purchases.

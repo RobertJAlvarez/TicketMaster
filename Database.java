@@ -19,9 +19,9 @@ public class Database {
   private static HashMap<String,Integer> mapNamesToCustomerID;  //customer.getFirstName() + customer.getLastName() as the key
   //seatTypes MUST BE ORDER IN DESCENDING IMPORTANCE!!!
   private static final String[] seatTypes = new String[] {"VIP","Gold","Silver","Bronze","General Admission"};
-  private static final String ORIGINALEVENTFILENAME = "EventListPA4-A.csv";
+  private static final String ORIGINALEVENTFILENAME = "EventList.csv";
   private static final String NEWEVENTFILENAME = "NewEventList.csv";
-  private static final String ORIGINALCUSTOMERFILENAME = "CustomerListRandomPA4.csv";
+  private static final String ORIGINALCUSTOMERFILENAME = "CustomerList.csv";
   private static final String NEWCUSTOMERFILENAME = "NewCustomerList.csv";
   private static final String TICKETFILENAME = "NewTicketList.csv";
   private static boolean hasBeenPopulate = false;

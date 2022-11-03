@@ -320,7 +320,7 @@ public class Admin {
 
     //Get venue cost
     System.out.println("What is the cost for renting " + entries.get(nameHeader) + "?");
-    while ( (cost <= 0.0) && (!STDINScanner.isEndOfFileEnter())) {
+    while ( (cost <= 0) && (!STDINScanner.isEndOfFileEnter())) {
       cost = scnr.readNextInt();
     }
     entries.put("Cost", String.valueOf(cost));
