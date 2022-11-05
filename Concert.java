@@ -1,3 +1,5 @@
+import java.util.GregorianCalendar;
+
 /**
  * Concert is a class that extends the Event class containing, event id, name, date, time,
  * prices, seats, availability, venue and tickets sold.
@@ -11,11 +13,10 @@ public class Concert extends Event {
    * 
    * @param eventID
    * @param name - String for event name
-   * @param date - String for event date
-   * @param time - String for event time
+   * @param date - GregorianCalendar for event date and time
    */
-  public Concert(int eventID, String name, String date, String time, boolean fireworksPlanned, int fireworksCost) {
-    super(eventID, name, date, time, fireworksPlanned, fireworksCost);
+  public Concert(int eventID, String name, GregorianCalendar date, boolean fireworksPlanned, int fireworksCost) {
+    super(eventID, name, date, fireworksPlanned, fireworksCost);
   }
 
   /**

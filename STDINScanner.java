@@ -1,3 +1,4 @@
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -96,38 +97,107 @@ public class STDINScanner {
    * 
    * @return valid String date following the format MM/DD/YYYY
    */
-  public String readDate() {
+  public GregorianCalendar readDate() {
     //(MM/DD/YYYY)
-    String temp;
-    String[] token;
-    int day;
-    int month;
-    int year;
+    GregorianCalendar date = null;
+    String[] day;
+    String[] time;
     boolean validDate = false;
 
+    System.out.println("Enter event Date: (MM/DD/YYYY)");
+
     do {
-      temp = nextLine();
-      if (temp.equals(EXITWORD)) {
-        setEndOfFileEnter(true);
-        temp = "";
+      day = nextLine().split("/");
+      if (isEndOfFileEnter()) {
         break;
       }
-      token = temp.split("/");
-      //We must have three tokens for a valid format
-      if (token.length == 3) {
-        //Check that the month is between 1 and 12
-        day = Integer.parseInt(token[0].replaceAll("\\D", "")); //\\D = [^0-9]
-        //Check that the day is between 1 and 31
-        month = Integer.parseInt(token[1].replaceAll("\\D", "")); //\\D = [^0-9]
-        //Check that the year is between 2022 and 2099
-        year = Integer.parseInt(token[2].replaceAll("\\D", "")); //\\D = [^0-9]
-        //TODO: Count for months that don't have 31 days
-        validDate = ( (day >= 1) && (day <= 12) && (month >= 1) && (month <= 31) && (year >= 2022) && (year <= 9999) );
-        if (!validDate) {
-          System.out.println("Invalid day format used, try again with a valid format.");
+      //We must have three tokens for a valid date format
+      if ( (day.length == 3) && checkValidDate(day[0], day[1], day[2]) ) {
+        time = readTime().split(":");
+        if (isEndOfFileEnter()) {
+          validDate = true;
+        } else if (time.length != 2) {
+          validDate = false;
+        } else {
+          date = new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[0])-1, Integer.parseInt(day[1]), Integer.parseInt(time[0]), Integer.parseInt(time[1]));
+          validDate = true;
         }
       }
     } while (!validDate);
+
+    return date;
+  }
+
+  /**
+   * 
+   * 
+   * @param day
+   * @param month
+   * @param year
+   * @return
+   */
+  private boolean checkValidDate(String m, String d, String y) {
+    final int[] dayRange = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int day;
+    int month;
+    int year;
+    boolean valid = false;
+
+    try {
+      day = Integer.parseInt(d);
+      month = Integer.parseInt(m);
+      year = Integer.parseInt(y);
+      //Check the day is positive, month is between 1 and 12, and year is between 2022 and 9999
+      if ( (day >= 1) && (month >= 1) && (month <= 12) && (year >= 2022) && (year <= 9999) ) {
+        //Check that the day is no larger than the last day number given the month
+        valid = (day <= dayRange[month-1]);
+      }
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid day format used, try again with a valid format.");
+    }
+
+    return valid;
+  }
+
+  /**
+   * 
+   * 
+   * @return valid String time following the format XX:XX in 24 hours
+   */
+  private String readTime() {
+    //XX:XX AM (or PM)
+    String temp;
+    String[] token;
+    char status;
+    boolean validTime = false;
+
+    System.out.println("Enter event time: [XX:XX AM (or PM)]");
+
+    do {
+      //Get new line and make all the letter upper case
+      temp = nextLine().toUpperCase();
+      if (isEndOfFileEnter()) {
+        temp = "";
+        break;
+      }
+      token = temp.split("[ :]");
+
+      if (token.length == 3) {
+        status = checkValidTime(token[0], token[1], token[2].trim());
+        switch (status) {
+          case 'A':
+            temp = token[0] + ":" + token[1];
+            validTime = true;
+            break;
+          case 'P':
+            temp = (Integer.parseInt(token[0]) + 12) + ":" + token[1];
+            validTime = true;
+            break;
+          default:
+            validTime = false;
+        }
+      }
+    } while (!validTime);
 
     return temp;
   }
@@ -135,44 +205,35 @@ public class STDINScanner {
   /**
    * 
    * 
-   * @return valid String time following the format XX:XX AM (or PM)
+   * @param h
+   * @param m
+   * @param time
+   * @return
    */
-  public String readTime() {
-    //XX:XX AM (or PM)
-    String temp;
-    String[] token;
+  private char checkValidTime(String h, String m, String time) {
     int hour;
-    int minutes;
-    String substring;
-    boolean validTime = false;
+    int minute;
+    char result = 'X';
 
-    do {
-      //Get new line and make all the letter upper case
-      temp = nextLine().toUpperCase();
-      if (temp.equals(EXITWORD)) {
-        setEndOfFileEnter(true);
-        temp = "";
-        break;
-      }
-      token = temp.split(":");
-
-      if (token.length == 2) {
-        //Get last two character from input
-        substring = token[1].length() > 2 ? token[1].substring(token[1].length() - 2) : token[1];
-        hour = Integer.parseInt(token[0].replaceAll("\\D", "")); //\\D = [^0-9]
-        minutes = Integer.parseInt(token[1].replaceAll("\\D", "")); //\\D = [^0-9]
-        //Check validity of input by checking that hour is less than 11, and minutes are less than 59.
-        validTime = (( (hour > 0) && (hour <= 12) && (minutes >= 0) && (minutes <= 59) ) &&
-            //Check that we have a PM or AM time given
-            ( (substring.charAt(0) == 'P') || (substring.charAt(0) == 'A') ) &&
-              (substring.charAt(1) == 'M'));
-        if (!validTime) {
-          System.out.println("Invalid time format used, try again with a valid format.");
+    try {
+      //Get last two character from input
+      hour = Integer.parseInt(h);
+      minute = Integer.parseInt(m);
+      //Check validity of input by checking that hour is less than 11, and minutes are less than 59.
+      if (( (hour > 0) && (hour <= 12) && (minute >= 0) && (minute <= 59) ) &&
+          //Check that we have a PM or AM time given
+          ( (time.charAt(0) == 'P') || (time.charAt(0) == 'A') ) &&
+            (time.charAt(1) == 'M')) {
+        result = 'A';
+        if ( (time.charAt(0) == 'P') && (hour != 12) ) {
+          result = 'P';
         }
       }
-    } while (!validTime);
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid time format used, try again with a valid format.");
+    }
 
-    return temp;
+    return result;
   }
 
   /**

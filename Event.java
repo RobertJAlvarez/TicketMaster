@@ -1,6 +1,8 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,10 +17,10 @@ import java.util.logging.Level;
  * @date September 16th, 2022
  */
 public abstract class Event implements Fireworks {
+  private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
   private int eventID;
   private String name;
-  private String date;
-  private String time;
+  private GregorianCalendar date;
   private String state;
   private int reservedSeats;
   private boolean fireworksPlanned;
@@ -33,16 +35,14 @@ public abstract class Event implements Fireworks {
   * 
   * @param eventID - int with ID number identifier of the event
   * @param name - String for name attribute
-  * @param date - String for date attribute
-  * @param time - String for time attribute
+  * @param date - Date for date attribute which contains date and time information of the event
   * @param fireworksPlanned - boolean to see if fireworks are planned during the event
   * @param fireworksCost - int with cost of fireworks if they are planned, price should be 0.0 otherwise.
   */
-  protected Event(int eventID, String name, String date, String time, boolean fireworksPlanned, int  fireworksCost) {
+  protected Event(int eventID, String name, GregorianCalendar date, boolean fireworksPlanned, int  fireworksCost) {
     this.eventID = eventID;
     this.name = name;
     this.date = date;
-    this.time = time;
     //TODO: Currently all the event are in Texas but we shouldn't assume that. Unfortunately, this wont be change in future PAs
     this.state = "Texas";
     this.fireworksPlanned = fireworksPlanned;
@@ -70,11 +70,7 @@ public abstract class Event implements Fireworks {
   }
 
   public String getDate() {
-    return date;
-  }
-
-  public String getTime() {
-    return time;
+    return sdf.format(date.getTime());
   }
 
   public String getState() {
@@ -126,12 +122,8 @@ public abstract class Event implements Fireworks {
     this.name = name;
   }
 
-  public void setDate(String date) {
+  public void setDate(GregorianCalendar date) {
     this.date = date;
-  }
-
-  public void setTime(String time) {
-    this.time = time;
   }
 
   public void setFireworksPlanned(boolean fireworksPlanned) {
@@ -242,7 +234,7 @@ public abstract class Event implements Fireworks {
   * Print ID#, name, date, and time of the event
   */
   protected void printEventInfo() {
-    System.out.printf("ID: %3s - Name: %-22s - Date: %-8s - Time: %s", eventID, name, date, time);
+    System.out.printf("ID: %3s - Name: %-22s - Date: %-18s", eventID, name, getDate());
   }
 
   /**
@@ -319,8 +311,10 @@ public abstract class Event implements Fireworks {
       writer.append(getEventID() + ",");
       writer.append(getClass().getName() + ",");
       writer.append(getName() + ",");
-      writer.append(getDate() + ",");
-      writer.append(getTime() + ",");
+      //write date and time using format MM/DD/YYY and hh:mm a
+      String[] temp = getDate().split(" ");
+      writer.append(temp[0] + ",");
+      writer.append(temp[1] + " " + temp[2] + ",");
       //Print seat prices and number per type
       for (String key : seatsInfo.keySet()) {
         writer.append(getSeatPrice(key) + "," + getNumberOfSeatsAvailable(key) + ",");

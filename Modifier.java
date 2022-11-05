@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 /**
  * This class provide all the options that a admin can do to modify event characteristics.
@@ -12,7 +13,7 @@ public class Modifier {
   private static ArrayList<String> possibleChanges = new ArrayList<>();
   private Event event;
   private int nModification;
-  private String update;
+  private Object update;
 
   /**
    * Constructor without parameters. Initialize and populate possibleChanges.
@@ -50,7 +51,7 @@ public class Modifier {
     return nModification;
   }
 
-  public String getUpdate() {
+  public Object getUpdate() {
     return update;
   }
 
@@ -78,7 +79,6 @@ public class Modifier {
     }
 
     possibleChanges.add("Name");
-    possibleChanges.add("Date");
     possibleChanges.add("Time");
     for (String seatType : Database.getSeatTypes()) {
       possibleChanges.add(seatType + " price");
@@ -129,10 +129,8 @@ public class Modifier {
     if (nModification == 1) {
       temp = event.getName();
     } else if (nModification == 2) {
-      temp = event.getDate();
-    } else if (nModification == 3) {
-      temp = event.getTime();
-    } else if (nModification >= 4 && nModification <= 4+Database.getSeatTypes().length) {
+      temp = event.getDate().toString();
+    } else if (nModification >= 3 && nModification <= 3+Database.getSeatTypes().length) {
       temp = "" + event.getSeatPrice(Database.getSeatTypes()[nModification-4]); //Convert float to string
     } else {
       System.out.println("Modify switch statement in Database to handle all modifications.");
@@ -155,24 +153,22 @@ public class Modifier {
    */
   public void updateEvent() {
     if (nModification == 1) {
-      event.setName(update);
+      event.setName((String) update);
     } else if (nModification == 2) {
-      event.setDate(update);
-    } else if (nModification == 3) {
-      event.setTime(update);
-    } else if (nModification >= 4 && nModification <= 4+Database.getSeatTypes().length) {
-      event.setSeatPrice(Database.getSeatTypes()[nModification-4], Float.parseFloat(update));
+      event.setDate((GregorianCalendar) update);
+    } else if (nModification >= 3 && nModification <= 4+Database.getSeatTypes().length) {
+      event.setSeatPrice(Database.getSeatTypes()[nModification-3], (float) update);
     } else {
       System.out.println("Modify switch statement in Database to handle all modifications.");
     }
 
     //Warn if new price is higher than next better ticket
-    if ((nModification >= 5) && (nModification <= 4+Database.getSeatTypes().length) &&
-        (Float.parseFloat(getEventCharacteristic(nModification-1)) < Float.parseFloat(update))) {
+    if ((nModification >= 4) && (nModification <= 3+Database.getSeatTypes().length) &&
+        (Float.parseFloat(getEventCharacteristic(nModification-1)) < ((Float) update))) {
       System.out.println("WARNING: new " + getModification() + " is, at least, more expensive than " + getModification(nModification-1));
     //Warn if new price is lower than previous best ticket
-    } else if ((nModification >= 4) && (nModification <= 3+Database.getSeatTypes().length) &&
-               (Float.parseFloat(getEventCharacteristic(nModification+1)) > Float.parseFloat(update))) {
+    } else if ((nModification >= 3) && (nModification <= 2+Database.getSeatTypes().length) &&
+               (Float.parseFloat(getEventCharacteristic(nModification+1)) > ((Float) update))) {
       System.out.println("WARNING: new " + getModification() + " is, at least, cheaper than " + getModification(nModification+1));
     }
   }
@@ -181,23 +177,18 @@ public class Modifier {
    * Read and save information to update event characteristic.
    */
   public void readUpdate() {
-    String updateS;
-    float updateF;
-
     if (nModification == 1) {
-      updateS = scnr.nextLine();
+      update = scnr.nextLine();
     } else if (nModification == 2) {
-      updateS = scnr.readDate();
-    } else if (nModification == 3) {
-      updateS = scnr.readTime();
+      update = scnr.readDate();
     } else {
+      float updateF;
       do {
         System.out.println("(Make sure that the cost is greater than 0)");
         updateF = scnr.readNextFloat();
       } while (updateF < 0.01);   //Entrance most cost at least a penny
-      updateS = Float.toString(updateF);
+      update = updateF;
     }
-    update = updateS;
   }
 
   /**

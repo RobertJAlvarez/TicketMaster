@@ -1,6 +1,7 @@
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -144,9 +145,14 @@ public class Admin {
           //Read input
           modify.readUpdate();
 
+          //If user decide to finish the program mid modification input
+          if (STDINScanner.isEndOfFileEnter()) {
+            break;
+          }
+
           //Update information
           if (modify.getModification().equalsIgnoreCase("name")) {  //If the name of the event is going to be change
-            Database.updateEventNameToIdMap(modify.getEvent().getName(), modify.getUpdate(), modify.getEvent().getEventID());
+            Database.updateEventNameToIdMap(modify.getEvent().getName(), (String) modify.getUpdate(), modify.getEvent().getEventID());
           }
 
           //Update event
@@ -199,11 +205,7 @@ public class Admin {
     System.out.print("Enter event name: ");
     entries.put("Name", scnr.nextLine());
 
-    System.out.println("Enter event Date: (MM/DD/YYYY)");
-    entries.put("Date", scnr.readDate());
-
-    System.out.println("Enter event time: [XX:XX AM (or PM)]");
-    entries.put("Time", scnr.readTime());
+    entries.put("Date", scnr.readDate().toString());
 
     System.out.println("Would the event have fireworks? (Yes/No)");
     entries.put(FIREWORKSPLANNEDHEADER, scnr.nextLine());
@@ -247,24 +249,63 @@ public class Admin {
     boolean haveFireworks = entries.get(FIREWORKSPLANNEDHEADER).equalsIgnoreCase("Yes");
     int fireworksCost = ((entries.get(FIREWORKSCOSTHEADER).length() != 0) ? Integer.parseInt(entries.get(FIREWORKSCOSTHEADER)) : 0);
     String nameHeader = "Name";
-    String dateHeader = "Date";
-    String timeHeader = "Time";
+
+    GregorianCalendar date = getCalendar(entries.get("Date") + " " + entries.get("Time"));
 
     switch (entries.get("Event Type")) {
       case ("Sport"):
-        event = new Sport(eventID, entries.get(nameHeader), entries.get(dateHeader), entries.get(timeHeader), haveFireworks, fireworksCost);
+        event = new Sport(eventID, entries.get(nameHeader), date, haveFireworks, fireworksCost);
         break;
       case ("Concert"):
-        event = new Concert(eventID, entries.get(nameHeader), entries.get(dateHeader), entries.get(timeHeader), haveFireworks, fireworksCost);
+        event = new Concert(eventID, entries.get(nameHeader), date, haveFireworks, fireworksCost);
         break;
       case ("Special"):
-        event = new Special(eventID, entries.get(nameHeader), entries.get(dateHeader), entries.get(timeHeader), haveFireworks, fireworksCost);
+        event = new Special(eventID, entries.get(nameHeader), date, haveFireworks, fireworksCost);
         break;
       default:
         System.out.println("Event type didn't match Sport, Concert nor Special.");
         Log.logWrite(Level.WARNING, "event with id: " + eventID + " could not be created.\n");
     }
     return event;
+  }
+
+  /**
+   * 
+   * 
+   * @param input
+   * @return
+   */
+  public static GregorianCalendar getCalendar(String input) {
+    String[] token;
+    int day;
+    int month;
+    int year;
+    int hour;
+    int minute;
+
+    token = input.split("[ /:]");
+
+    try {
+      month = Integer.parseInt(token[0]) - 1; //GregorianCalendar starts with January at 0
+      day = Integer.parseInt(token[1]);
+      year = Integer.parseInt(token[2]);
+      hour = Integer.parseInt(token[3]);
+      minute = Integer.parseInt(token[4]);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+
+    //The original csv files have year as YY so we make it YYYY
+    if (year < 100) {
+      year += 2000;
+    }
+
+    if (token[5].contains("PM")) {
+      hour += 12;
+    }
+
+    return new GregorianCalendar(year, month, day, hour, minute);
   }
 
   /**
