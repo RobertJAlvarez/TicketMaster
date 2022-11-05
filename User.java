@@ -51,7 +51,6 @@ public class User {
    */
   public static void logUser() {
     customer = matchNames();
-    //If user can confirm its password on 3 tries or less, we set the customer to be null
     if ( (customer != null) && (!customer.checkPassword()) ) {
       customer = null;
     }

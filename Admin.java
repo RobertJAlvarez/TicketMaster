@@ -2,9 +2,11 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
@@ -170,7 +172,7 @@ public class Admin {
 
     // Modify events if wanted
     do {
-      inputID = scnr.askForEvent("to buy a seat");
+      inputID = scnr.askForEvent("to calculate statistics");
       event = Database.getEvent(inputID);
 
       if (event != null) {
@@ -471,7 +473,8 @@ public class Admin {
    */
   public static void movTicketSummary() {
     File logDir = new File("./TicketSummaries");
-    //TODO: Check that the ticketSummary.txt file only exist once
+    Set<String> allTicketSummaries = new HashSet<>();
+
     try {
       if (!logDir.exists()) {  //If directory doesn't exist, we make it
         logDir.mkdirs();
@@ -485,8 +488,16 @@ public class Admin {
       String filename;
       while (ticketSummaryFiles.peek() != null) {
         filename = ticketSummaryFiles.poll();
-        if (!new File(filename).renameTo(new File("./TicketSummaries/" + filename))) {
-          System.out.println("File: " + filename + " couldn't be move to TicketSummaries.");
+        //If it is the first time we see this ticket summary filename we add it, otherwise the most recent was already move and the others deleted
+        if (!allTicketSummaries.contains(filename)) {
+          //Add file to TicketSummaries, if it wasn't success full, we print an error message
+          if (!new File(filename).renameTo(new File("./TicketSummaries/" + filename))) {
+            System.err.println("File: " + filename + " couldn't be move to TicketSummaries.");
+          }
+          //If the file was successfully moved, we add it to our set
+          else {
+            allTicketSummaries.add(filename);
+          }
         }
       }
     } catch (Exception e) {

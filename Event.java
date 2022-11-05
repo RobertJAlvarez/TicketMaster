@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.logging.Level;
 
 /**
-* Sport is a type of event with attributes of name, date, time, and prices. This class also have setters and getters for all attributes
-* and a printInfo similar to toString.
-* It also have an special option to hold fireworks during the event.
-* 
-* @author Robert J Alvarez
-* @date September 16th, 2022
-*/
+ * Sport is a type of event with attributes of name, date, time, and prices. This class also have setters and getters for all attributes
+ * and a printInfo similar to toString.
+ * It also have an special option to hold fireworks during the event.
+ * 
+ * @author Robert J Alvarez
+ * @date September 16th, 2022
+ */
 public abstract class Event implements Fireworks {
   private int eventID;
   private String name;
