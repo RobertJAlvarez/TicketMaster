@@ -36,6 +36,7 @@ public class Ticketmaster {
     int accessType = 0; //1 for Customer, 2 for administrator, and 0 to finish the program
 
     Database.populateDatabase();       //Fill Events, Venues, Customers and Tickets
+    //LoginViewer.logUser();
 
     do {
       Log.logWrite(Level.FINE, "Ask for system access.");

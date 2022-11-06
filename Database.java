@@ -159,7 +159,7 @@ public class Database {
 
     customers.put(id, customer);
     //Use first name concatenated with the last name for the key
-    mapNamesToCustomerID.put(customer.getFirstName() + customer.getLastName(), id);
+    mapNamesToCustomerID.put(customer.getUsername(), id);
   }
 
   /**

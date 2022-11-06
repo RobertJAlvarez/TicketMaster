@@ -68,10 +68,10 @@ public class User {
 
     for (int iTries = 3; iTries > 0; iTries--) {
       System.out.print("What is your first name? ");
-      names = scnr.nextLine();
+      names = scnr.nextLine().toLowerCase();
 
       System.out.print("What is your last name? ");
-      names = names.concat(scnr.nextLine());
+      names = names.concat(scnr.nextLine().toLowerCase());
 
       customer = Database.getCustomer(names);
       if (customer != null)
