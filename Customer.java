@@ -138,12 +138,22 @@ public class Customer {
     System.out.println("You have " + nTriesLeft + " tries to enter your password.");
     while (nTriesLeft-- > 0) {
       System.out.print("Enter your password: ");
-      if ( scnr.nextLine().equals(getPassword()) )
+      if ( checkPassword(scnr.nextLine()) )
         break;
       System.out.println("Incorrect password, try again:");
       System.out.println(nTriesLeft + " tries left.");
     }
     return nTriesLeft > 0;
+  }
+
+  /**
+   * 
+   * 
+   * @param passwordInput
+   * @return
+   */
+  public boolean checkPassword(String passwordInput) {
+    return passwordInput.equals(getPassword());
   }
 
   /**

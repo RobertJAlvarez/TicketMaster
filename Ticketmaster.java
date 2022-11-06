@@ -72,9 +72,6 @@ public class Ticketmaster {
       }
     } while (accessType != 0);
 
-    Admin.ticketSummary(Database.getCustomer("RobertAlvarez"));
-    Admin.ticketSummary(Database.getCustomer("DonaldDuck"));
-    Admin.ticketSummary(Database.getCustomer("AliNouri"));
     closeProgram();
   }
 
@@ -83,6 +80,10 @@ public class Ticketmaster {
    * folder and all logs into its folder. Close scanner.
    */
   public static void closeProgram() {
+    Admin.ticketSummary(Database.getCustomer("RobertAlvarez"));
+    Admin.ticketSummary(Database.getCustomer("DonaldDuck"));
+    Admin.ticketSummary(Database.getCustomer("AliNouri"));
+
     Log.logWrite(Level.FINE,"Writing new Customer, Event, and ticket lists.");
     Database.saveDatabase();
     Admin.movTicketSummary();

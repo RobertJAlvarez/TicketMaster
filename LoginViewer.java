@@ -11,15 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LoginModule implements ActionListener {
+public class LoginViewer implements ActionListener {
 	private static JTextField username;
 	private static JPasswordField password;
 	private static JLabel message;
-	private Customer customer = null;
 	private boolean popUpClose = false;
 
 	public static void main(String[] args) {
-		Customer customer;
 		System.out.println("Before call");
 		logUser();
 		System.out.println("After call");
@@ -60,13 +58,13 @@ public class LoginModule implements ActionListener {
 		//Make a Login button which when press it calls ActionPerformed with the ActionEvent having Login
 		JButton button = new JButton("Login");
 		button.setBounds(100, 80, 70, 20);
-		button.addActionListener(new LoginModule());
+		button.addActionListener(new LoginViewer());
 		panel.add(button);
 
 		//Make an Exit button which when press it calls ActionPerformed with the ActionEvent having Exit
 		JButton buttonExit = new JButton("Exit");
 		buttonExit.setBounds(180, 80, 70, 20);
-		buttonExit.addActionListener(new LoginModule());
+		buttonExit.addActionListener(new LoginViewer());
 		panel.add(buttonExit);
 
 		//Set a way to display a message once a button is press
@@ -82,11 +80,14 @@ public class LoginModule implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
+		Customer customer;
+
 		if(s.equals("Login")) {
 			String userUsername = username.getText();
-			String userPassword = password.getText();
+			String userPassword = new String(password.getPassword());
 
-			if (userUsername.equals("Ali") && userPassword.equals("BestTA")) {
+			customer = Database.getCustomer(userUsername);
+			if ( (customer != null) && (!customer.checkPassword(userPassword)) ) {
 				popUpClose = true;
 			} else {
 				message.setText("Wrong password");
