@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -122,8 +123,21 @@ public abstract class Event implements Fireworks {
     this.name = name;
   }
 
-  public void setDate(GregorianCalendar date) {
-    this.date = date;
+  public void setDate(String date) {
+    String[] tokens = date.split("/");
+    this.date.set(Calendar.MONTH, Integer.parseInt(tokens[0]));
+    this.date.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tokens[1]));
+    this.date.set(Calendar.YEAR, Integer.parseInt(tokens[2]));
+  }
+
+  public void setTime(String time) {
+    String[] tokens = time.split("[ :]");
+    int hour = Integer.parseInt(tokens[0]);
+    if (tokens[2].contains("PM") && hour != 12) {
+      hour += 12;
+    }
+    this.date.set(Calendar.HOUR_OF_DAY, hour);
+    this.date.set(Calendar.MINUTE, Integer.parseInt(tokens[1]));
   }
 
   public void setFireworksPlanned(boolean fireworksPlanned) {

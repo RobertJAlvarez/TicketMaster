@@ -205,7 +205,8 @@ public class Admin {
     System.out.print("Enter event name: ");
     entries.put("Name", scnr.nextLine());
 
-    entries.put("Date", scnr.readDate().toString());
+    entries.put("Date", scnr.readDate());
+    entries.put("Time", scnr.readTime());
 
     System.out.println("Would the event have fireworks? (Yes/No)");
     entries.put(FIREWORKSPLANNEDHEADER, scnr.nextLine());

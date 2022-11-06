@@ -1,4 +1,3 @@
-import java.util.GregorianCalendar;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -97,35 +96,27 @@ public class STDINScanner {
    * 
    * @return valid String date following the format MM/DD/YYYY
    */
-  public GregorianCalendar readDate() {
+  public String readDate() {
     //(MM/DD/YYYY)
-    GregorianCalendar date = null;
-    String[] day;
-    String[] time;
+    String[] temp;
+    String day;
     boolean validDate = false;
 
     System.out.println("Enter event Date: (MM/DD/YYYY)");
 
     do {
-      day = nextLine().split("/");
+      day = nextLine();
+      temp = day.split("/");
       if (isEndOfFileEnter()) {
         break;
       }
       //We must have three tokens for a valid date format
-      if ( (day.length == 3) && checkValidDate(day[0], day[1], day[2]) ) {
-        time = readTime().split(":");
-        if (isEndOfFileEnter()) {
-          validDate = true;
-        } else if (time.length != 2) {
-          validDate = false;
-        } else {
-          date = new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[0])-1, Integer.parseInt(day[1]), Integer.parseInt(time[0]), Integer.parseInt(time[1]));
-          validDate = true;
-        }
+      if ( (temp.length == 3) && checkValidDate(temp[0], temp[1], temp[2]) ) {
+        validDate = true;
       }
     } while (!validDate);
 
-    return date;
+    return day;
   }
 
   /**
@@ -151,6 +142,7 @@ public class STDINScanner {
       if ( (day >= 1) && (month >= 1) && (month <= 12) && (year >= 2022) && (year <= 9999) ) {
         //Check that the day is no larger than the last day number given the month
         valid = (day <= dayRange[month-1]);
+        //TODO: Account for february having 29 days on leap years
       }
     } catch (NumberFormatException e) {
       System.out.println("Invalid day format used, try again with a valid format.");
@@ -162,13 +154,12 @@ public class STDINScanner {
   /**
    * 
    * 
-   * @return valid String time following the format XX:XX in 24 hours
+   * @return valid String time following the format XX:XX A/PM
    */
-  private String readTime() {
+  public String readTime() {
     //XX:XX AM (or PM)
     String temp;
     String[] token;
-    char status;
     boolean validTime = false;
 
     System.out.println("Enter event time: [XX:XX AM (or PM)]");
@@ -180,21 +171,13 @@ public class STDINScanner {
         temp = "";
         break;
       }
-      token = temp.split("[ :]");
 
+      token = temp.split("[ :]");
       if (token.length == 3) {
-        status = checkValidTime(token[0], token[1], token[2].trim());
-        switch (status) {
-          case 'A':
-            temp = token[0] + ":" + token[1];
-            validTime = true;
-            break;
-          case 'P':
-            temp = (Integer.parseInt(token[0]) + 12) + ":" + token[1];
-            validTime = true;
-            break;
-          default:
-            validTime = false;
+        if (checkValidTime(token[0], token[1], token[2].trim())) {
+          validTime = true;
+        } else {
+          validTime = false;
         }
       }
     } while (!validTime);
@@ -210,25 +193,20 @@ public class STDINScanner {
    * @param time
    * @return
    */
-  private char checkValidTime(String h, String m, String time) {
+  private boolean checkValidTime(String h, String m, String time) {
     int hour;
     int minute;
-    char result = 'X';
+    boolean result = false;
 
     try {
       //Get last two character from input
       hour = Integer.parseInt(h);
       minute = Integer.parseInt(m);
       //Check validity of input by checking that hour is less than 11, and minutes are less than 59.
-      if (( (hour > 0) && (hour <= 12) && (minute >= 0) && (minute <= 59) ) &&
+      result = (( (hour > 0) && (hour <= 12) && (minute >= 0) && (minute <= 59) ) &&
           //Check that we have a PM or AM time given
           ( (time.charAt(0) == 'P') || (time.charAt(0) == 'A') ) &&
-            (time.charAt(1) == 'M')) {
-        result = 'A';
-        if ( (time.charAt(0) == 'P') && (hour != 12) ) {
-          result = 'P';
-        }
-      }
+            (time.charAt(1) == 'M'));
     } catch (NumberFormatException e) {
       System.out.println("Invalid time format used, try again with a valid format.");
     }
