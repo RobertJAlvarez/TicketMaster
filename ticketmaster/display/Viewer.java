@@ -2,6 +2,7 @@ package ticketmaster.display;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -32,33 +33,33 @@ public class Viewer implements ActionListener {
     }
 
     frame = new JFrame("Log in options");
-    frame.setSize(300,300);
+    frame.setPreferredSize(new Dimension(300,140));
     frame.setLayout(null);
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     JLabel label = new JLabel("System options:");
-    label.setBounds(20,30,100,50);
+    label.setBounds(20,10,150,20);
     frame.add(label);
 
     radioAdmin = new JRadioButton("Admin");
-    radioAdmin.setBounds(100,50,100,30);
+    radioAdmin.setBounds(50,30,90,30);
     frame.add(radioAdmin);
 
     radioUser = new JRadioButton("User");
-    radioUser.setBounds(100,50,100,30);
+    radioUser.setBounds(150,30,100,30);
     frame.add(radioUser);
 
     ButtonGroup groupButton = new ButtonGroup();
     groupButton.add(radioAdmin);
     groupButton.add(radioUser);
 
-    JButton loginButton = new JButton("click");
-    loginButton.setBounds(100,150,80,30);
+    JButton loginButton = new JButton("Click");
+    loginButton.setBounds(70,60,70,30);
     loginButton.addActionListener(new Viewer());
     frame.add(loginButton);
 
     JButton buttonExit = new JButton("Exit");
-		buttonExit.setBounds(180, 80, 70, 20);
+		buttonExit.setBounds(150, 60, 70, 30);
 		buttonExit.addActionListener(new Viewer());
 		frame.add(buttonExit);
 
