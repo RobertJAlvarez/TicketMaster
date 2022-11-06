@@ -36,7 +36,7 @@ public abstract class Event implements Fireworks {
   * 
   * @param eventID - int with ID number identifier of the event
   * @param name - String for name attribute
-  * @param date - Date for date attribute which contains date and time information of the event
+  * @param date - GregorianCalendar for date attribute which contains date and time information of the event
   * @param fireworksPlanned - boolean to see if fireworks are planned during the event
   * @param fireworksCost - int with cost of fireworks if they are planned, price should be 0.0 otherwise.
   */
