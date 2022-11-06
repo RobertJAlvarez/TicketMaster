@@ -1,8 +1,11 @@
+package com.viewer.mypackage;
+
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,19 +14,18 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.Ticketmaster.mypackage.Customer;
+import com.Ticketmaster.mypackage.Database;
+import com.Ticketmaster.mypackage.Log;
+import com.Ticketmaster.mypackage.User;
+
 public class LoginViewer implements ActionListener {
 	private static JTextField username;
 	private static JPasswordField password;
 	private static JLabel message;
 	private boolean popUpClose = false;
 
-	public static void main(String[] args) {
-		System.out.println("Before call");
-		logUser();
-		System.out.println("After call");
-	}
-
-	public static void logUser() {
+	protected static void logUser() {
 		//Create the frame
 		JFrame frame = new JFrame("Hello World!");
 		frame.setLocationRelativeTo(null);
@@ -86,11 +88,19 @@ public class LoginViewer implements ActionListener {
 			String userUsername = username.getText();
 			String userPassword = new String(password.getPassword());
 
+			System.out.println(userUsername + " " + userPassword);
+
 			customer = Database.getCustomer(userUsername);
-			if ( (customer != null) && (!customer.checkPassword(userPassword)) ) {
+			if ( (customer != null) && (customer.checkPassword(userPassword)) ) {
+				Log.logWrite(Level.FINE,"Log as user.");
+
+				User.setCustomer(customer);
+        User.userLogged();
+        User.logOffUser();
 				popUpClose = true;
 			} else {
-				message.setText("Wrong password");
+				Log.logWrite(Level.FINE,"User couldn't be log in.");
+        System.out.println("We couldn't log you in.");
 			}
 		} else if (s.equals("Exit")) {
 			popUpClose = true;

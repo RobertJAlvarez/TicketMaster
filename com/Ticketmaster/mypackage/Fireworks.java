@@ -1,3 +1,4 @@
+package com.Ticketmaster.mypackage;
 /**
  * Fireworks interface for setters and getters.
  * 

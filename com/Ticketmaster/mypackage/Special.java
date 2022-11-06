@@ -1,13 +1,14 @@
+package com.Ticketmaster.mypackage;
 import java.util.GregorianCalendar;
 
 /**
- * Sport is a class that extends the Event class containing, event id, name, date, time,
+ * Special is a class that extends the Event class containing, event id, name, date, time,
  * prices, seats, availability, venue and tickets sold.
  * 
  * @author Robert J Alvarez
  * @date September 18th, 2022
  */
-public class Sport extends Event {
+public class Special extends Event {
   /**
    * Constructor to create an Event with all parameters. It invokes the super constructor.
    * 
@@ -15,14 +16,14 @@ public class Sport extends Event {
    * @param name - String for event name
    * @param date - GregorianCalendar for event date and time
    */
-  public Sport(int eventID, String name, GregorianCalendar date, boolean fireworksPlanned, int fireworksCost) {
+  public Special(int eventID, String name, GregorianCalendar date, boolean fireworksPlanned, int fireworksCost) {
     super(eventID, name, date, fireworksPlanned, fireworksCost);
   }
 
   /**
    * Constructor to create an Event with no parameters. It invokes the super constructor.
    */
-  public Sport() {
+  public Special() {
     super();
   }
 

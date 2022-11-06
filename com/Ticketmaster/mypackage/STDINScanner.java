@@ -1,3 +1,4 @@
+package com.Ticketmaster.mypackage;
 import java.util.Scanner;
 import java.util.logging.Level;
 

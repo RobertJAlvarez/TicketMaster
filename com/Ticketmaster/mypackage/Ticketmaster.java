@@ -1,3 +1,5 @@
+package com.Ticketmaster.mypackage;
+
 /*
  * Name: Robert Alvarez
  * Date: October 23rd, 2022
@@ -14,6 +16,8 @@
  */
 
 import java.util.logging.Level;
+
+import com.viewer.mypackage.Viewer;
 
 /**
  * Ticketmaster have the main method that control the primary behaviors of the program such as reading csv files to
@@ -36,7 +40,6 @@ public class Ticketmaster {
     int accessType = 0; //1 for Customer, 2 for administrator, and 0 to finish the program
 
     Database.populateDatabase();       //Fill Events, Venues, Customers and Tickets
-    //LoginViewer.logUser();
 
     do {
       Log.logWrite(Level.FINE, "Ask for system access.");
@@ -53,16 +56,7 @@ public class Ticketmaster {
         case (1):
           Log.logWrite(Level.FINE,"Continue with Customer log in options.");
           Log.logWrite(Level.FINE,"Ask for user information to log in.");
-          User.logUser();
-
-          if (User.getUser() == null) {
-            Log.logWrite(Level.FINE,"User couldn't be log in.");
-            System.out.println("We couldn't log you in.");
-          } else {
-            Log.logWrite(Level.FINE,"Log as user.");
-            User.userLogged();
-            User.logOffUser();
-          }
+          Viewer.logUser();
           break;
         case (2):
           Log.logWrite(Level.FINE,"Log as administrator.");
