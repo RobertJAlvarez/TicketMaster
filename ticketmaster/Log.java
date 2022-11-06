@@ -1,4 +1,5 @@
-package com.Ticketmaster.mypackage;
+package ticketmaster;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

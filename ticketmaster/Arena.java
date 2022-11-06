@@ -1,4 +1,5 @@
-package com.Ticketmaster.mypackage;
+package ticketmaster;
+
 /**
  * Arena is a class that extends the Venue class to be use in the Event class 'to have a place to hold an event.'
  * 

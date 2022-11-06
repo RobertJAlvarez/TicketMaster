@@ -1,11 +1,12 @@
-package com.Ticketmaster.mypackage;
+package ticketmaster;
+
 /**
- * OpenAir is a class that extends the Venue class to be use in the Event class 'to have a place to hold an event.'
+ * Auditorium is a class that extends the Venue class to be use in the Event class 'to have a place to hold an event.'
  * 
  * @author Robert J Alvarez
  * @date September 18th, 2022
  */
-public class OpenAir extends Venue {
+public class Auditorium extends Venue {
   /**
    * Constructor to create a venue by invoking the super constructor
    * 
@@ -14,12 +15,12 @@ public class OpenAir extends Venue {
    * @param capacity - int with the maximum capacity
    * @param cost - int with for the cost to rent the venue
    */
-  public OpenAir(String name, int numSeatsUnavailable, int capacity, int cost) {
+  public Auditorium(String name, int numSeatsUnavailable, int capacity, int cost) {
     super(name, numSeatsUnavailable, capacity, cost);
   }
 
   /**
    * Constructor without parameters. Do nothing.
    */
-  public OpenAir() {}
+  public Auditorium() {}
 }

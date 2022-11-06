@@ -1,4 +1,5 @@
-package com.Ticketmaster.mypackage;
+package ticketmaster;
+
 /**
  * Class used to model a seat for an event with a price and category, e.g., VIP, Gold, Silver.
  * 

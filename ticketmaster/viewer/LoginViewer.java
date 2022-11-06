@@ -1,4 +1,4 @@
-package com.viewer.mypackage;
+package ticketmaster.viewer;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -14,10 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import com.Ticketmaster.mypackage.Customer;
-import com.Ticketmaster.mypackage.Database;
-import com.Ticketmaster.mypackage.Log;
-import com.Ticketmaster.mypackage.User;
+import ticketmaster.Customer;
+import ticketmaster.Database;
+import ticketmaster.Log;
+import ticketmaster.User;
 
 public class LoginViewer implements ActionListener {
 	private static JTextField username;

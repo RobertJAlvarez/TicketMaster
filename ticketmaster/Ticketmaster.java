@@ -1,4 +1,4 @@
-package com.Ticketmaster.mypackage;
+package ticketmaster;
 
 /*
  * Name: Robert Alvarez
@@ -17,7 +17,7 @@ package com.Ticketmaster.mypackage;
 
 import java.util.logging.Level;
 
-import com.viewer.mypackage.Viewer;
+import ticketmaster.viewer.Viewer;
 
 /**
  * Ticketmaster have the main method that control the primary behaviors of the program such as reading csv files to

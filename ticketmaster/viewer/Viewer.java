@@ -1,4 +1,4 @@
-package com.viewer.mypackage;
+package ticketmaster.viewer;
 
 public class Viewer {
   private Viewer() {}

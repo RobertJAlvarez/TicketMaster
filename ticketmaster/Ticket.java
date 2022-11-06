@@ -1,4 +1,5 @@
-package com.Ticketmaster.mypackage;
+package ticketmaster;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
