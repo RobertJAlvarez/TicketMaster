@@ -1,5 +1,3 @@
-package ticketmaster;
-
 /*
  * Name: Robert Alvarez
  * Date: October 23rd, 2022
@@ -17,6 +15,10 @@ package ticketmaster;
 
 import java.util.logging.Level;
 
+import ticketmaster.Admin;
+import ticketmaster.Database;
+import ticketmaster.Log;
+import ticketmaster.STDINScanner;
 import ticketmaster.viewer.Viewer;
 
 /**
