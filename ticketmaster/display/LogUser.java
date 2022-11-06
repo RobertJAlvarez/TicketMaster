@@ -1,4 +1,5 @@
 package ticketmaster.display;
+
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 import java.awt.Dimension;
@@ -18,14 +19,17 @@ import ticketmaster.Database;
 import ticketmaster.Log;
 import ticketmaster.User;
 
-public class LoginViewer implements ActionListener {
+public class LogUser implements ActionListener {
 	private static JTextField username;
 	private static JPasswordField password;
 	private static JLabel message;
 	private static JFrame frame = null;
 	private static final int MAXLOGINTRIES = 3;
 	private int nTriesLeft = MAXLOGINTRIES;
-	private boolean popUpClose = false;
+
+	public static void makeInvisible() {
+		frame.setVisible(false);
+	}
 
 	public static void makeVisible() {
 		frame.setVisible(true);
@@ -71,13 +75,13 @@ public class LoginViewer implements ActionListener {
 		//Make a Login button which when press it calls ActionPerformed with the ActionEvent having Login
 		JButton button = new JButton("Login");
 		button.setBounds(100, 80, 70, 20);
-		button.addActionListener(new LoginViewer());
+		button.addActionListener(new LogUser());
 		panel.add(button);
 
 		//Make an Exit button which when press it calls ActionPerformed with the ActionEvent having Exit
 		JButton buttonExit = new JButton("Exit");
 		buttonExit.setBounds(180, 80, 70, 20);
-		buttonExit.addActionListener(new LoginViewer());
+		buttonExit.addActionListener(new LogUser());
 		panel.add(buttonExit);
 
 		//Set a way to display a message once a button is press
@@ -96,7 +100,7 @@ public class LoginViewer implements ActionListener {
 		Customer customer;
 
 		if ( (nTriesLeft <= 0) || (s.equals("Exit")) ) {
-			popUpClose = true;
+			makeInvisible();
 			nTriesLeft = MAXLOGINTRIES;
 		} else if(s.equals("Login")) {
 			String userUsername = username.getText();
@@ -116,10 +120,6 @@ public class LoginViewer implements ActionListener {
 				Log.logWrite(Level.FINE,"User couldn't be log in.");
 				message.setText("We couldn't log you in.");
 			}
-		}
-
-		if (popUpClose) {
-			Database.closeProgram();
 		}
 	}
 }

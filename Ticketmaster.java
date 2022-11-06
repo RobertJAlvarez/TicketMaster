@@ -1,4 +1,4 @@
-/*
+/**
  * Name: Robert Alvarez
  * Date: October 23rd, 2022
  * Instructor: Dr. Mejia
@@ -13,12 +13,7 @@
  *    University of Texas at El Paso and a grade will be assigned for the work I produced."
  */
 
-import java.util.logging.Level;
-
-import ticketmaster.Admin;
 import ticketmaster.Database;
-import ticketmaster.Log;
-import ticketmaster.STDINScanner;
 import ticketmaster.display.Viewer;
 
 /**
@@ -29,8 +24,6 @@ import ticketmaster.display.Viewer;
  * @date September 25th, 2022
  */
 public class Ticketmaster {
-  private static STDINScanner scnr = STDINScanner.getInstance();
-
   /**
    * Populate the Database, set the logger, and start running the customer/admin option to use the system.
    * At the end, it make three ticket summaries and close the program by calling closeProgram().
@@ -38,35 +31,7 @@ public class Ticketmaster {
    * @param args - Array of strings with what was given when the code got compile.
    */
   public static void main(String[] args) {
-    int input;
-    int accessType = 0; //1 for Customer, 2 for administrator, and 0 to finish the program
-
     Database.populateDatabase();       //Fill Events, Venues, Customers and Tickets
-
-    do {
-      Log.logWrite(Level.FINE, "Ask for system access.");
-      System.out.println("We have the following sign in options:");
-      System.out.println("1. Customer.");
-      System.out.println("2. Administrator.");
-      System.out.println("Anything else to exit.");
-
-      input = scnr.readNextInt();
-      accessType = input;
-
-      Log.logWrite(Level.FINE, "Input: " + input);
-      switch (accessType) {
-        case (1):
-          Log.logWrite(Level.FINE,"Continue with Customer log in options.");
-          Log.logWrite(Level.FINE,"Ask for user information to log in.");
-          Viewer.logUser();
-          break;
-        case (2):
-          Log.logWrite(Level.FINE,"Log as administrator.");
-          Admin.logged();
-          break;
-        default:
-          accessType = 0;
-      }
-    } while (accessType != 0);
+    Viewer.logUserOrAdmin();
   }
 }
