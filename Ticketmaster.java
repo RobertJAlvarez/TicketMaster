@@ -19,7 +19,7 @@ import ticketmaster.Admin;
 import ticketmaster.Database;
 import ticketmaster.Log;
 import ticketmaster.STDINScanner;
-import ticketmaster.viewer.Viewer;
+import ticketmaster.display.Viewer;
 
 /**
  * Ticketmaster have the main method that control the primary behaviors of the program such as reading csv files to
@@ -68,23 +68,5 @@ public class Ticketmaster {
           accessType = 0;
       }
     } while (accessType != 0);
-
-    closeProgram();
-  }
-
-  /**
-   * Write csv files for customers, events, and tickets. Move all ticket summaries into its
-   * folder and all logs into its folder. Close scanner.
-   */
-  public static void closeProgram() {
-    Admin.ticketSummary(Database.getCustomer("RobertAlvarez"));
-    Admin.ticketSummary(Database.getCustomer("DonaldDuck"));
-    Admin.ticketSummary(Database.getCustomer("AliNouri"));
-
-    Log.logWrite(Level.FINE,"Writing new Customer, Event, and ticket lists.");
-    Database.saveDatabase();
-    Admin.movTicketSummary();
-    Log.movLogs();
-    scnr.close();
   }
 }

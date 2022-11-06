@@ -1,5 +1,4 @@
-package ticketmaster.viewer;
-
+package ticketmaster.display;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 import java.awt.Dimension;
@@ -23,11 +22,23 @@ public class LoginViewer implements ActionListener {
 	private static JTextField username;
 	private static JPasswordField password;
 	private static JLabel message;
+	private static JFrame frame = null;
+	private static final int MAXLOGINTRIES = 3;
+	private int nTriesLeft = MAXLOGINTRIES;
 	private boolean popUpClose = false;
 
+	public static void makeVisible() {
+		frame.setVisible(true);
+	}
+
 	protected static void logUser() {
+		if (frame != null) {
+			makeVisible();
+			return;
+		}
+
 		//Create the frame
-		JFrame frame = new JFrame("Hello World!");
+		frame = new JFrame("User login!");
 		frame.setLocationRelativeTo(null);
 		frame.setPreferredSize(new Dimension(300,150));
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -76,7 +87,7 @@ public class LoginViewer implements ActionListener {
 
 		//Display the frame
 		frame.pack();
-		frame.setVisible(true);
+		makeVisible();
 	}
 
 	@Override
@@ -84,11 +95,12 @@ public class LoginViewer implements ActionListener {
 		String s = e.getActionCommand();
 		Customer customer;
 
-		if(s.equals("Login")) {
+		if ( (nTriesLeft <= 0) || (s.equals("Exit")) ) {
+			popUpClose = true;
+			nTriesLeft = MAXLOGINTRIES;
+		} else if(s.equals("Login")) {
 			String userUsername = username.getText();
 			String userPassword = new String(password.getPassword());
-
-			System.out.println(userUsername + " " + userPassword);
 
 			customer = Database.getCustomer(userUsername);
 			if ( (customer != null) && (customer.checkPassword(userPassword)) ) {
@@ -97,17 +109,17 @@ public class LoginViewer implements ActionListener {
 				User.setCustomer(customer);
         User.userLogged();
         User.logOffUser();
-				popUpClose = true;
+				frame.setVisible(false);
+				nTriesLeft = MAXLOGINTRIES;
 			} else {
+				nTriesLeft--;	//One try to log in had been used
 				Log.logWrite(Level.FINE,"User couldn't be log in.");
-        System.out.println("We couldn't log you in.");
+				message.setText("We couldn't log you in.");
 			}
-		} else if (s.equals("Exit")) {
-			popUpClose = true;
 		}
 
 		if (popUpClose) {
-			System.exit(0);
+			Database.closeProgram();
 		}
 	}
 }

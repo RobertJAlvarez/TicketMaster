@@ -219,4 +219,20 @@ public class Database {
     WriteCSV.writeCustomerList(customers, NEWCUSTOMERFILENAME);
     WriteCSV.writeTicketsList(ticketsPurchased, TICKETFILENAME);
   }
+
+  /**
+   * Write csv files for customers, events, and tickets. Move all ticket summaries into its
+   * folder and all logs into its folder. Close scanner.
+   */
+  public static void closeProgram() {
+    Admin.ticketSummary(getCustomer("RobertAlvarez"));
+    Admin.ticketSummary(getCustomer("DonaldDuck"));
+    Admin.ticketSummary(getCustomer("AliNouri"));
+
+    Log.logWrite(Level.FINE,"Writing new Customer, Event, and ticket lists.");
+    saveDatabase();
+    Admin.movTicketSummary();
+    Log.movLogs();
+    STDINScanner.getInstance().close();
+  }
 }
