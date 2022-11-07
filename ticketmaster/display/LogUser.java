@@ -102,6 +102,7 @@ public class LogUser implements ActionListener {
 		if ( (nTriesLeft <= 0) || (s.equals("Exit")) ) {
 			makeInvisible();
 			nTriesLeft = MAXLOGINTRIES;
+			Viewer.makeVisible();
 		} else if(s.equals("Login")) {
 			String userUsername = username.getText();
 			String userPassword = new String(password.getPassword());
@@ -110,11 +111,12 @@ public class LogUser implements ActionListener {
 			if ( (customer != null) && (customer.checkPassword(userPassword)) ) {
 				Log.logWrite(Level.FINE,"Log as user.");
 
+				makeInvisible();
+				nTriesLeft = MAXLOGINTRIES;
+
 				User.setCustomer(customer);
         User.userLogged();
         User.logOffUser();
-				frame.setVisible(false);
-				nTriesLeft = MAXLOGINTRIES;
 			} else {
 				nTriesLeft--;	//One try to log in had been used
 				Log.logWrite(Level.FINE,"User couldn't be log in.");
