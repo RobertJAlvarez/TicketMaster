@@ -357,7 +357,6 @@ public class Customer {
    * and save all the ticket information for all tickets of the user.
    */
   public void writeTicketSummary() {
-    //TODO: Check that a txt file doesn't exist, if it does we delete it and make a new one
     setTicketSummaryFilename(getFirstName() + "_" + getLastName() + "_Ticket_Summary.txt");
 
     try (FileWriter writer = new FileWriter(getTicketSummaryFilename())) {
