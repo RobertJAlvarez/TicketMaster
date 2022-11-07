@@ -19,7 +19,7 @@ import java.util.logging.Level;
  * @author Robert J Alvarez
  * @date September 16th, 2022
  */
-public abstract class Event implements Fireworks {
+public abstract class Event {
   private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
   private int eventID;
   private String name;

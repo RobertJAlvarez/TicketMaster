@@ -22,6 +22,10 @@ public class Viewer implements ActionListener {
   private static JRadioButton radioAdmin;
   private static JRadioButton radioUser;
 
+  public static void makeInvisible() {
+		frame.setVisible(false);
+	}
+
   protected static void makeVisible() {
     frame.setVisible(true);
   }
@@ -78,6 +82,7 @@ public class Viewer implements ActionListener {
       Log.logWrite(Level.FINE,"Log as administrator.");
       JOptionPane.showMessageDialog(frame, "I'm currently working on admin options.");
     } else if (radioUser.isSelected()) {
+      makeInvisible();
       LogUser.logUser();
     } else {
       JOptionPane.showMessageDialog(frame, "Select one of the two given options or exit the program.");
