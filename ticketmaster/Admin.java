@@ -21,9 +21,9 @@ import java.util.logging.Level;
 public class Admin {
   private static STDINScanner scnr = STDINScanner.getInstance();
   private static Queue<String> ticketSummaryFiles = new LinkedList<>();
-  private static final String FIREWORKSPLANNEDHEADER = "Fireworks Planned";
-  private static final String FIREWORKSCOSTHEADER = "Fireworks Cost";
-  private static final String VENUETYPEHEADER = "Venue Type";
+  public static final String FIREWORKSPLANNEDHEADER = "Fireworks Planned";
+  public static final String FIREWORKSCOSTHEADER = "Fireworks Cost";
+  public static final String VENUETYPEHEADER = "Venue Type";
 
   /**
    * Constructor with all parameters.

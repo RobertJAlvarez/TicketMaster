@@ -31,22 +31,14 @@ public class ReadCSV {
     Scanner fileScnr = prepareFileToBeRead(filename);
     int populateOption;
 
-    //Choose that to populate
-    if (whatToPopulate.equalsIgnoreCase(Event.class.getName())) {  //Events
-      populateOption = 0;
-    } else if (whatToPopulate.equalsIgnoreCase(Customer.class.getName())) { //Customers
-      populateOption = 1;
-    } else if (whatToPopulate.equalsIgnoreCase(Ticket.class.getName())) {   //Tickets
-      populateOption = 2;
-    } else if (whatToPopulate.equalsIgnoreCase("AutoPurchase")) { //Auto purchases
-      populateOption = 3;
-    } else {  //No valid option to populate was given
-      System.out.println(whatToPopulate + " is not a valid option on what to populate in ReadCSV.populateDatabase().");
+    //Check that fileScnr was successfully open
+    if (fileScnr == null) {
       return;
     }
 
-    //Check that fileScnr was successfully open
-    if (fileScnr == null) {
+    populateOption = getWhatToPopulate(whatToPopulate);
+    if (populateOption < 0) {
+      System.out.println(whatToPopulate + " is not a valid option on what to populate in ReadCSV.populateDatabase().");
       return;
     }
 
@@ -58,6 +50,11 @@ public class ReadCSV {
     entries = ( fileScnr.nextLine() ).split(",");
     for (String columnName : entries)
       lineInfo.put(columnName, "");
+
+    //Check that the file provided have all the header needed
+    if (!checkHeaders(lineInfo, populateOption)) {
+      return;
+    }
 
     //Read the rest of the file provided to make events and venues
     while ( fileScnr.hasNextLine() ) {
@@ -87,6 +84,68 @@ public class ReadCSV {
       }
     }
     fileScnr.close();
+  }
+
+  private static int getWhatToPopulate(String whatToPopulate) {
+    int populateOption = -1;
+
+    //Choose that to populate
+    if (whatToPopulate.equalsIgnoreCase(Event.class.getName())) {  //Events
+      populateOption = 0;
+    } else if (whatToPopulate.equalsIgnoreCase(Customer.class.getName())) { //Customers
+      populateOption = 1;
+    } else if (whatToPopulate.equalsIgnoreCase(Ticket.class.getName())) {   //Tickets
+      populateOption = 2;
+    } else if (whatToPopulate.equalsIgnoreCase("AutoPurchase")) { //Auto purchases
+      populateOption = 3;
+    }
+
+    return populateOption;
+  }
+
+  /**
+   * 
+   * 
+   * @param entries
+   * @return
+   */
+  private static boolean checkHeaders(Map<String,String> entries, int populateOption) {
+    boolean goodHeaders = true;
+
+    switch (populateOption) {
+      case (0):
+        //Check that the minimum event and venue headers exist
+        goodHeaders = (entries.containsKey(EVENTIDHEADER) && entries.containsKey("Event Type") && entries.containsKey("Name") && entries.containsKey("Date")
+          && entries.containsKey("Time") && entries.containsKey(Admin.FIREWORKSPLANNEDHEADER) && entries.containsKey(Admin.FIREWORKSCOSTHEADER)
+          && entries.containsKey("Venue Name") && entries.containsKey(Admin.VENUETYPEHEADER) && entries.containsKey("Capacity") && entries.containsKey("Cost") );
+        break;
+      case (1):
+        //Check that the minimum customers headers exist
+        goodHeaders = (entries.containsKey("ID") && entries.containsKey("Money Available") && entries.containsKey("TicketMiner Membership")
+          && entries.containsKey("First Name") && entries.containsKey("Last Name") && entries.containsKey("Username") && entries.containsKey("Password"));
+        break;
+      case (2):
+        break;
+      case (3):
+        break;
+      default:
+        System.err.println(populateOption + " is not accounted for on the switch statement in ReadCSV.populateDatabase().");
+    }
+
+    return goodHeaders;
+  }
+
+  /**
+   * 
+   * 
+   * @param entries - Map<String,String> with the header of the column names as keys and the line information just read as values
+   */
+  private static void addCustomer(Map<String,String> entries) {
+    int id = Integer.parseInt(entries.get("ID"));
+    float moneyAvailable = Float.parseFloat(entries.get("Money Available"));
+    boolean hasMembership = entries.get("TicketMiner Membership").equalsIgnoreCase("TRUE");
+    Customer customer = new Customer(id, entries.get("First Name"), entries.get("Last Name"), moneyAvailable, hasMembership, entries.get("Username"), entries.get("Password"));
+    Database.addCustomers(customer);
   }
 
   /**
@@ -121,19 +180,6 @@ public class ReadCSV {
       makeSeats(entries, event);
       Database.addEvent(event);
     }
-  }
-
-  /**
-   * 
-   * 
-   * @param entries - Map<String,String> with the header of the column names as keys and the line information just read as values
-   */
-  private static void addCustomer(Map<String,String> entries) {
-    int id = Integer.parseInt(entries.get("ID"));
-    float moneyAvailable = Float.parseFloat(entries.get("Money Available"));
-    boolean hasMembership = entries.get("TicketMiner Membership").equalsIgnoreCase("TRUE");
-    Customer customer = new Customer(id, entries.get("First Name"), entries.get("Last Name"), moneyAvailable, hasMembership, entries.get("Username"), entries.get("Password"));
-    Database.addCustomers(customer);
   }
 
   /**

@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import ticketmaster.display.FileChooser;
+
 /**
  * Database is an class to save all events, customer and tickets purchased. Events, venue (component of an event), and customers
  * are read from csv files. It also contains methods to print events, save tickets, and find and return specifics of each by the use of keys.
@@ -21,9 +23,7 @@ public class Database {
   private static HashMap<String,Integer> mapNamesToCustomerID;  //customer.getFirstName() + customer.getLastName() as the key
   //seatTypes MUST BE ORDER IN DESCENDING IMPORTANCE!!!
   private static final String[] seatTypes = new String[] {"VIP","Gold","Silver","Bronze","General Admission"};
-  private static final String ORIGINALEVENTFILENAME = "EventList.csv";
   private static final String NEWEVENTFILENAME = "NewEventList.csv";
-  private static final String ORIGINALCUSTOMERFILENAME = "CustomerList.csv";
   private static final String NEWCUSTOMERFILENAME = "NewCustomerList.csv";
   private static final String TICKETFILENAME = "NewTicketList.csv";
   private static boolean hasBeenPopulate = false;
@@ -99,17 +99,19 @@ public class Database {
     mapNamesToCustomerID = new HashMap<>();
     mapNameToEventID = new HashMap<>();
 
-    String filename;
+    String filename = null;
     final String READ = "About to read ";
 
-    filename = getNewerFile(ORIGINALEVENTFILENAME, NEWEVENTFILENAME);
+    filename = FileChooser.chooseFile("to populate events");
     Log.logWrite(Level.FINE, READ + filename + " to populate Events and venues");
     ReadCSV.populateDatabase(filename, Event.class.getName());
+    if (events.size() == 0) {
+      System.err.println("File given don't contain the required minimum type of headers to create events.");
+    }
 
-    filename = getNewerFile(ORIGINALCUSTOMERFILENAME, NEWCUSTOMERFILENAME);
+    filename = FileChooser.chooseFile("to read customer information");
     Log.logWrite(Level.FINE, READ + filename + " to populate Customers.");
     ReadCSV.populateDatabase(filename, Customer.class.getName());
-
     filename = getNewerFile("", TICKETFILENAME);
     if (filename.length() > 0) {
       Log.logWrite(Level.FINE, READ + filename + " to populate Tickets");
@@ -225,9 +227,9 @@ public class Database {
    * folder and all logs into its folder. Close scanner.
    */
   public static void closeProgram() {
-    Admin.ticketSummary(getCustomer("RobertAlvarez"));
-    Admin.ticketSummary(getCustomer("DonaldDuck"));
-    Admin.ticketSummary(getCustomer("AliNouri"));
+    Admin.ticketSummary(getCustomer("robertalvarez"));
+    Admin.ticketSummary(getCustomer("donaldduck"));
+    Admin.ticketSummary(getCustomer("alinouri"));
 
     Log.logWrite(Level.FINE,"Writing new Customer, Event, and ticket lists.");
     saveDatabase();
