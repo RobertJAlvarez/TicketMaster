@@ -14,7 +14,6 @@
  */
 
 import ticketmaster.Database;
-import ticketmaster.display.FileChooser;
 import ticketmaster.display.Viewer;
 
 /**

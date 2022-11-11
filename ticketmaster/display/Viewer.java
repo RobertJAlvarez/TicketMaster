@@ -17,6 +17,11 @@ import javax.swing.JRadioButton;
 import ticketmaster.Database;
 import ticketmaster.Log;
 
+/**
+ * 
+ * @author Robert J Alvarez
+ * @date September 18th, 2022
+ */
 public class Viewer implements ActionListener {
   private static JFrame frame = null;
   private static JRadioButton radioAdmin;

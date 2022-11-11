@@ -19,6 +19,11 @@ import ticketmaster.Database;
 import ticketmaster.Log;
 import ticketmaster.User;
 
+/**
+ * 
+ * @author Robert J Alvarez
+ * @date September 18th, 2022
+ */
 public class LogUser implements ActionListener {
 	private static JTextField username;
 	private static JPasswordField password;

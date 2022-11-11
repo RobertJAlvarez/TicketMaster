@@ -6,6 +6,11 @@ import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+/**
+ * 
+ * @author Robert J Alvarez
+ * @date September 18th, 2022
+ */
 public class FileChooser {
   static JLabel label;
 
