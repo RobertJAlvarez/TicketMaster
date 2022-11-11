@@ -175,7 +175,25 @@ public class Customer {
    */
   public Ticket buySeats(Event event) {
     Ticket ticket = new Ticket(event, event.getVenue(), this);
-    buySeat(event, ticket);
+    buySeat(ticket);
+    if (ticket.getNumberOfSeatsPurchases() == 0) {
+      ticket.setPurchaseTime();
+      ticket.setPurchaseID();
+    } else {
+      ticket = null;
+    }
+    return ticket;
+  }
+
+  /**
+   * Make a Ticket, call buySeat() to buy an individual seat and return the ticket with all the purchases made.
+   * 
+   * @param event - Event to buy seats for.
+   * @return Ticket with the seats purchase made.
+   */
+  public Ticket buySeats(Event event, String seatType, int nSeats) {
+    Ticket ticket = new Ticket(event, event.getVenue(), this);
+    buyNSeats(ticket, seatType, nSeats);
     if (ticket.getNumberOfSeatsPurchases() == 0) {
       ticket.setPurchaseTime();
       ticket.setPurchaseID();
@@ -188,16 +206,11 @@ public class Customer {
   /**
    * Recursive function that allows the customer to buy seats for the event and save them on a ticket.
    * 
-   * @param event - Event to buy seats for.
    * @param ticket - Ticket to save the information about the purchases made.
    */
-  private void buySeat(Event event, Ticket ticket) {
-    Seat seat;
+  private void buySeat(Ticket ticket) {
+    Event event = ticket.getEvent();
     String seatType;
-    int optionN;
-    float seatCost;
-    int nAvailableSeats;
-    final float taxPercentage = Tax.getTaxPercentage(event);
 
     do {
       System.out.println("This are our remaining seat options:");
@@ -205,40 +218,11 @@ public class Customer {
       System.out.println("Anything else to exit.");
 
       System.out.println("Which seat type would you like to buy?");
-      optionN = scnr.readNextInt();
-      seatType = event.getSeatOptionN(optionN);
+      seatType = event.getSeatOptionN(scnr.readNextInt());
 
       //Check that seat type exist
       if (seatType.length() != 0) {
-        nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
-        seatCost = event.getSeatPrice(seatType);
-        //Give 10% discount in subtotal if customer is ticket miner member
-        if (hasTicketMinerMembership()) {
-          //Update how much your customer had save
-          setTotalSave(getTotalSave() + seatCost/(float)10.0);
-          //Update how much the event had lost from discounts
-          event.setTotalDiscounted(event.getTotalDiscounted() + seatCost/(float)10.0);
-          seatCost -= seatCost/(float)10.0;
-        }
-
-        //Calculate tax
-        seatCost += seatCost*taxPercentage/(float)100.0;
-
-        //Make sure there are seats available and customer can afford it
-        if ( getMoneyAvailable() > seatCost) {
-          //Create seat
-          seat = new Seat(seatType, seatCost);
-          //Update number of seats
-          event.setNumSeats(seatType, nAvailableSeats-1);
-          //Update customer available money
-          setMoneyAvailable(getMoneyAvailable()-seatCost);
-          //Add purchase to ticket
-          ticket.addPurchase(seat);
-          //Update total cost of seats purchased
-          ticket.setTotalCost(ticket.getTotalCost() + seatCost);
-        } else {
-          System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase a " + seatType + " seat.");
-        }
+        buyNSeats(ticket, seatType, 1);
       } else {
         break;
       }
@@ -261,18 +245,17 @@ public class Customer {
    * @param nSeats - int with the number of seats wanted to be purchase.
    * @return Ticket with all the transactions made.
    */
-  public Ticket buyNSeats(Event event, String seatType, int nSeats) {
-    Ticket ticket = new Ticket(event, event.getVenue(), this);
-    Seat seat;
+  private void buyNSeats(Ticket ticket, String seatType, int nSeats) {
+    Event event = ticket.getEvent();
     int nAvailableSeats;
     float seatCost;
-    float taxPercentage;
+    final float taxPercentage = Tax.getTaxPercentage(event);  //Get taxes base on event location
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
     seatCost = event.getSeatPrice(seatType);
 
     //Check that there are enough seats to purchase
-    if (nAvailableSeats > nSeats) {
+    if (nAvailableSeats >= nSeats) {
       //Give 10% discount in subtotal if customer is ticket miner member
       if (hasTicketMinerMembership()) {
         //Update how much your customer had save
@@ -283,8 +266,6 @@ public class Customer {
         seatCost -= seatCost/(float)10.0;
       }
 
-      //Get taxes base on event location
-      taxPercentage = Tax.getTaxPercentage(event);
       //Calculate tax
       seatCost += seatCost*taxPercentage/(float)100.0;
 
@@ -297,6 +278,7 @@ public class Customer {
         setMoneyAvailable(getMoneyAvailable()-seatCost*nSeats);
 
         //Create seats
+        Seat seat;
         for (int i = 0; i < nSeats; i++) {
           seat = new Seat(seatType, seatCost);
           //Add purchase to ticket
@@ -304,17 +286,13 @@ public class Customer {
         }
 
         //Set ticket attributes
-        ticket.setTotalCost(seatCost*nSeats);
-        ticket.setPurchaseTime();
-        ticket.setPurchaseID();
+        ticket.setTotalCost(ticket.getTotalCost() + seatCost*nSeats);
       } else {
         System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase " + nSeats + seatType + " seats.");
       }
     } else {
       System.out.println("Event (event id: " + event.getEventID() + ") have less than " + nSeats + seatType + " seats to sell.");
     }
-
-    return ticket;
   }
 
   /**

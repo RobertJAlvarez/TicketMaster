@@ -52,11 +52,11 @@ public class Ticket {
   }
 
   public Event getEvent() {
-    return this.event;
+    return event;
   }
 
   public Venue getVenue() {
-    return this.venue;
+    return venue;
   }
 
   public List<Seat> getSeatsPurchased() {
