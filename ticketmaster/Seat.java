@@ -43,4 +43,10 @@ public class Seat {
   public void setPrice(float price) {
     this.price = price;
   }
+
+  //Methods
+  @Override
+  public String toString() {
+    return getSeatType() + ": $" + getPrice();
+  }
 }

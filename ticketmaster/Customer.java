@@ -158,6 +158,12 @@ public class Customer {
     return passwordInput.equals(getPassword());
   }
 
+  public void printAllTickets() {
+    for (Ticket ticket : ticketsPurchased.values()) {
+      ticket.getSummary();
+    }
+  }
+
   /**
    * Add ticket to ticketsPurchased where the purchase id is the key and the ticket is the value.
    * 

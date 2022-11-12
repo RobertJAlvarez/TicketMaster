@@ -76,7 +76,32 @@ public class User {
    * Sell seats or an entire ticket already purchase from this system.
    */
   private static void sellSeats() {
-    //TODO: Check the tickets that the customer have and when the seat is selected to be resell check the day of the event that is not passed.
+    Ticket ticket;
+    int option = 0;
+
+    do {
+      System.out.println("You had purchase all this tickets:");
+      customer.printAllTickets();
+      System.out.println("Enter ticket ID to continue with the sell options or enter a invalid ticket ID to cancel.");
+      ticket = Database.getTicketPurchased(scnr.readNextInt());
+      if (ticket == null) {
+        break;
+      }
+      System.out.println("What would you like to sell?");
+      System.out.println(++option + ". All seats.");
+      for (Seat seat : ticket.getSeatsPurchased()) {
+        System.out.println(++option + ". " + seat.toString());
+      }
+      System.out.println("Any other number to cancel.");
+      option = scnr.readNextInt();
+      if (option == 1) {
+        //TODO: Sell all seats
+      } else if ( (option > 1) && (option <= ticket.getSeatsPurchased().size()+1 ) ) {
+        //TODO: Sell that seat
+      } else {
+        System.out.println("Sell has been cancelled.");
+      }
+    } while (true);
   }
 
   /**
