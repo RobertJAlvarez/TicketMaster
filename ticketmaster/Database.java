@@ -209,6 +209,19 @@ public class Database {
   }
 
   /**
+   * Given a ticket, use its purchase ID, customer, and event attributes to removes it from the software database.
+   * 
+   * @param ticket
+   */
+  public static void removeTicket(Ticket ticket) {
+    int ticketID = ticket.getPurchaseID();
+
+    ticket.getEvent().removeTicket(ticketID);
+    ticket.getCustomer().removeTicket(ticketID);
+    ticketsPurchased.remove(ticketID);
+  }
+
+  /**
    * Use oldName to delete the mapping between oldName and id and now map newName with id.
    * 
    * @param oldName - String name of event before it was change, therefore this is the previous key to event id.

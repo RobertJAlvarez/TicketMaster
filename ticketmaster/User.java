@@ -1,5 +1,6 @@
 package ticketmaster;
 
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -94,14 +95,35 @@ public class User {
       }
       System.out.println("Any other number to cancel.");
       option = scnr.readNextInt();
-      if (option == 1) {
-        //TODO: Sell all seats
+      if ( (option == 1) || ((option == 2) && (ticket.getSeatsPurchased().size() == 1)) ) {
+        sellAllSeats(ticket);
       } else if ( (option > 1) && (option <= ticket.getSeatsPurchased().size()+1 ) ) {
-        //TODO: Sell that seat
+        sellSeat(ticket, option-2);
       } else {
         System.out.println("Sell has been cancelled.");
       }
     } while (true);
+  }
+
+  /**
+   * @param ticket
+   */
+  private static void sellAllSeats(Ticket ticket) {
+    List<Seat> seats = ticket.getSeatsPurchased();
+
+    for (int i = seats.size()-1; i >= 0; i--) {
+      sellSeat(ticket, i);
+    }
+
+    Database.removeTicket(ticket);
+  }
+
+  /**
+   * @param ticket
+   * @param atIdx
+   */
+  private static void sellSeat(Ticket ticket, int atIdx) {
+    //
   }
 
   /**

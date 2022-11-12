@@ -137,25 +137,25 @@ public class Ticket {
 
   public void setTaxesPay(float taxes) {
     salesTotals[0] = taxes;
-    Event.addTaxesCollected(taxes);
+    event.addTaxesCollected(taxes);
     Database.addTaxesCollected(taxes);
   }
 
   public void setServiceFeePay(float serviceFee) {
     salesTotals[1] = serviceFee;
-    Event.addServiceFee(serviceFee);
+    event.addServiceFee(serviceFee);
     Database.addServiceFee(serviceFee);
   }
 
   public void setConvenienceFee(float convenienceFee) {
     salesTotals[2] = convenienceFee;
-    Event.addConvenienceFee(convenienceFee);
+    event.addConvenienceFee(convenienceFee);
     Database.addConvenienceFee(convenienceFee);
   }
 
   public void setCharityFeePay(float charityFee) {
     salesTotals[3] = charityFee;
-    Event.addCharityFee(charityFee);
+    event.addCharityFee(charityFee);
     Database.addCharityFee(charityFee);
   }
 
@@ -166,19 +166,19 @@ public class Ticket {
   //Methods
   public void addTaxesCollected(float taxes) {
     salesTotals[0] += taxes;
-    Event.addTaxesCollected(taxes);
+    event.addTaxesCollected(taxes);
     Database.addTaxesCollected(taxes);
   }
 
   public void addServiceFee(float serviceFee) {
     salesTotals[1] += serviceFee;
-    Event.addServiceFee(serviceFee);
+    event.addServiceFee(serviceFee);
     Database.addServiceFee(serviceFee);
   }
 
   public void addCharityFee(float charityFee) {
     salesTotals[3] += charityFee;
-    Event.addCharityFee(charityFee);
+    event.addCharityFee(charityFee);
     Database.addCharityFee(charityFee);
   }
 

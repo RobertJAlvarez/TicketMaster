@@ -173,6 +173,10 @@ public class Customer {
     ticketsPurchased.put(ticket.getPurchaseID(), ticket);
   }
 
+  public void removeTicket(int ticketID) {
+    ticketsPurchased.remove(ticketID);
+  }
+
   /**
    * Make a Ticket, call buySeat() to buy an individual seat and return the ticket with all the purchases made.
    * 
