@@ -34,7 +34,7 @@ public class User {
     Event event;
     Ticket ticket;
 
-    //TODO: add option to sell seats already buy. Check the tickets that the customer have and when the seat is selected to be resell check the day of the event that is not passed.
+    //TODO: Add option to sell seats already buy. Check the tickets that the customer have and when the seat is selected to be resell check the day of the event that is not passed.
 
     do {
       inputID = scnr.askForEvent("to buy a seat");

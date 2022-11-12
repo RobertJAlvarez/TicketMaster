@@ -198,7 +198,7 @@ public class ReadCSV {
 
     ticket.setPurchaseID(id);
     ticket.setPurchaseTime(entries.get("Purchase Time"));
-    ticket.setTotalCost(Float.parseFloat(entries.get("Total Cost")));
+    //TODO: update ticket csv file to now account for the fees and subtotal
 
     for (int i = 1; i <= Ticket.getMaxNumberOfSeats(); i++) {
       seatType = entries.get("Seat Type " + i);

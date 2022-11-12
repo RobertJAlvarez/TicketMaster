@@ -201,22 +201,18 @@ public abstract class Event {
   //Methods
   public static void addTaxesCollected(float taxes) {
     salesTotals[0] += taxes;
-    Database.addTaxesCollected(taxes);
   }
 
   public static void addServiceFee(float serviceFee) {
     salesTotals[1] += serviceFee;
-    Database.addServiceFee(serviceFee);
   }
 
   public static void addConvenienceFee(float convenienceFee) {
     salesTotals[2] += convenienceFee;
-    Database.addConvenienceFee(convenienceFee);
   }
 
   public static void addCharityFee(float charityFee) {
     salesTotals[3] += charityFee;
-    Database.addCharityFee(charityFee);
   }
 
   /**

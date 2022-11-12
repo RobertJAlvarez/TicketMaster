@@ -21,7 +21,7 @@ public class Ticket {
   private ArrayList<Seat> seatsPurchased;
   private Customer customer;
   private String purchaseTime;
-  private static float[] salesTotals = new float[] {(float) 0.0, (float) -1.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
+  private float[] salesTotals = new float[] {(float) 0.0, (float) -1.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
   private float subtotal;
   private static final int MAXNUMBEROFSEATS = 6;
 
@@ -37,6 +37,7 @@ public class Ticket {
     this.venue = venue;
     this.seatsPurchased = new ArrayList<>();
     this.customer = customer;
+    this.subtotal = (float) 0.0;
   }
 
   /**
@@ -71,12 +72,32 @@ public class Ticket {
     return purchaseTime;
   }
 
-  public float getTotalCost() {
-    return totalCost;
+  public float getTaxesPay() {
+    return salesTotals[0];
+  }
+
+  public float getServiceFeePay() {
+    return salesTotals[1];
+  }
+
+  public float getConvenienceFeePay() {
+    return salesTotals[2];
+  }
+
+  public float getCharityFeePay() {
+    return salesTotals[3];
   }
 
   public static int getMaxNumberOfSeats() {
     return MAXNUMBEROFSEATS;
+  }
+
+  public float getTotalCost() {
+    float fees = (float) 0.0;
+    for (float cost : salesTotals) {
+      fees += cost;
+    }
+    return fees + subtotal;
   }
 
   //Setters
@@ -109,17 +130,29 @@ public class Ticket {
     purchaseTime = dtf.format(LocalDateTime.now());
   }
 
-  public void setTotalCost(float totalCost) {
-    this.totalCost = totalCost;
+  public void setConvenienceFee(float convenienceFee) {
+    salesTotals[1] = convenienceFee;
+    Event.addConvenienceFee(convenienceFee);
+    Database.addConvenienceFee(convenienceFee);
   }
 
   //Methods
-  public void addServiceFee(float fee) {
-    serviceFee += fee;
+  public void addTaxesCollected(float taxes) {
+    salesTotals[0] += taxes;
+    Event.addTaxesCollected(taxes);
+    Database.addTaxesCollected(taxes);
   }
 
-  public void addCharityFee(float fee) {
-    charityFee += fee;
+  public void addServiceFee(float serviceFee) {
+    salesTotals[2] += serviceFee;
+    Event.addServiceFee(serviceFee);
+    Database.addServiceFee(serviceFee);
+  }
+
+  public void addCharityFee(float charityFee) {
+    salesTotals[3] += charityFee;
+    Event.addCharityFee(charityFee);
+    Database.addCharityFee(charityFee);
   }
 
   public void addToSubtotal(float cost) {

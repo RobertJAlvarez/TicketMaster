@@ -176,10 +176,14 @@ public class Customer {
   public Ticket buySeats(Event event) {
     Ticket ticket = new Ticket(event, event.getVenue(), this);
     buySeat(ticket);
-    if (ticket.getNumberOfSeatsPurchases() == 0) {
+    if (ticket.getNumberOfSeatsPurchases() != 0) {
       ticket.setPurchaseTime();
       ticket.setPurchaseID();
     } else {
+      //Return convenience fee to the customer if it was payed
+      if (ticket.getConvenienceFeePay() > 0) {
+        setMoneyAvailable(getMoneyAvailable() + ticket.getConvenienceFeePay());
+      }
       ticket = null;
     }
     return ticket;
@@ -194,10 +198,14 @@ public class Customer {
   public Ticket buySeats(Event event, String seatType, int nSeats) {
     Ticket ticket = new Ticket(event, event.getVenue(), this);
     buyNSeats(ticket, seatType, nSeats);
-    if (ticket.getNumberOfSeatsPurchases() == 0) {
+    if (ticket.getNumberOfSeatsPurchases() != 0) {
       ticket.setPurchaseTime();
       ticket.setPurchaseID();
     } else {
+      //Return convenience fee to the customer if it was payed
+      if (ticket.getConvenienceFeePay() > 0) {
+        setMoneyAvailable(getMoneyAvailable() + ticket.getConvenienceFeePay());
+      }
       ticket = null;
     }
     return ticket;
@@ -251,43 +259,56 @@ public class Customer {
     float seatCost;
     final float taxes = Tax.getTaxPercentage(event)/(float)100.0; //Get taxes base on event location
 
+    //Charge convenience fee
+    if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > 2.5) ) {
+      setMoneyAvailable(getMoneyAvailable() - (float) 2.5); //Update customer available money
+      ticket.setConvenienceFee((float) 2.5);  //Set services pay for the ticket
+    }
+
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
     seatCost = event.getSeatPrice(seatType);
 
     //Check that there are enough seats to purchase
     if (nAvailableSeats >= nSeats) {
-      //Give 10% discount in subtotal if customer is ticket miner member
-      if (hasTicketMinerMembership()) {
-        //Update how much your customer had save
-        setTotalSave(getTotalSave() + seatCost*nSeats/(float)10.0);
-        //Update how much the event had lost from discounts
-        event.setTotalDiscounted(event.getTotalDiscounted() + seatCost*nSeats/(float)10.0);
-        //Actual cost of seat after discount
-        seatCost -= seatCost/(float)10.0;
-      }
+      //Calculate base price
+      float originalPrice = seatCost*nSeats;
 
-      //Calculate tax
-      seatCost += seatCost*taxes;
-      Database.addTaxesCollected(taxes);
+      //Calculate tax and fees
+      float tax = originalPrice*taxes;
+      ticket.addTaxesCollected(tax);
+      float serviceFee = originalPrice*((float) 0.005);  //Service fee is of 0.5%
+      ticket.addServiceFee(serviceFee);
+      float charityFee = originalPrice*((float) 0.0075); //Service fee is of 0.75%
+      ticket.addCharityFee(charityFee);
+
+      //Calculate total cost
+      float total = tax + serviceFee + charityFee + originalPrice - (hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0));
 
       //Check that user have enough money to purchase nSeats
-      if (getMoneyAvailable() >= nSeats*seatCost) {
+      if (getMoneyAvailable() >= total) {
         //Update number of seats
         event.setNumSeats(seatType, nAvailableSeats-nSeats);
 
-        //Update customer available money
-        setMoneyAvailable(getMoneyAvailable()-seatCost*nSeats);
+        //Save the 10% discount from the original price if customer is ticket miner member
+        if (hasTicketMinerMembership()) {
+          //Update how much your customer had save
+          setTotalSave(getTotalSave() + originalPrice/(float)10.0);
+          //Update how much the event had lost from discounts
+          event.setTotalDiscounted(event.getTotalDiscounted() + originalPrice/(float)10.0);
+          //Set subtotal for the purchase, discount only applied to total price before taxes and fees
+          ticket.addToSubtotal(originalPrice - originalPrice/(float)10.0);
+        }
 
-        //Create seats
+        //Create seats and add them to the ticket
         Seat seat;
-        for (int i = 0; i < nSeats; i++) {
+        do {
           seat = new Seat(seatType, seatCost);
           //Add purchase to ticket
           ticket.addPurchase(seat);
-        }
+        } while (--nSeats > 0);
 
-        //Set ticket attributes
-        ticket.setTotalCost(ticket.getTotalCost() + seatCost*nSeats);
+        //Update customer available money
+        setMoneyAvailable(getMoneyAvailable() - total);
       } else {
         System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase " + nSeats + seatType + " seats.");
       }
