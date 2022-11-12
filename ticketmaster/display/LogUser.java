@@ -32,7 +32,7 @@ public class LogUser implements ActionListener {
 	private static final int MAXLOGINTRIES = 3;
 	private int nTriesLeft = MAXLOGINTRIES;
 
-	public static void makeInvisible() {
+	private static void makeInvisible() {
 		frame.setVisible(false);
 	}
 
@@ -121,7 +121,6 @@ public class LogUser implements ActionListener {
 
 				User.setCustomer(customer);
         User.userLogged();
-        User.logOffUser();
 			} else {
 				nTriesLeft--;	//One try to log in had been used
 				Log.logWrite(Level.FINE,"User couldn't be log in.");

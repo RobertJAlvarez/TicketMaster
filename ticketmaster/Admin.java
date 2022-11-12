@@ -12,6 +12,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 
+import ticketmaster.display.Viewer;
+
 /**
  * This class group all the possible interactions that an administrator can have on the system.
  * 
@@ -35,6 +37,7 @@ public class Admin {
     do {
       printOptions();
     } while (runOption() != 0);
+    Viewer.makeVisible();
   }
 
   /**

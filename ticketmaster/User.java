@@ -3,6 +3,8 @@ package ticketmaster;
 import java.util.List;
 import java.util.logging.Level;
 
+import ticketmaster.display.LogUser;
+
 /**
  * This class group all the possible interactions that an administrator can have on the system.
  * 
@@ -36,6 +38,10 @@ public class User {
     do {
       printOptions();
     } while (runOption() != 0);
+
+    logOffUser();
+
+    LogUser.makeVisible();
   }
 
   /**
@@ -207,7 +213,7 @@ public class User {
   /**
    * Set customer to null so we have to log another one back in to use User methods.
    */
-  public static void logOffUser() {
+  private static void logOffUser() {
     customer = null;
   }
 }

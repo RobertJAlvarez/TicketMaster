@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
+import ticketmaster.Admin;
 import ticketmaster.Database;
 import ticketmaster.Log;
 
@@ -27,11 +28,11 @@ public class Viewer implements ActionListener {
   private static JRadioButton radioAdmin;
   private static JRadioButton radioUser;
 
-  public static void makeInvisible() {
+  private static void makeInvisible() {
 		frame.setVisible(false);
 	}
 
-  protected static void makeVisible() {
+  public static void makeVisible() {
     frame.setVisible(true);
   }
 
@@ -85,7 +86,9 @@ public class Viewer implements ActionListener {
       System.exit(0);
     } else if (radioAdmin.isSelected()) {
       Log.logWrite(Level.FINE,"Log as administrator.");
-      JOptionPane.showMessageDialog(frame, "I'm currently working on admin options.");
+      Viewer.makeInvisible();
+      Admin.logged();
+      //JOptionPane.showMessageDialog(frame, "I'm currently working on admin options.");
     } else if (radioUser.isSelected()) {
       makeInvisible();
       LogUser.logUser();
