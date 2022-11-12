@@ -38,7 +38,7 @@ public class Admin {
   }
 
   /**
-   * Print all possible interaction that an administrator can have with the system.
+   * Print all possible interactions that an administrator can have with the system.
    */
   private static void printOptions() {
     System.out.println("We have the following options for administrators:");
@@ -47,7 +47,7 @@ public class Admin {
     System.out.println("3. Create an event.");
     System.out.println("4. Run automatic purchases.");
     System.out.println("5. Write electronic ticket summary for a customer.");
-    System.out.println("Anything else to exit.");
+    System.out.println("Anything else to log out.");
   }
 
   /**

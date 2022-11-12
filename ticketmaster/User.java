@@ -26,10 +26,63 @@ public class User {
   }
 
   //Methods
+  public static void userLogged() {
+    if (customer == null) {
+      System.out.println("A user must be logged for the system to display user options.");
+      return;
+    }
+
+    do {
+      printOptions();
+    } while (runOption() != 0);
+  }
+
+  /**
+   * Print all possible interactions that a user can have with the system.
+   */
+  private static void printOptions() {
+    System.out.println("We have the following options for users:");
+    System.out.println("1. Buy seats for an event.");
+    System.out.println("2. Sell seats purchased.");
+    System.out.println("Anything else to log out.");
+  }
+
+  /**
+   * Execute the option mapped to a user action.
+   * 1. Purchase from 1 to 6 seat at a time for an event for as many events wanted.
+   * 2. Sell seats or an entire ticket already purchase from this system.
+   * 
+   * @return
+   */
+  private static int runOption() {
+    int option = scnr.readNextInt();
+
+    switch (option) {
+      case (1):
+        buySeats();
+        break;
+      case (2):
+        sellSeats();
+        break;
+      default:
+        System.out.println("Thank you for keeping our system up to day, hope to see you back soon:)");
+        option = 0;
+    }
+
+    return option;
+  }
+
+  /**
+   * Sell seats or an entire ticket already purchase from this system.
+   */
+  private static void sellSeats() {
+    //TODO:
+  }
+
   /**
    * Manage all the interactions from system and user.
    */
-  public static void userLogged() {
+  private static void buySeats() {
     int inputID = -1;
     Event event;
     Ticket ticket;
