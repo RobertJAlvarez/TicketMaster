@@ -20,7 +20,8 @@ import java.util.logging.Level;
  * @date September 16th, 2022
  */
 public abstract class Event {
-  private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+  private final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+
   private int eventID;
   private String name;
   private GregorianCalendar date;
@@ -346,8 +347,8 @@ public abstract class Event {
       writer.append(getName() + ",");
       //write date and time using format MM/DD/YYY and hh:mm a
       String[] temp = getDate().split(" ");
-      writer.append(temp[0] + ",");
-      writer.append(temp[1] + " " + temp[2] + ",");
+      writer.append(temp[0] + ",");                 //MM/DD/YYY
+      writer.append(temp[1] + " " + temp[2] + ","); //hh:mm and AM/PM
       //Print seat prices and number per type
       for (String key : seatsInfo.keySet()) {
         writer.append(getSeatPrice(key) + "," + getNumberOfSeatsAvailable(key) + ",");

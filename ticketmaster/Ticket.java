@@ -2,9 +2,9 @@ package ticketmaster;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -15,12 +15,14 @@ import java.util.List;
  * @date September 18th, 2022
  */
 public class Ticket {
+  private final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+
   private int purchaseID;
   private Event event;
   private Venue venue;
   private ArrayList<Seat> seatsPurchased;
   private Customer customer;
-  private String purchaseTime;
+  private GregorianCalendar purchaseTime;
   private float[] salesTotals = new float[] {(float) 0.0, (float) -1.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
   private float subtotal;
   private static final int MAXNUMBEROFSEATS = 6;
@@ -69,7 +71,7 @@ public class Ticket {
   }
 
   public String getPurchaseTime() {
-    return purchaseTime;
+    return sdf.format(purchaseTime.getTime());
   }
 
   public float getTaxesPay() {
@@ -125,13 +127,12 @@ public class Ticket {
     this.customer = customer;
   }
 
-  public void setPurchaseTime(String purchaseTime) {
+  public void setPurchaseTime(GregorianCalendar purchaseTime) {
     this.purchaseTime = purchaseTime;
   }
 
   public void setPurchaseTime() {
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-    purchaseTime = dtf.format(LocalDateTime.now());
+    purchaseTime = new GregorianCalendar();
   }
 
   public void setTaxesPay(float taxes) {

@@ -197,7 +197,7 @@ public class ReadCSV {
     float seatPrice;
 
     ticket.setPurchaseID(id);
-    ticket.setPurchaseTime(entries.get("Purchase Time"));
+    ticket.setPurchaseTime(Admin.getCalendar(entries.get("Purchase Time")));
     ticket.setTaxesPay(Float.parseFloat(entries.get("Taxes pay")));
     ticket.setServiceFeePay(Float.parseFloat(entries.get("Service Fee")));
     ticket.setConvenienceFee(Float.parseFloat(entries.get("Convenience Fee")));

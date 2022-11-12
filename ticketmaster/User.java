@@ -76,7 +76,7 @@ public class User {
    * Sell seats or an entire ticket already purchase from this system.
    */
   private static void sellSeats() {
-    //TODO:
+    //TODO: Check the tickets that the customer have and when the seat is selected to be resell check the day of the event that is not passed.
   }
 
   /**
@@ -86,8 +86,6 @@ public class User {
     int inputID = -1;
     Event event;
     Ticket ticket;
-
-    //TODO: Add option to sell seats already buy. Check the tickets that the customer have and when the seat is selected to be resell check the day of the event that is not passed.
 
     do {
       inputID = scnr.askForEvent("to buy a seat");
