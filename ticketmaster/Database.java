@@ -28,6 +28,7 @@ public class Database {
   private static final String TICKETFILENAME = "NewTicketList.csv";
   private static boolean hasBeenPopulate = false;
   private static int largestEventID;
+  private static float[] salesTotals = new float[] {(float) 0.0, (float) 0.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
 
   /**
    * Constructor with no parameters. It initiate events, customer, and tickets purchased.
@@ -84,6 +85,22 @@ public class Database {
   }
 
   //Methods
+  public static void addTaxesCollected(float taxes) {
+    salesTotals[0] += taxes;
+  }
+
+  public static void addServiceFee(float serviceFee) {
+    salesTotals[1] += serviceFee;
+  }
+
+  public static void addConvenienceFee(float convenienceFee) {
+    salesTotals[2] += convenienceFee;
+  }
+
+  public static void addCharityFee(float charityFee) {
+    salesTotals[3] += charityFee;
+  }
+
   /**
    * Call populateDatabase from ReadCSV class with database, filename and the type of object to populate.
    */

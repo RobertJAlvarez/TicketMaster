@@ -249,7 +249,7 @@ public class Customer {
     Event event = ticket.getEvent();
     int nAvailableSeats;
     float seatCost;
-    final float taxPercentage = Tax.getTaxPercentage(event);  //Get taxes base on event location
+    final float taxes = Tax.getTaxPercentage(event)/(float)100.0; //Get taxes base on event location
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
     seatCost = event.getSeatPrice(seatType);
@@ -267,7 +267,8 @@ public class Customer {
       }
 
       //Calculate tax
-      seatCost += seatCost*taxPercentage/(float)100.0;
+      seatCost += seatCost*taxes;
+      Database.addTaxesCollected(taxes);
 
       //Check that user have enough money to purchase nSeats
       if (getMoneyAvailable() >= nSeats*seatCost) {

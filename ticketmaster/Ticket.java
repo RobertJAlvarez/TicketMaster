@@ -21,7 +21,8 @@ public class Ticket {
   private ArrayList<Seat> seatsPurchased;
   private Customer customer;
   private String purchaseTime;
-  private float totalCost;
+  private static float[] salesTotals = new float[] {(float) 0.0, (float) -1.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
+  private float subtotal;
   private static final int MAXNUMBEROFSEATS = 6;
 
   /**
@@ -36,7 +37,6 @@ public class Ticket {
     this.venue = venue;
     this.seatsPurchased = new ArrayList<>();
     this.customer = customer;
-    this.totalCost = (float) 0.0;
   }
 
   /**
@@ -114,6 +114,18 @@ public class Ticket {
   }
 
   //Methods
+  public void addServiceFee(float fee) {
+    serviceFee += fee;
+  }
+
+  public void addCharityFee(float fee) {
+    charityFee += fee;
+  }
+
+  public void addToSubtotal(float cost) {
+    subtotal += cost;
+  }
+
   public void addPurchase(Seat purchase) {
     seatsPurchased.add(purchase);
   }

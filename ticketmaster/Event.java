@@ -32,6 +32,7 @@ public abstract class Event {
   private HashMap<Integer,Ticket> ticketsSold;      //key = ticketID | value = Ticket that match the id
   private Venue venue;
   private float totalDiscounted;
+  private static float[] salesTotals = new float[] {(float) 0.0, (float) 0.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
 
   /**
   * Constructor with all parameters.
@@ -198,6 +199,26 @@ public abstract class Event {
   }
 
   //Methods
+  public static void addTaxesCollected(float taxes) {
+    salesTotals[0] += taxes;
+    Database.addTaxesCollected(taxes);
+  }
+
+  public static void addServiceFee(float serviceFee) {
+    salesTotals[1] += serviceFee;
+    Database.addServiceFee(serviceFee);
+  }
+
+  public static void addConvenienceFee(float convenienceFee) {
+    salesTotals[2] += convenienceFee;
+    Database.addConvenienceFee(convenienceFee);
+  }
+
+  public static void addCharityFee(float charityFee) {
+    salesTotals[3] += charityFee;
+    Database.addCharityFee(charityFee);
+  }
+
   /**
    * Given the seat type we would set the price and increase the number of seat available.
    * If the number of seats haven't been set we start at 0 and then add the number of seats.
