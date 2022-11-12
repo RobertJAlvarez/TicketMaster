@@ -101,6 +101,22 @@ public class Database {
     salesTotals[3] += charityFee;
   }
 
+  public static void returnTaxes(float taxes) {
+    salesTotals[0] -= taxes;
+  }
+
+  public static void returnServiceFee(float serviceFee) {
+    salesTotals[1] -= serviceFee;
+  }
+
+  public static void returnConvenienceFee(float convenienceFee) {
+    salesTotals[2] -= convenienceFee;
+  }
+
+  public static void returnCharityFee(float charityFee) {
+    salesTotals[3] -= charityFee;
+  }
+
   /**
    * Call populateDatabase from ReadCSV class with database, filename and the type of object to populate.
    */

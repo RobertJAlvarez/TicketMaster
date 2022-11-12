@@ -122,6 +122,22 @@ public abstract class Event {
     return totalDiscounted;
   }
 
+  public float getTaxes() {
+    return salesTotals[0];
+  }
+
+  public float getServiceFee() {
+    return salesTotals[1];
+  }
+
+  public float getConvenienceFee() {
+    return salesTotals[2];
+  }
+
+  public float getCharityFee() {
+    return salesTotals[3];
+  }
+
   //Setters
   public void setName(String name) {
     this.name = name;
@@ -163,6 +179,22 @@ public abstract class Event {
 
   public void setTotalDiscounted(float totalDiscounted) {
     this.totalDiscounted = totalDiscounted;
+  }
+
+  public void setTaxes(float taxes) {
+    salesTotals[0] = taxes;
+  }
+
+  public void setServiceFee(float serviceFee) {
+    salesTotals[1] = serviceFee;
+  }
+
+  public void setConvenienceFee(float convenienceFee) {
+    salesTotals[2] = convenienceFee;
+  }
+
+  public void setCharityFee(float charityFee) {
+    salesTotals[3] = charityFee;
   }
 
   /**
@@ -214,6 +246,22 @@ public abstract class Event {
 
   public void addCharityFee(float charityFee) {
     salesTotals[3] += charityFee;
+  }
+
+  public void returnTaxes(float taxes) {
+    salesTotals[0] -= taxes;
+  }
+
+  public void returnServiceFee(float serviceFee) {
+    salesTotals[1] -= serviceFee;
+  }
+
+  public void returnConvenienceFee(float convenienceFee) {
+    salesTotals[2] -= convenienceFee;
+  }
+
+  public void returnCharityFee(float charityFee) {
+    salesTotals[3] -= charityFee;
   }
 
   public void removeTicket(int ticketID) {

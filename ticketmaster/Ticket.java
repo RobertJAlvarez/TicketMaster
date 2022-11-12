@@ -186,8 +186,36 @@ public class Ticket {
     subtotal += cost;
   }
 
+  public void returnTaxes(float taxes) {
+    salesTotals[0] -= taxes;
+    event.returnTaxes(taxes);
+    Database.returnTaxes(taxes);
+  }
+
+  public void returnServiceFee(float serviceFee) {
+    salesTotals[1] += serviceFee;
+    event.returnServiceFee(serviceFee);
+    Database.returnServiceFee(serviceFee);
+  }
+
+  public void returnConvenienceFee() {
+    event.returnConvenienceFee(salesTotals[2]);
+    Database.returnConvenienceFee(salesTotals[2]);
+    salesTotals[2] = ((float) -1.0);
+  }
+
+  public void returnCharityFee(float charityFee) {
+    salesTotals[3] += charityFee;
+    event.returnCharityFee(charityFee);
+    Database.returnCharityFee(charityFee);
+  }
+
   public void addPurchase(Seat purchase) {
     seatsPurchased.add(purchase);
+  }
+
+  public void removeSeat(Seat seat) {
+    seatsPurchased.remove(seat);
   }
 
   public int getNumberOfSeatsPurchases() {
