@@ -88,6 +88,10 @@ public class Ticket {
     return salesTotals[3];
   }
 
+  public float getSubtotal() {
+    return subtotal;
+  }
+
   public static int getMaxNumberOfSeats() {
     return MAXNUMBEROFSEATS;
   }
@@ -130,10 +134,32 @@ public class Ticket {
     purchaseTime = dtf.format(LocalDateTime.now());
   }
 
+  public void setTaxesPay(float taxes) {
+    salesTotals[0] = taxes;
+    Event.addTaxesCollected(taxes);
+    Database.addTaxesCollected(taxes);
+  }
+
+  public void setServiceFeePay(float serviceFee) {
+    salesTotals[1] = serviceFee;
+    Event.addServiceFee(serviceFee);
+    Database.addServiceFee(serviceFee);
+  }
+
   public void setConvenienceFee(float convenienceFee) {
-    salesTotals[1] = convenienceFee;
+    salesTotals[2] = convenienceFee;
     Event.addConvenienceFee(convenienceFee);
     Database.addConvenienceFee(convenienceFee);
+  }
+
+  public void setCharityFeePay(float charityFee) {
+    salesTotals[3] = charityFee;
+    Event.addCharityFee(charityFee);
+    Database.addCharityFee(charityFee);
+  }
+
+  public void setSubtotal(float subtotal) {
+    this.subtotal = subtotal;
   }
 
   //Methods
@@ -144,7 +170,7 @@ public class Ticket {
   }
 
   public void addServiceFee(float serviceFee) {
-    salesTotals[2] += serviceFee;
+    salesTotals[1] += serviceFee;
     Event.addServiceFee(serviceFee);
     Database.addServiceFee(serviceFee);
   }
@@ -207,7 +233,7 @@ public class Ticket {
    */
   public static void writeCSVHeader(FileWriter writer) {
     try {
-      writer.append("Purchase ID,Event ID,Customer ID,Purchase Time,Total Cost,");
+      writer.append("Purchase ID,Event ID,Customer ID,Purchase Time,Taxes pay,Service Fee,Convenience Fee,Charity Fee,Subtotal,Total");
       String[] seatsHeader = {"Seat Type","Price"};
       for (int i = 1; i <= getMaxNumberOfSeats(); i++) {
         for (int j = 0; j < seatsHeader.length; j++) {
@@ -231,6 +257,10 @@ public class Ticket {
       writer.append(getEvent().getEventID() + ",");
       writer.append(getCustomer().getCustomerID() + ",");
       writer.append(getPurchaseTime() + ",");
+      writer.append(getTaxesPay() + ",");
+      writer.append(getServiceFeePay() + ",");
+      writer.append(getCharityFeePay() + ",");
+      writer.append(getSubtotal() + ",");
       writer.append(getTotalCost() + ",");
       int i = 0;
       for (Seat seat : getSeatsPurchased()) {

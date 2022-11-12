@@ -38,8 +38,6 @@ public class Statistics {
    * Calculate number of seats sold, total revue, expect profit from an event by providing one.
    */
   private static void calculateStatistics(Event event) {
-    seatsSold = new LinkedHashMap<>();
-
     //Make sure that there is an event before starting a calculation.
     if (event == null) {
       System.out.println("An event must be provided (use setEvent()) before starting a calculation.");
@@ -49,6 +47,8 @@ public class Statistics {
     String seatType;
     int nSeats;
     float seatRevenue;
+
+    seatsSold = new LinkedHashMap<>();
 
     //Get the type of seats that could have been sold for the event and calculate expected profit from the unsold seats
     expectedProfit = (float) 0.0;

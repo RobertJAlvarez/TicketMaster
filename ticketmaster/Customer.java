@@ -248,7 +248,7 @@ public class Customer {
    * Check event to see if it have equal or more amount of seats of the type given. If it does and the
    * customer can afford it, we process the purchases. Otherwise, we don't do anything.
    * 
-   * @param event - Event from where to try to process the seats purchase from.
+   * @param ticket - Save seats created after the purchase into the ticket given.
    * @param seatType - String with the type of seat to purchase the seats.
    * @param nSeats - int with the number of seats wanted to be purchase.
    * @return Ticket with all the transactions made.
