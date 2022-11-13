@@ -252,9 +252,9 @@ public class Customer {
     final float discount = hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0); //Calculate discount if any
 
     //Charge convenience fee
-    if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > 2.5) ) {
-      setMoneyAvailable(getMoneyAvailable() - (float) 2.5); //Update customer available money
-      ticket.setConvenienceFee((float) 2.5);  //Set services pay for the ticket
+    if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > Fees.getConveniencefee()) ) {
+      setMoneyAvailable(getMoneyAvailable() - Fees.getConveniencefee()); //Update customer available money
+      ticket.setConvenienceFee(Fees.getConveniencefee());  //Set services pay for the ticket
     }
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
@@ -264,9 +264,9 @@ public class Customer {
       //Calculate tax and fees
       float tax = originalPrice*Tax.getTaxPercentage(event)/((float)100.0); //Get taxes base on event location
       ticket.addTaxesCollected(tax);
-      float serviceFee = originalPrice*((float) 0.005);  //Service fee is of 0.5%
+      float serviceFee = originalPrice*Fees.getServicefee();  //Service fee is of 0.5%
       ticket.addServiceFee(serviceFee);
-      float charityFee = originalPrice*((float) 0.0075); //Service fee is of 0.75%
+      float charityFee = originalPrice*Fees.getCharityfee(); //Service fee is of 0.75%
       ticket.addCharityFee(charityFee);
 
       //Calculate subtotal
