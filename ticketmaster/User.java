@@ -175,42 +175,6 @@ public class User {
   }
 
   /**
-   * Get username and password from user and return the customer that match those characteristics, or null otherwise.
-   */
-  public static void logUser() {
-    customer = matchNames();
-    if ( (customer != null) && (!customer.checkPassword()) ) {
-      customer = null;
-    }
-  }
-
-  /**
-   * Give three opportunities to input first name and last name correctly. If withing the three tries
-   * a user match first name and last name, we return the customer object.
-   * 
-   * @return Customer that match first and last name.
-   */
-  private static Customer matchNames() {
-    String names;
-    Customer customer;
-
-    for (int iTries = 3; iTries > 0; iTries--) {
-      System.out.print("What is your first name? ");
-      names = scnr.nextLine().toLowerCase();
-
-      System.out.print("What is your last name? ");
-      names = names.concat(scnr.nextLine().toLowerCase());
-
-      customer = Database.getCustomer(names);
-      if (customer != null)
-        return customer;
-      else
-        System.out.println("Names didn't match an existent user with it.");
-    }
-    return null;
-  }
-
-  /**
    * Set customer to null so we have to log another one back in to use User methods.
    */
   private static void logOffUser() {

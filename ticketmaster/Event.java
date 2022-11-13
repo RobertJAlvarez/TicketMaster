@@ -395,7 +395,7 @@ public abstract class Event {
   public void writeContentToCSV(FileWriter writer) {
     try {
       writer.append(getEventID() + ",");
-      writer.append(getClass().getName() + ",");
+      writer.append(getClass().getSimpleName() + ",");
       writer.append(getName() + ",");
       //write date and time using format MM/DD/YYY and hh:mm a
       String[] temp = getDate().split(" ");

@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 
+import ticketmaster.display.FileChooser;
 import ticketmaster.display.Viewer;
 
 /**
@@ -480,39 +481,8 @@ public class Admin {
    * Let the user select a file to process some purchases on the system.
    */
   private static void autoPurchase() {
-    final String tenK = "AutoPurchase10K.csv";
-    final String oneHundredK = "AutoPurchase100K.csv";
-    final String fourHundredK = "AutoPurchase400K.csv";
-    final String autoPurchase = "AutoPurchase";
-    int input;
-
-    do {
-      //Menu of auto purchase options
-      System.out.println("You can make auto purchases from any of the following files: ");
-      System.out.println("1. Approximately 10,000 purchases.");
-      System.out.println("2. Approximately 100,000 purchases.");
-      System.out.println("3. Approximately 400,000 purchases.");
-      System.out.println("Anything else to exit.");
-
-      input = scnr.readNextInt();
-      switch (input) {
-        case (1):
-          ReadCSV.populateDatabase(tenK, autoPurchase);
-          break;
-        case (2):
-          ReadCSV.populateDatabase(oneHundredK, autoPurchase);
-          break;
-        case (3):
-          ReadCSV.populateDatabase(fourHundredK, autoPurchase);
-          break;
-        default:
-          System.out.println("We would now exit auto purchase option.");
-          input = 0;
-      }
-      if (input != 0) {
-        System.out.println("Transactions had been process.");
-      }
-    } while (input != 0);
+    String filename = FileChooser.chooseFile("to populate events");
+    ReadCSV.populateDatabase(filename, "AutoPurchase");
   }
 
   /**

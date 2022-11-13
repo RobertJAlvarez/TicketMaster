@@ -2,7 +2,6 @@ package ticketmaster.display;
 
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -12,25 +11,28 @@ import javax.swing.filechooser.FileSystemView;
  * @date September 18th, 2022
  */
 public class FileChooser {
-  static JLabel label;
+  private static JFileChooser fc = null;
 
   private FileChooser() {}
 
   public static String chooseFile(String reason) {
-System.out.println("111");
     String file = null;
 
-    JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getParentDirectory(new File(".")));
-    fileChooser.setAcceptAllFileFilterUsed(false);
-    fileChooser.setDialogTitle("Select a .csv file to " + reason);
+    if (fc == null) {
+      fc = new JFileChooser(FileSystemView.getFileSystemView().getParentDirectory(new File(".")));
+      fc.setAcceptAllFileFilterUsed(false);
 
-    FileNameExtensionFilter restriction = new FileNameExtensionFilter("Only .csv files", "csv");
-    fileChooser.addChoosableFileFilter(restriction);
+      FileNameExtensionFilter restriction = new FileNameExtensionFilter("Only .csv files", "csv");
+      fc.addChoosableFileFilter(restriction);
+    }
 
-    int r = fileChooser.showOpenDialog(null);
+    //Write pop up header
+    fc.setDialogTitle("Select a .csv file to " + reason);
+
+    int r = fc.showOpenDialog(null);
 
     if (r == JFileChooser.APPROVE_OPTION) {
-      file = fileChooser.getSelectedFile().getAbsolutePath();
+      file = fc.getSelectedFile().getAbsolutePath();
     }
 
     return file;

@@ -103,7 +103,7 @@ public abstract class Venue {
     try {
       writer.append(getName() + ",");
       writer.append(getNumSeatsUnavailable() + ",");
-      writer.append(getClass().getName() + ",");
+      writer.append(getClass().getSimpleName() + ",");
       writer.append(getCapacity() + ",");
       writer.append(getCost() + "");
     } catch (IOException e) {

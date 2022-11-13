@@ -35,6 +35,6 @@ public class Concert extends Event {
   @Override
   public void printEventInfo() {
     super.printEventInfo();
-    System.out.println(" - Event Type: " + getClass().getName());
+    System.out.println(" - Event Type: " + getClass().getSimpleName());
   }
 }

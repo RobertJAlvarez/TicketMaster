@@ -130,25 +130,6 @@ public class Customer {
 
   //Methods
   /**
-   * Ask three times for a password and compare it with the one of the user.
-   * 
-   * @return true if the password was input correctly within 3 tries, false otherwise.
-   */
-  public boolean checkPassword() {
-    int nTriesLeft = 3;
-
-    System.out.println("You have " + nTriesLeft + " tries to enter your password.");
-    while (nTriesLeft-- > 0) {
-      System.out.print("Enter your password: ");
-      if ( checkPassword(scnr.nextLine()) )
-        break;
-      System.out.println("Incorrect password, try again:");
-      System.out.println(nTriesLeft + " tries left.");
-    }
-    return nTriesLeft > 0;
-  }
-
-  /**
    * 
    * 
    * @param passwordInput
@@ -160,7 +141,7 @@ public class Customer {
 
   public void printAllTickets() {
     for (Ticket ticket : ticketsPurchased.values()) {
-      ticket.getSummary();
+      System.out.println(ticket.getSummary());
     }
   }
 
@@ -291,8 +272,11 @@ public class Customer {
       float charityFee = originalPrice*((float) 0.0075); //Service fee is of 0.75%
       ticket.addCharityFee(charityFee);
 
-      //Calculate total cost
-      float total = tax + serviceFee + charityFee + originalPrice - (hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0));
+      //Calculate subtotal
+      ticket.addToSubtotal(originalPrice - (hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0)));
+
+      //Get total cost
+      float total = ticket.getTotalCost();
 
       //Check that user have enough money to purchase nSeats
       if (getMoneyAvailable() >= total) {
@@ -304,9 +288,7 @@ public class Customer {
           //Update how much your customer had save
           setTotalSave(getTotalSave() + originalPrice/(float)10.0);
           //Update how much the event had lost from discounts
-          event.setTotalDiscounted(event.getTotalDiscounted() + originalPrice/(float)10.0);
-          //Set subtotal for the purchase, discount only applied to total price before taxes and fees
-          ticket.addToSubtotal(originalPrice - originalPrice/(float)10.0);
+          event.setTotalDiscounted(event.getTotalDiscounted() + originalPrice/((float)10.0));
         }
 
         //Create seats and add them to the ticket
@@ -320,10 +302,10 @@ public class Customer {
         //Update customer available money
         setMoneyAvailable(getMoneyAvailable() - total);
       } else {
-        System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase " + nSeats + seatType + " seats.");
+        System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase " + nSeats + " " + seatType + " seats.");
       }
     } else {
-      System.out.println("Event (event id: " + event.getEventID() + ") have less than " + nSeats + seatType + " seats to sell.");
+      System.out.println("Event (event id: " + event.getEventID() + ") have less than " + nSeats + " " + seatType + " seats to sell.");
     }
   }
 

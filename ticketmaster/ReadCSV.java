@@ -90,11 +90,11 @@ public class ReadCSV {
     int populateOption = -1;
 
     //Choose that to populate
-    if (whatToPopulate.equalsIgnoreCase(Event.class.getName())) {  //Events
+    if (whatToPopulate.equalsIgnoreCase(Event.class.getSimpleName())) {  //Events
       populateOption = 0;
-    } else if (whatToPopulate.equalsIgnoreCase(Customer.class.getName())) { //Customers
+    } else if (whatToPopulate.equalsIgnoreCase(Customer.class.getSimpleName())) { //Customers
       populateOption = 1;
-    } else if (whatToPopulate.equalsIgnoreCase(Ticket.class.getName())) {   //Tickets
+    } else if (whatToPopulate.equalsIgnoreCase(Ticket.class.getSimpleName())) {   //Tickets
       populateOption = 2;
     } else if (whatToPopulate.equalsIgnoreCase("AutoPurchase")) { //Auto purchases
       populateOption = 3;
@@ -158,8 +158,14 @@ public class ReadCSV {
     int eventID = Integer.parseInt(entries.get(EVENTIDHEADER));
     Event event = Database.getEvent(eventID);
     int nSeats = Integer.parseInt(entries.get("Ticket Quantity"));
-    Ticket ticket = customer.buySeats(event, entries.get("Ticket Type"), nSeats);
-    Database.addTicket(ticket);
+    //TODO
+    try {
+      Ticket ticket = customer.buySeats(event, entries.get("Ticket Type"), nSeats);
+      Database.addTicket(ticket);
+    } catch (NullPointerException e) {
+      System.out.println(entries.get("First") + entries.get("Last"));
+      System.err.println(e.toString());
+    }
   }
 
   /**

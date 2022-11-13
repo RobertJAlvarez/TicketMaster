@@ -23,7 +23,7 @@ public class Ticket {
   private ArrayList<Seat> seatsPurchased;
   private Customer customer;
   private GregorianCalendar purchaseTime;
-  private float[] salesTotals = new float[] {(float) 0.0, (float) -1.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
+  private float[] salesTotals = new float[] {(float) 0.0, (float) 0.0, (float) -1.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
   private float subtotal;
   private static final int MAXNUMBEROFSEATS = 6;
 
@@ -248,7 +248,7 @@ public class Ticket {
   public String getSummary() {
     StringBuilder bld = new StringBuilder();
 
-    bld.append("Confirmation Number: " + getPurchaseID() + " | Event type: " + event.getClass().getName() + " | Event Name: " + event.getName() +
+    bld.append("Confirmation Number: " + getPurchaseID() + " | Event type: " + event.getClass().getSimpleName() + " | Event Name: " + event.getName() +
       " | Event Date: " + event.getDate() + " | Number of seats: " + getNumberOfSeatsPurchases() + " | Total price: " + getTotalCost() + "\n");
 
     return bld.toString();
@@ -262,7 +262,7 @@ public class Ticket {
    */
   public static void writeCSVHeader(FileWriter writer) {
     try {
-      writer.append("Purchase ID,Event ID,Customer ID,Purchase Time,Taxes pay,Service Fee,Convenience Fee,Charity Fee,Subtotal,Total");
+      writer.append("Purchase ID,Event ID,Customer ID,Purchase Time,Taxes pay,Service Fee,Convenience Fee,Charity Fee,Subtotal,Total,");
       String[] seatsHeader = {"Seat Type","Price"};
       for (int i = 1; i <= getMaxNumberOfSeats(); i++) {
         for (int j = 0; j < seatsHeader.length; j++) {
@@ -288,6 +288,7 @@ public class Ticket {
       writer.append(getPurchaseTime() + ",");
       writer.append(getTaxesPay() + ",");
       writer.append(getServiceFeePay() + ",");
+      writer.append(getConvenienceFeePay() + ",");
       writer.append(getCharityFeePay() + ",");
       writer.append(getSubtotal() + ",");
       writer.append(getTotalCost() + ",");
