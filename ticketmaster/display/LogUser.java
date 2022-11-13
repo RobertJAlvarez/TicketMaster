@@ -22,7 +22,7 @@ import ticketmaster.User;
 /**
  * 
  * @author Robert J Alvarez
- * @date September 18th, 2022
+ * @date November 8th, 2022
  */
 public class LogUser implements ActionListener {
 	private static JTextField username;
@@ -38,6 +38,7 @@ public class LogUser implements ActionListener {
 
 	public static void makeVisible() {
 		frame.setVisible(true);
+		frame.toFront();
 	}
 
 	protected static void logUser() {

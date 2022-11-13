@@ -21,7 +21,7 @@ import ticketmaster.Log;
 /**
  * 
  * @author Robert J Alvarez
- * @date September 18th, 2022
+ * @date November 8th, 2022
  */
 public class Viewer implements ActionListener {
   private static JFrame frame = null;
@@ -34,6 +34,7 @@ public class Viewer implements ActionListener {
 
   public static void makeVisible() {
     frame.setVisible(true);
+    frame.toFront();
   }
 
   public static void logUserOrAdmin() {
@@ -43,8 +44,9 @@ public class Viewer implements ActionListener {
     }
 
     frame = new JFrame("Log in options");
-    frame.setPreferredSize(new Dimension(300,140));
     frame.setLayout(null);
+    frame.setLocationRelativeTo(null);
+    frame.setPreferredSize(new Dimension(300,140));
     frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     JLabel label = new JLabel("System options:");
