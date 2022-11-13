@@ -251,10 +251,15 @@ public class Customer {
     final float originalPrice = seatCost*nSeats;  //Calculate base price
     final float discount = hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0); //Calculate discount if any
 
-    //Charge convenience fee
-    if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > Fees.getConvenienceFee()) ) {
-      setMoneyAvailable(getMoneyAvailable() - Fees.getConvenienceFee()); //Update customer available money
-      ticket.setConvenienceFee(Fees.getConvenienceFee());  //Set services pay for the ticket
+    //Charge convenience fee if it hasn't been payed
+    if (ticket.getConvenienceFeePay() < 0) {
+      if ((getMoneyAvailable() >= Fees.getConvenienceFee()) ) {
+        setMoneyAvailable(getMoneyAvailable() - Fees.getConvenienceFee()); //Update customer available money
+        ticket.setConvenienceFee(Fees.getConvenienceFee());  //Set services pay for the ticket
+      } else {
+        System.out.println("Customer: " + getLastName() + ", " + getFirstName() + " couldn't pay the convenience fee.");
+        return;
+      }
     }
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
