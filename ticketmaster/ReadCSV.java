@@ -158,7 +158,6 @@ public class ReadCSV {
     int eventID = Integer.parseInt(entries.get(EVENTIDHEADER));
     Event event = Database.getEvent(eventID);
     int nSeats = Integer.parseInt(entries.get("Ticket Quantity"));
-    //TODO
     try {
       Ticket ticket = customer.buySeats(event, entries.get("Ticket Type"), nSeats);
       Database.addTicket(ticket);

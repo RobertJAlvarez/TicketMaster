@@ -277,12 +277,12 @@ public class Admin {
   }
 
   /**
-   * TODO
+   * Input string must have the following format: "MM/dd/yyyy hh:mm a" following the GregorianCalendar definitions for each character.
    * 
-   * @param input
-   * @return
+   * @param input - String with the format "MM/dd/yyyy hh:mm a" use to make a GregorianCalendar object to be return.
+   * @return GregorianCalendar with the information provided in input
    */
-  public static GregorianCalendar getCalendar(String input) { //Input must have the following format "MM/dd/yyyy hh:mm a"
+  public static GregorianCalendar getCalendar(String input) {
     String[] token;
     int day;
     int month;

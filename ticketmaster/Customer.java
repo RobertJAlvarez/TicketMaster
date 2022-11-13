@@ -247,8 +247,9 @@ public class Customer {
   private void buyNSeats(Ticket ticket, String seatType, int nSeats) {
     Event event = ticket.getEvent();
     int nAvailableSeats;
-    float seatCost;
-    final float taxes = Tax.getTaxPercentage(event)/(float)100.0; //Get taxes base on event location
+    float seatCost = event.getSeatPrice(seatType);
+    final float originalPrice = seatCost*nSeats;  //Calculate base price
+    final float discount = hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0); //Calculate discount if any
 
     //Charge convenience fee
     if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > 2.5) ) {
@@ -257,15 +258,11 @@ public class Customer {
     }
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
-    seatCost = event.getSeatPrice(seatType);
 
     //Check that there are enough seats to purchase
     if (nAvailableSeats >= nSeats) {
-      //Calculate base price
-      float originalPrice = seatCost*nSeats;
-
       //Calculate tax and fees
-      float tax = originalPrice*taxes;
+      float tax = originalPrice*Tax.getTaxPercentage(event)/((float)100.0); //Get taxes base on event location
       ticket.addTaxesCollected(tax);
       float serviceFee = originalPrice*((float) 0.005);  //Service fee is of 0.5%
       ticket.addServiceFee(serviceFee);
@@ -273,7 +270,7 @@ public class Customer {
       ticket.addCharityFee(charityFee);
 
       //Calculate subtotal
-      ticket.addToSubtotal(originalPrice - (hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0)));
+      ticket.addToSubtotal(originalPrice - discount);
 
       //Get total cost
       float total = ticket.getTotalCost();
@@ -286,7 +283,7 @@ public class Customer {
         //Save the 10% discount from the original price if customer is ticket miner member
         if (hasTicketMinerMembership()) {
           //Update how much your customer had save
-          setTotalSave(getTotalSave() + originalPrice/(float)10.0);
+          setTotalSave(getTotalSave() + originalPrice/((float)10.0));
           //Update how much the event had lost from discounts
           event.setTotalDiscounted(event.getTotalDiscounted() + originalPrice/((float)10.0));
         }
@@ -294,7 +291,7 @@ public class Customer {
         //Create seats and add them to the ticket
         Seat seat;
         do {
-          seat = new Seat(seatType, seatCost);
+          seat = new Seat(seatType, seatCost - discount);
           //Add purchase to ticket
           ticket.addPurchase(seat);
         } while (--nSeats > 0);

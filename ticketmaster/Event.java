@@ -278,18 +278,13 @@ public abstract class Event {
    * @param nSeats - int with the number of seats to be added.
    */
   public void makeNSeatsByNum(String seatType, String price, int nSeats) {
-    int prevNumSeats;
-
     //Add key if it didn't exist before
     if (!seatsInfo.containsKey(seatType)) {
       seatsInfo.put(seatType, new String[] {"0", price});
     }
 
-    //Get number of open seats before creating more
-    prevNumSeats = Integer.parseInt(seatsInfo.get(seatType)[0]);
-
     //Set number of available seats
-    setNumSeats(seatType, prevNumSeats+nSeats);
+    setNumSeats(seatType, Integer.parseInt(seatsInfo.get(seatType)[0]) + nSeats); //Get previous number of seats + nSeats
   }
 
   /**

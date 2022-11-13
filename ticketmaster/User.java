@@ -18,11 +18,6 @@ public class User {
 
   private User() {}
 
-  //Getter
-  public static Customer getUser() {
-    return customer;
-  }
-
   //Setter
   public static void setCustomer(Customer customer) {
     User.customer = customer;
@@ -133,24 +128,33 @@ public class User {
       sellSeat(ticket, seats.get(i));
     }
 
-    //Return convenience fee to the customer
-    customer.setMoneyAvailable(customer.getMoneyAvailable() + ticket.getConvenienceFeePay());
-
     //Remove the ticket from database, event, and customer list
     Database.removeTicket(ticket);
   }
 
   /**
-   * Return taxes and fees charged from cost of the seat.
+   * Return subtotal payed for the seat, no fees nor taxes are return. Make another seat base on the type available
+   * for the event and remove the seat form the ticket.
    * 
    * @param ticket
    * @param atIdx
    */
   private static void sellSeat(Ticket ticket, Seat seat) {
-    float seatCost = seat.getPrice();
-    ticket.returnTaxes(seatCost * Tax.getTaxPercentage(ticket.getEvent())); //Taxes are calculated based on the event location
-    ticket.returnServiceFee(seatCost * ((float) 0.005));  //Service fee is of 0.5%
-    ticket.returnCharityFee(seatCost * ((float) 0.0075)); //Charity fee is of 0.75%
+    float cost = seat.getPrice();
+    Event event = ticket.getEvent();
+
+    //Update subtotal
+    ticket.setSubtotal(ticket.getSubtotal() - cost);
+    //Make a seat base on the type, price would be ignore if a seat of the same type already exist
+    event.makeNSeatsByNum(seat.getSeatType(), String.valueOf(cost), 1);
+    if (customer.hasTicketMinerMembership()) {
+      float discount = cost/((float) 9.0);
+      //Update total discount given
+      event.setTotalDiscounted(event.getTotalDiscounted() - discount);
+      //Update total customer saving
+      customer.setTotalSave(customer.getTotalSave() - discount);
+    }
+    //Remove seat from the ticket
     ticket.removeSeat(seat);
   }
 
