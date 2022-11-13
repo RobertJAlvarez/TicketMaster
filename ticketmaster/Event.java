@@ -232,38 +232,6 @@ public abstract class Event {
   }
 
   //Methods
-  public void addTaxesCollected(float taxes) {
-    salesTotals[0] += taxes;
-  }
-
-  public void addServiceFee(float serviceFee) {
-    salesTotals[1] += serviceFee;
-  }
-
-  public void addConvenienceFee(float convenienceFee) {
-    salesTotals[2] += convenienceFee;
-  }
-
-  public void addCharityFee(float charityFee) {
-    salesTotals[3] += charityFee;
-  }
-
-  public void returnTaxes(float taxes) {
-    salesTotals[0] -= taxes;
-  }
-
-  public void returnServiceFee(float serviceFee) {
-    salesTotals[1] -= serviceFee;
-  }
-
-  public void returnConvenienceFee(float convenienceFee) {
-    salesTotals[2] -= convenienceFee;
-  }
-
-  public void returnCharityFee(float charityFee) {
-    salesTotals[3] -= charityFee;
-  }
-
   public void removeTicket(int ticketID) {
     ticketsSold.remove(ticketID);
   }

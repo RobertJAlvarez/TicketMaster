@@ -13,15 +13,15 @@ public class Fees {
 
   private Fees() {}
 
-  public static float getConveniencefee() {
+  public static float getConvenienceFee() {
     return CONVENIENCEFEE;
   }
 
-  public static float getServicefee() {
+  public static float getServiceFee() {
     return SERVICEFEE;
   }
 
-  public static float getCharityfee() {
+  public static float getCharityFee() {
     return CHARITYFEE;
   }
 }

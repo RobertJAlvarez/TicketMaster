@@ -137,25 +137,25 @@ public class Ticket {
 
   public void setTaxesPay(float taxes) {
     salesTotals[0] = taxes;
-    event.addTaxesCollected(taxes);
+    event.setTaxes(event.getTaxes() + taxes);
     Database.addTaxesCollected(taxes);
   }
 
   public void setServiceFeePay(float serviceFee) {
     salesTotals[1] = serviceFee;
-    event.addServiceFee(serviceFee);
+    event.setServiceFee(event.getServiceFee() + serviceFee);
     Database.addServiceFee(serviceFee);
   }
 
   public void setConvenienceFee(float convenienceFee) {
     salesTotals[2] = convenienceFee;
-    event.addConvenienceFee(convenienceFee);
+    event.setConvenienceFee(event.getConvenienceFee() + convenienceFee);
     Database.addConvenienceFee(convenienceFee);
   }
 
   public void setCharityFeePay(float charityFee) {
     salesTotals[3] = charityFee;
-    event.addCharityFee(charityFee);
+    event.setCharityFee(event.getCharityFee() + charityFee);
     Database.addCharityFee(charityFee);
   }
 
@@ -166,19 +166,19 @@ public class Ticket {
   //Methods
   public void addTaxesCollected(float taxes) {
     salesTotals[0] += taxes;
-    event.addTaxesCollected(taxes);
+    event.setTaxes(event.getTaxes() + taxes);
     Database.addTaxesCollected(taxes);
   }
 
   public void addServiceFee(float serviceFee) {
     salesTotals[1] += serviceFee;
-    event.addServiceFee(serviceFee);
+    event.setServiceFee(event.getServiceFee() + serviceFee);
     Database.addServiceFee(serviceFee);
   }
 
   public void addCharityFee(float charityFee) {
     salesTotals[3] += charityFee;
-    event.addCharityFee(charityFee);
+    event.setCharityFee(event.getCharityFee() + charityFee);
     Database.addCharityFee(charityFee);
   }
 
@@ -188,25 +188,25 @@ public class Ticket {
 
   public void returnTaxes(float taxes) {
     salesTotals[0] -= taxes;
-    event.returnTaxes(taxes);
+    event.setTaxes(event.getTaxes() - taxes);
     Database.returnTaxes(taxes);
   }
 
   public void returnServiceFee(float serviceFee) {
     salesTotals[1] += serviceFee;
-    event.returnServiceFee(serviceFee);
+    event.setServiceFee(event.getServiceFee() - serviceFee);
     Database.returnServiceFee(serviceFee);
   }
 
   public void returnConvenienceFee() {
-    event.returnConvenienceFee(salesTotals[2]);
+    event.setConvenienceFee(event.getConvenienceFee() - salesTotals[2]);
     Database.returnConvenienceFee(salesTotals[2]);
     salesTotals[2] = ((float) -1.0);
   }
 
   public void returnCharityFee(float charityFee) {
     salesTotals[3] += charityFee;
-    event.returnCharityFee(charityFee);
+    event.setCharityFee(event.getCharityFee() - charityFee);
     Database.returnCharityFee(charityFee);
   }
 

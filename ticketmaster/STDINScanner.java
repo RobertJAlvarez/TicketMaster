@@ -27,7 +27,7 @@ public class STDINScanner {
 
   //Setter
   private static void setEndOfFileEnter(boolean status) {
-    STDINScanner.endOfFileEnter = status;
+    endOfFileEnter = status;
   }
 
   //Methods

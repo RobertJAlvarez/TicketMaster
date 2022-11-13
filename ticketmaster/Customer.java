@@ -130,7 +130,7 @@ public class Customer {
 
   //Methods
   /**
-   * 
+   * Given a string we check if it is the same as the customer password
    * 
    * @param passwordInput
    * @return
@@ -252,9 +252,9 @@ public class Customer {
     final float discount = hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0); //Calculate discount if any
 
     //Charge convenience fee
-    if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > Fees.getConveniencefee()) ) {
-      setMoneyAvailable(getMoneyAvailable() - Fees.getConveniencefee()); //Update customer available money
-      ticket.setConvenienceFee(Fees.getConveniencefee());  //Set services pay for the ticket
+    if ( (ticket.getServiceFeePay() < 0) && (getMoneyAvailable() > Fees.getConvenienceFee()) ) {
+      setMoneyAvailable(getMoneyAvailable() - Fees.getConvenienceFee()); //Update customer available money
+      ticket.setConvenienceFee(Fees.getConvenienceFee());  //Set services pay for the ticket
     }
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
@@ -264,9 +264,9 @@ public class Customer {
       //Calculate tax and fees
       float tax = originalPrice*Tax.getTaxPercentage(event)/((float)100.0); //Get taxes base on event location
       ticket.addTaxesCollected(tax);
-      float serviceFee = originalPrice*Fees.getServicefee();  //Service fee is of 0.5%
+      float serviceFee = originalPrice*Fees.getServiceFee();  //Service fee is of 0.5%
       ticket.addServiceFee(serviceFee);
-      float charityFee = originalPrice*Fees.getCharityfee(); //Service fee is of 0.75%
+      float charityFee = originalPrice*Fees.getCharityFee(); //Service fee is of 0.75%
       ticket.addCharityFee(charityFee);
 
       //Calculate subtotal

@@ -332,7 +332,8 @@ public class Admin {
   }
 
   /**
-   * 
+   * Given a Map that match the header of the csv column as key and the value inside the cell as the value we
+   * make an event base on its type and return it.
    * 
    * @param entries - Map<String,String> with the header of the column names as keys and the line information just read as values
    */
