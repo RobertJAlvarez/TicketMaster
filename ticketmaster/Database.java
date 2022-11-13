@@ -80,6 +80,22 @@ public class Database {
     return Database.largestEventID;
   }
 
+  public static float getTaxes() {
+    return salesTotals[0];
+  }
+
+  public static float getServiceFee() {
+    return salesTotals[1];
+  }
+
+  public static float getConvenienceFee() {
+    return salesTotals[2];
+  }
+
+  public static float getCharityFee() {
+    return salesTotals[3];
+  }
+
   //Setters
   public static void setLargestEventID(int largestEventID) {
     Database.largestEventID = largestEventID;
@@ -185,13 +201,25 @@ public class Database {
   /**
    * Add the event into the database.
    * 
-   * @param event - Event to be added into the data base.
+   * @param event - Event to be added into the database.
    */
   public static void addEvent(Event event) {
     int id = event.getEventID();
 
     events.put(id, event);                      //Add event using the id as key
     mapNameToEventID.put(event.getName(), id);  //Map event name with its ID
+  }
+
+  /**
+   * Remove the event from database.
+   * 
+   * @param event - Event to be remove from database.
+   */
+  public static void removeEvent(Event event) {
+    int id = event.getEventID();
+
+    events.remove(id);
+    mapNameToEventID.remove(event.getName());
   }
 
   /**

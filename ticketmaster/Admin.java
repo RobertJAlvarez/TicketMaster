@@ -24,9 +24,9 @@ import ticketmaster.display.Viewer;
 public class Admin {
   private static STDINScanner scnr = STDINScanner.getInstance();
   private static Queue<String> ticketSummaryFiles = new LinkedList<>();
-  public static final String FIREWORKSPLANNEDHEADER = "Fireworks Planned";
-  public static final String FIREWORKSCOSTHEADER = "Fireworks Cost";
-  public static final String VENUETYPEHEADER = "Venue Type";
+  protected static final String FIREWORKSPLANNEDHEADER = "Fireworks Planned";
+  protected static final String FIREWORKSCOSTHEADER = "Fireworks Cost";
+  protected static final String VENUETYPEHEADER = "Venue Type";
 
   /**
    * Constructor with all parameters.
@@ -51,6 +51,9 @@ public class Admin {
     System.out.println("3. Create an event.");
     System.out.println("4. Run automatic purchases.");
     System.out.println("5. Write electronic ticket summary for a customer.");
+    System.out.println("6. Print amount of money gained by TicketMiner company for all events.");
+    System.out.println("7. Print amount of money gained by TicketMiner company for a events.");
+    System.out.println("8. Cancel an event.");
     System.out.println("Anything else to log out.");
   }
 
@@ -83,11 +86,94 @@ public class Admin {
       case (5):
         ticketSummary();
         break;
+      case (6):
+        printTicketMinerFeesCollected();
+        break;
+      case (7):
+        printEventFeesCollected();
+        break;
+      case (8):
+        cancelEvent();
+        break;
       default:
         System.out.println("Thank you for keeping our system up to day, hope to see you back soon:)");
         option = 0;
     }
     return option;
+  }
+
+  /**
+   * Print all fees collected from TicketMiner.
+   */
+  private static void printTicketMinerFeesCollected() {
+    System.out.println("TicketMiner fees collected:");
+    System.out.println("\tService fees: " + Database.getServiceFee());
+    System.out.println("\tConvenience fees: " + Database.getConvenienceFee());
+    System.out.println("\tCharity fees: " + Database.getCharityFee());
+  }
+
+  /**
+   * Print all fees collected from a event.
+   */
+  private static void printEventFeesCollected() {
+    int inputID;
+    Event event;
+
+    do {
+      inputID = scnr.askForEvent("to print fees amount collected");
+      event = Database.getEvent(inputID);
+
+      if (event != null) {
+        Log.logWrite(Level.FINE, "Event ID enter " + inputID + ", proceed to print fees.");
+        System.out.println(event.getName() + " fees collected:");
+        System.out.println("\tService fees: " + event.getServiceFee());
+        System.out.println("\tConvenience fees: " + event.getConvenienceFee());
+        System.out.println("\tCharity fees: " + event.getCharityFee());
+      }
+    } while (inputID != -1);
+  }
+
+  /**
+   * Remove an event from the database. Doing that it would return taxes, fees, and seat cost after discount return to every customer that
+   * had a seat reserved for the event. The TicketMiners profits are adjusted as needed.
+   */
+  private static void cancelEvent() {
+    int inputID;
+    Event event;
+    Customer customer;
+
+    do {
+      inputID = scnr.askForEvent("to cancel the event");
+      event = Database.getEvent(inputID);
+
+      if (event != null) {
+        Log.logWrite(Level.FINE, "Event ID enter " + inputID + ", proceed to cancel the event.");
+        for (Ticket ticket : event.getTickets()) {
+          //Return tax, fees, and subtotal to customer
+          customer = ticket.getCustomer();
+          customer.setMoneyAvailable(customer.getMoneyAvailable() + ticket.getTotalCost());
+
+          //Update TicketMiner total fees colleted
+          Database.returnTaxes(ticket.getTaxesPay());
+          Database.returnServiceFee(ticket.getServiceFeePay());
+          Database.returnConvenienceFee(ticket.getConvenienceFeePay());
+          Database.returnCharityFee(ticket.getCharityFeePay());
+
+          //Update customer saving from membership
+          if (customer.hasTicketMinerMembership()) {
+            float discount = ticket.getSubtotal()/((float) 9.0);
+            //Update total customer saving
+            customer.setTotalSave(customer.getTotalSave() - discount);
+          }
+
+          //Remove the ticket from database, event, and customer list
+          Database.removeTicket(ticket);
+        }
+
+        //Remove event from database
+        Database.removeEvent(event);
+      }
+    } while (inputID != -1);
   }
 
   /**

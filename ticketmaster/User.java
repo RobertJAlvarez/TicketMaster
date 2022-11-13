@@ -121,7 +121,7 @@ public class User {
    * 
    * @param ticket
    */
-  private static void sellAllSeats(Ticket ticket) {
+  public static void sellAllSeats(Ticket ticket) {
     List<Seat> seats = ticket.getSeatsPurchased();
 
     for (int i = seats.size()-1; i >= 0; i--) {
@@ -142,6 +142,7 @@ public class User {
   private static void sellSeat(Ticket ticket, Seat seat) {
     float cost = seat.getPrice();
     Event event = ticket.getEvent();
+    Customer customer = ticket.getCustomer();
 
     //Update subtotal
     ticket.setSubtotal(ticket.getSubtotal() - cost);

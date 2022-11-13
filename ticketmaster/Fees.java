@@ -1,7 +1,7 @@
 package ticketmaster;
 
 /**
- * Class to save fee information and return the fee prices for convenience, service, and charity.
+ * Class to save fee information and return it for convenience, service, and charity.
  * 
  * @author Daniel Marin
  * @date November 9 2022
