@@ -255,8 +255,7 @@ public class STDINScanner {
     System.out.print("Enter ID number or name of the event " + reason + ", 0 see all event options, or -1 to exit: ");
 
     temp = nextLine();
-    if (temp.equals(EXITWORD)) {
-      setEndOfFileEnter(true);
+    if (isEndOfFileEnter()) {
       return -1;
     }
 

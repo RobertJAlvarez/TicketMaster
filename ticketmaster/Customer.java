@@ -271,7 +271,7 @@ public class Customer {
       ticket.addTaxesCollected(tax);
       float serviceFee = originalPrice*Fees.getServiceFee();  //Service fee is of 0.5%
       ticket.addServiceFee(serviceFee);
-      float charityFee = originalPrice*Fees.getCharityFee(); //Service fee is of 0.75%
+      float charityFee = originalPrice*Fees.getCharityFee();  //Service fee is of 0.75%
       ticket.addCharityFee(charityFee);
 
       //Calculate subtotal

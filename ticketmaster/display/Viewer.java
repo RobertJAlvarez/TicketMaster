@@ -79,6 +79,8 @@ public class Viewer implements ActionListener {
     makeVisible();
   }
 
+//JOptionPane.showMessageDialog(frame, "I'm currently working on admin options.");
+
   @Override
 	public void actionPerformed(ActionEvent e) {
     String s = e.getActionCommand();
@@ -90,7 +92,6 @@ public class Viewer implements ActionListener {
       Log.logWrite(Level.FINE,"Log as administrator.");
       Viewer.makeInvisible();
       Admin.logged();
-      //JOptionPane.showMessageDialog(frame, "I'm currently working on admin options.");
     } else if (radioUser.isSelected()) {
       makeInvisible();
       LogUser.logUser();
