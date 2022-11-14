@@ -261,16 +261,26 @@ public class Database {
   }
 
   /**
-   * Given a ticket, use its purchase ID, customer, and event attributes to removes it from the software database.
+   * Given a ticket, use its purchase ID, customer, and event attributes to removes it from the software database base on allFrom.
    * 
-   * @param ticket
+   * @param ticket - Ticket to be remove from the database.
+   * @param allFrom - String[] with class names to remove the ticket from them.
    */
-  public static void removeTicket(Ticket ticket) {
+  public static void removeTicket(Ticket ticket, String[] allFrom) {
     int ticketID = ticket.getPurchaseID();
 
-    ticket.getEvent().removeTicket(ticketID);
-    ticket.getCustomer().removeTicket(ticketID);
-    ticketsPurchased.remove(ticketID);
+    for (String from : allFrom) {
+      switch (from) {
+        case ("Event"):
+          ticket.getEvent().removeTicket(ticketID);
+          break;
+        case ("Customer"):
+          ticket.getCustomer().removeTicket(ticketID);
+          break;
+        default:
+      }
+      ticketsPurchased.remove(ticketID);
+    }
   }
 
   /**

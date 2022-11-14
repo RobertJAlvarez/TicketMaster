@@ -129,7 +129,7 @@ public class User {
     }
 
     //Remove the ticket from database, event, and customer list
-    Database.removeTicket(ticket);
+    Database.removeTicket(ticket, new String[] {Event.class.getSimpleName(), Customer.class.getSimpleName()});
   }
 
   /**

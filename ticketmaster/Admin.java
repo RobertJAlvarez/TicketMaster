@@ -166,8 +166,8 @@ public class Admin {
             customer.setTotalSave(customer.getTotalSave() - discount);
           }
 
-          //Remove the ticket from database, event, and customer list
-          Database.removeTicket(ticket);
+          //Remove the ticket from database and customer list
+          Database.removeTicket(ticket, new String[] {Customer.class.getSimpleName()});
         }
 
         //Remove event from database
