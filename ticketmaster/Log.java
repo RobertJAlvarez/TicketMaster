@@ -11,7 +11,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * 
+ * Log class is complement some java.util.logging.* methods by adding automatic customization to loggers files, write the
+ * log information to all files that are of that level and above if they exist, and to move the loggers files into a folder
+ * to by the end of the program execution to keep them on record.
  * 
  * @author Robert J Alvarez
  * @date October 4th, 2022
