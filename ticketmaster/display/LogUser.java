@@ -20,6 +20,9 @@ import ticketmaster.Log;
 import ticketmaster.User;
 
 /**
+ * This class make a pop up window asking for the username and password fields and two buttons options, "Login" and "Close".
+ * If the correct username an password are given when Login button is press the userLogged method in User is call and the
+ * user state machine menu/interaction is started.
  * 
  * @author Robert J Alvarez
  * @date November 8th, 2022

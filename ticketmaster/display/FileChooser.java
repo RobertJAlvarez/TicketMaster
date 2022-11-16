@@ -6,7 +6,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * 
+ * This class provide a method (chooseFile) which make a pop up window at the current directory and it lets you select
+ * a .csv file and the absolute path is return if one is selected. Otherwise, a null string is returned.
+ *
  * @author Robert J Alvarez
  * @date November 8th, 2022
  */

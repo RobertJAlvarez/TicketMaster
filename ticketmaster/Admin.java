@@ -6,9 +6,7 @@ import java.nio.file.Paths;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -23,7 +21,7 @@ import ticketmaster.display.Viewer;
  */
 public class Admin {
   private static STDINScanner scnr = STDINScanner.getInstance();
-  private static Queue<String> ticketSummaryFiles = new LinkedList<>();
+  private static Set<String> ticketSummaryFiles = new HashSet<>();
   protected static final String FIREWORKSPLANNEDHEADER = "Fireworks Planned";
   protected static final String FIREWORKSCOSTHEADER = "Fireworks Cost";
   protected static final String VENUETYPEHEADER = "Venue Type";
@@ -589,23 +587,16 @@ public class Admin {
       }
 
       //Move all the ticket summaries created from current directory to TicketSummaries directory
-      String filename;
-      while (ticketSummaryFiles.peek() != null) {
-        filename = ticketSummaryFiles.poll();
-        //If it is the first time we see this ticket summary filename we add it, otherwise the most recent was already move and the others deleted
-        if (!allTicketSummaries.contains(filename)) {
-          //Add file to TicketSummaries, if it wasn't success full, we print an error message
-          if (!new File(filename).renameTo(new File("./TicketSummaries/" + filename))) {
-            System.err.println("File: " + filename + " couldn't be move to TicketSummaries.");
-          }
-          //If the file was successfully moved, we add it to our set
-          else {
-            allTicketSummaries.add(filename);
-          }
+      for (String filename : ticketSummaryFiles) {
+        //Add file to TicketSummaries, if it wasn't success full, we print an error message
+        if (!new File(filename).renameTo(new File("./TicketSummaries/" + filename))) {
+          System.err.println("File: " + filename + " couldn't be move to TicketSummaries.");
         }
       }
     } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      ticketSummaryFiles.clear();
     }
   }
 }

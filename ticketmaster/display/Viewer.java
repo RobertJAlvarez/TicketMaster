@@ -19,6 +19,10 @@ import ticketmaster.Database;
 import ticketmaster.Log;
 
 /**
+ * This class have a pop up window which is design to be the starting point of the software user interaction.
+ * The pop up window have "Admin" and "User" options and two buttons "Click" and "Exit". If exit is selected, the
+ * database is save. If an option is selected and the "Click" is pressed the respective state machine is selected
+ * to display and execute the menu options as they are selected.
  * 
  * @author Robert J Alvarez
  * @date November 8th, 2022
