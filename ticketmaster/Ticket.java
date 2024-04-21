@@ -8,8 +8,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
- * Ticket class save information about multiple transactions from a single customer for
- * multiple seats for different events, if wanted.
+ * Ticket class save information about multiple transactions from a single
+ * customer for multiple seats for different events, if wanted.
  * 
  * @author Robert J Alvarez
  * @date September 18th, 2022
@@ -23,16 +23,20 @@ public class Ticket {
   private ArrayList<Seat> seatsPurchased;
   private Customer customer;
   private GregorianCalendar purchaseTime;
-  private float[] salesTotals = new float[] {(float) 0.0, (float) 0.0, (float) -1.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
+  private float[] salesTotals = new float[] { (float) 0.0, (float) 0.0, (float) -1.0, (float) 0.0 }; // 0: taxes, 1:
+                                                                                                     // service, 2:
+                                                                                                     // convenience, 3:
+                                                                                                     // charity
   private float subtotal;
   private static final int MAXNUMBEROFSEATS = 6;
 
   /**
-   * Constructor that initialize seatsPurchased, save customer, and generate purchase id for the ticket.
+   * Constructor that initialize seatsPurchased, save customer, and generate
+   * purchase id for the ticket.
    * 
-   * @param event - 
-   * @param venue - 
-   * @param customer - 
+   * @param event    -
+   * @param venue    -
+   * @param customer -
    */
   public Ticket(Event event, Venue venue, Customer customer) {
     this.event = event;
@@ -43,13 +47,14 @@ public class Ticket {
   }
 
   /**
-   * Constructor with no parameters. Call Constructor with Customer parameter of null.
+   * Constructor with no parameters. Call Constructor with Customer parameter of
+   * null.
    */
   public Ticket() {
-    this(null,null,null);
+    this(null, null, null);
   }
 
-  //Getters
+  // Getters
   public int getPurchaseID() {
     return purchaseID;
   }
@@ -106,7 +111,7 @@ public class Ticket {
     return fees + subtotal;
   }
 
-  //Setters
+  // Setters
   public void setPurchaseID() {
     this.purchaseID = generatePurchaseID();
   }
@@ -163,7 +168,7 @@ public class Ticket {
     this.subtotal = subtotal;
   }
 
-  //Methods
+  // Methods
   public void addTaxesCollected(float taxes) {
     salesTotals[0] += taxes;
     event.setTaxes(event.getTaxes() + taxes);
@@ -227,13 +232,16 @@ public class Ticket {
   }
 
   /**
-   * Use the ticket information to save a string in records with the information of the purchases.
+   * Use the ticket information to save a string in records with the information
+   * of the purchases.
    */
   public String getRecord() {
     StringBuilder bld = new StringBuilder();
 
-    bld.append("Event: " + event.getName() + " | Venue: " + venue.getName() + " | Customer: " + getCustomer().getUsername() +
-      " | Ticket ID:" + getPurchaseID() + " | Total cost: " + getTotalCost() + " | Purchase time: " + getPurchaseTime() + "\n");
+    bld.append(
+        "Event: " + event.getName() + " | Venue: " + venue.getName() + " | Customer: " + getCustomer().getUsername() +
+            " | Ticket ID:" + getPurchaseID() + " | Total cost: " + getTotalCost() + " | Purchase time: "
+            + getPurchaseTime() + "\n");
 
     for (Seat seat : getSeatsPurchased()) {
       bld.append("\t" + "Seat type: " + seat.getSeatType() + " | Seat price: " + seat.getPrice() + "\n");
@@ -248,25 +256,30 @@ public class Ticket {
   public String getSummary() {
     StringBuilder bld = new StringBuilder();
 
-    bld.append("Confirmation Number: " + getPurchaseID() + " | Event type: " + event.getClass().getSimpleName() + " | Event Name: " + event.getName() +
-      " | Event Date: " + event.getDate() + " | Number of seats: " + getNumberOfSeatsPurchases() + " | Total price: " + getTotalCost() + "\n");
+    bld.append("Confirmation Number: " + getPurchaseID() + " | Event type: " + event.getClass().getSimpleName()
+        + " | Event Name: " + event.getName() +
+        " | Event Date: " + event.getDate() + " | Number of seats: " + getNumberOfSeatsPurchases() + " | Total price: "
+        + getTotalCost() + "\n");
 
     return bld.toString();
   }
 
   /**
-   * Write the header for all the necessary information to replicate the Ticket only by reading the file.
-   * Last character appended to file is a new line character.
+   * Write the header for all the necessary information to replicate the Ticket
+   * only by reading the file. Last character appended to file is a new line
+   * character.
    * 
    * @param writer - FileWriter ready to be write on
    */
   public static void writeCSVHeader(FileWriter writer) {
     try {
-      writer.append("Purchase ID,Event ID,Customer ID,Purchase Time,Taxes pay,Service Fee,Convenience Fee,Charity Fee,Subtotal,Total,");
-      String[] seatsHeader = {"Seat Type","Price"};
+      writer.append(
+          "Purchase ID,Event ID,Customer ID,Purchase Time,Taxes pay,Service Fee,Convenience Fee,Charity Fee,Subtotal,Total,");
+      String[] seatsHeader = { "Seat Type", "Price" };
       for (int i = 1; i <= getMaxNumberOfSeats(); i++) {
         for (int j = 0; j < seatsHeader.length; j++) {
-          writer.append(seatsHeader[j] + " " + i + (((i == getMaxNumberOfSeats()) && (j == seatsHeader.length-1)) ? "\n" : ",") );
+          writer.append(seatsHeader[j] + " " + i
+              + (((i == getMaxNumberOfSeats()) && (j == seatsHeader.length - 1)) ? "\n" : ","));
         }
       }
     } catch (IOException e) {
@@ -275,8 +288,8 @@ public class Ticket {
   }
 
   /**
-   * Fill all the columns made by Ticket.writeCSVHeader() with the event information.
-   * Last character added to file is an new line character.
+   * Fill all the columns made by Ticket.writeCSVHeader() with the event
+   * information. Last character added to file is an new line character.
    * 
    * @param writer - FileWriter ready to be write on
    */
@@ -295,9 +308,9 @@ public class Ticket {
       int i = 0;
       for (Seat seat : getSeatsPurchased()) {
         writer.append(seat.getSeatType() + ",");
-        writer.append(seat.getPrice() + ((i++ == getMaxNumberOfSeats()-1) ? "\n" : ","));
+        writer.append(seat.getPrice() + ((i++ == getMaxNumberOfSeats() - 1) ? "\n" : ","));
       }
-      while (i < getMaxNumberOfSeats()-1) {
+      while (i < getMaxNumberOfSeats() - 1) {
         writer.append(",,,");
         i++;
       }
@@ -305,7 +318,7 @@ public class Ticket {
         writer.append(",,\n");
       }
     } catch (IOException e) {
-      e.printStackTrace();  //Writing the file was unsuccessful
+      e.printStackTrace(); // Writing the file was unsuccessful
     }
   }
 }

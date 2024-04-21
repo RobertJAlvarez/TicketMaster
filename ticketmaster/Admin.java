@@ -14,7 +14,8 @@ import ticketmaster.display.FileChooser;
 import ticketmaster.display.Viewer;
 
 /**
- * This class group all the possible interactions that an administrator can have on the system.
+ * This class group all the possible interactions that an administrator can have
+ * on the system.
  * 
  * @author Robert J Alvarez
  * @date September 25th, 2022
@@ -29,9 +30,10 @@ public class Admin {
   /**
    * Constructor with all parameters.
    */
-  private Admin() {}
+  private Admin() {
+  }
 
-  //Methods
+  // Methods
   public static void logged() {
     do {
       printOptions();
@@ -40,7 +42,8 @@ public class Admin {
   }
 
   /**
-   * Print all possible interactions that an administrator can have with the system.
+   * Print all possible interactions that an administrator can have with the
+   * system.
    */
   private static void printOptions() {
     System.out.println("We have the following options for administrators:");
@@ -132,8 +135,10 @@ public class Admin {
   }
 
   /**
-   * Remove an event from the database. Doing that it would return taxes, fees, and seat cost after discount return to every customer that
-   * had a seat reserved for the event. The TicketMiners profits are adjusted as needed.
+   * Remove an event from the database. Doing that it would return taxes, fees,
+   * and seat cost after discount return to every customer that
+   * had a seat reserved for the event. The TicketMiners profits are adjusted as
+   * needed.
    */
   private static void cancelEvent() {
     int inputID;
@@ -147,28 +152,28 @@ public class Admin {
       if (event != null) {
         Log.logWrite(Level.FINE, "Event ID enter " + inputID + ", proceed to cancel the event.");
         for (Ticket ticket : event.getTickets()) {
-          //Return tax, fees, and subtotal to customer
+          // Return tax, fees, and subtotal to customer
           customer = ticket.getCustomer();
           customer.setMoneyAvailable(customer.getMoneyAvailable() + ticket.getTotalCost());
 
-          //Update TicketMiner total fees colleted
+          // Update TicketMiner total fees colleted
           Database.returnTaxes(ticket.getTaxesPay());
           Database.returnServiceFee(ticket.getServiceFeePay());
           Database.returnConvenienceFee(ticket.getConvenienceFeePay());
           Database.returnCharityFee(ticket.getCharityFeePay());
 
-          //Update customer saving from membership
+          // Update customer saving from membership
           if (customer.hasTicketMinerMembership()) {
-            float discount = ticket.getSubtotal()/((float) 9.0);
-            //Update total customer saving
+            float discount = ticket.getSubtotal() / ((float) 9.0);
+            // Update total customer saving
             customer.setTotalSave(customer.getTotalSave() - discount);
           }
 
-          //Remove the ticket from database and customer list
-          Database.removeTicket(ticket, new String[] {Customer.class.getSimpleName()});
+          // Remove the ticket from database and customer list
+          Database.removeTicket(ticket, new String[] { Customer.class.getSimpleName() });
         }
 
-        //Remove event from database
+        // Remove event from database
         Database.removeEvent(event);
       }
     } while (inputID != -1);
@@ -187,7 +192,8 @@ public class Admin {
   }
 
   /**
-   * Its ask the admin for the user first and last name that he wants to make a summary for all tickets.
+   * Its ask the admin for the user first and last name that he wants to make a
+   * summary for all tickets.
    */
   private static void ticketSummary() {
     String names;
@@ -209,8 +215,9 @@ public class Admin {
   }
 
   /**
-   * Gives the admin the option to change characteristics of an event. Such options are listed inside the
-   * printModificationsMenu method in Modifier class.
+   * Gives the admin the option to change characteristics of an event. Such
+   * options are listed inside the printModificationsMenu method in Modifier
+   * class.
    */
   private static void modifyEvent() {
     Modifier modify = new Modifier();
@@ -228,29 +235,30 @@ public class Admin {
         modify.setModificationNumber(scnr.readNextInt());
         if (modify.modificationExist()) {
           Log.logWrite(Level.FINE, "Modification to be change: " + modify.getModification());
-          //Output the event modification request
+          // Output the event modification request
           System.out.println("Previous " + modify.getModification() + ": " + modify.getEventCharacteristic());
           System.out.println("Enter new event " + modify.getModification() + ":");
 
-          //Read input
+          // Read input
           modify.readUpdate();
 
-          //If user decide to finish the program mid modification input
+          // If user decide to finish the program mid modification input
           if (STDINScanner.isEndOfFileEnter()) {
             break;
           }
 
-          //Update information
-          if (modify.getModification().equalsIgnoreCase("name")) {  //If the name of the event is going to be change
-            Database.updateEventNameToIdMap(modify.getEvent().getName(), (String) modify.getUpdate(), modify.getEvent().getEventID());
+          // Update information
+          if (modify.getModification().equalsIgnoreCase("name")) { // If the name of the event is going to be change
+            Database.updateEventNameToIdMap(modify.getEvent().getName(), (String) modify.getUpdate(),
+                modify.getEvent().getEventID());
           }
 
-          //Update event
+          // Update event
           modify.updateEvent();
 
-          //Record change
+          // Record change
           Log.logWrite(Level.INFO, modify.getRecord());
-        } else {  //If an invalid modification number was entered.
+        } else { // If an invalid modification number was entered.
           Log.logWrite(Level.FINE, "Modification with index " + modify.getModificationNumber() + " doesn't exist.");
           System.out.println("Enter a valid modification number.");
         }
@@ -259,8 +267,9 @@ public class Admin {
   }
 
   /**
-   * Ask user for the event that it would like to see the statistics for. Once a valid event has been given,
-   * we calculate the statistics of the event and print them out to System.out.
+   * Ask user for the event that it would like to see the statistics for. Once a
+   * valid event has been given, we calculate the statistics of the event and
+   * print them out to System.out.
    */
   private static void seeStatistics() {
     Event event;
@@ -279,12 +288,12 @@ public class Admin {
   }
 
   /**
-   * Let the user create an event (with its venue) given some minimal characteristics,
-   * e.g., event type, name, date, time, etc.
+   * Let the user create an event (with its venue) given some minimal
+   * characteristics, e.g., event type, name, date, time, etc.
    */
   private static void createEvent() {
     HashMap<String, String> entries = new HashMap<>();
-    String[] eventTypes = {"Sport", "Concert", "Special"};
+    String[] eventTypes = { "Sport", "Concert", "Special" };
     Event event;
 
     entries.put(ReadCSV.EVENTIDHEADER, String.valueOf(Database.getNewEventID()));
@@ -301,7 +310,8 @@ public class Admin {
     System.out.println("Would the event have fireworks? (Yes/No)");
     entries.put(FIREWORKSPLANNEDHEADER, scnr.nextLine());
 
-    //Set the price of the fireworks if they are planned, otherwise put an empty string.
+    // Set the price of the fireworks if they are planned, otherwise put an empty
+    // string.
     if (entries.get(FIREWORKSPLANNEDHEADER).equalsIgnoreCase("Yes")) {
       System.out.println("How much would the fireworks cost? ");
       entries.put(FIREWORKSCOSTHEADER, String.valueOf(scnr.readNextInt()));
@@ -309,7 +319,7 @@ public class Admin {
       entries.put(FIREWORKSCOSTHEADER, "");
     }
 
-    //If at any point the end of file character was given, we don't make the event
+    // If at any point the end of file character was given, we don't make the event
     if (STDINScanner.isEndOfFileEnter()) {
       return;
     }
@@ -321,7 +331,7 @@ public class Admin {
         return;
       }
       event.setVenue(venue);
-      //Make the seats for the event
+      // Make the seats for the event
       createSeats(event);
       Database.addEvent(event);
     } else {
@@ -330,16 +340,19 @@ public class Admin {
   }
 
   /**
-   * Given a Map that match the header of the csv column as key and the value inside the cell as the value we
-   * make an event base on its type and return it.
+   * Given a Map that match the header of the csv column as key and the value
+   * inside the cell as the value we make an event base on its type and return it.
    * 
-   * @param entries - Map<String,String> with the header of the column names as keys and the line information just read as values
+   * @param entries - Map<String,String> with the header of the column names as
+   *                keys and the line information just read as values
    */
   public static Event makeEvent(Map<String, String> entries) {
     int eventID = Integer.parseInt(entries.get(ReadCSV.EVENTIDHEADER));
     Event event = null;
     boolean haveFireworks = entries.get(FIREWORKSPLANNEDHEADER).equalsIgnoreCase("Yes");
-    int fireworksCost = ((entries.get(FIREWORKSCOSTHEADER).length() != 0) ? Integer.parseInt(entries.get(FIREWORKSCOSTHEADER)) : 0);
+    int fireworksCost = ((entries.get(FIREWORKSCOSTHEADER).length() != 0)
+        ? Integer.parseInt(entries.get(FIREWORKSCOSTHEADER))
+        : 0);
     String nameHeader = "Name";
 
     GregorianCalendar date = getCalendar(entries.get("Date") + " " + entries.get("Time"));
@@ -362,9 +375,11 @@ public class Admin {
   }
 
   /**
-   * Input string must have the following format: "MM/dd/yyyy hh:mm a" following the GregorianCalendar definitions for each character.
+   * Input string must have the following format: "MM/dd/yyyy hh:mm a" following
+   * the GregorianCalendar definitions for each character.
    * 
-   * @param input - String with the format "MM/dd/yyyy hh:mm a" use to make a GregorianCalendar object to be return.
+   * @param input - String with the format "MM/dd/yyyy hh:mm a" use to make a
+   *              GregorianCalendar object to be return.
    * @return GregorianCalendar with the information provided in input
    */
   public static GregorianCalendar getCalendar(String input) {
@@ -378,7 +393,7 @@ public class Admin {
     token = input.split("[ /:]");
 
     try {
-      month = Integer.parseInt(token[0]) - 1; //GregorianCalendar starts with January at 0
+      month = Integer.parseInt(token[0]) - 1; // GregorianCalendar starts with January at 0
       day = Integer.parseInt(token[1]);
       year = Integer.parseInt(token[2]);
       hour = Integer.parseInt(token[3]);
@@ -388,7 +403,7 @@ public class Admin {
       return null;
     }
 
-    //The original csv files have year as YY so we make it YYYY
+    // The original csv files have year as YY so we make it YYYY
     if (year < 100) {
       year += 2000;
     }
@@ -401,25 +416,29 @@ public class Admin {
   }
 
   /**
-   * Print all the options, read the user answer, if it selected a valid options store it in entries using header as the key.
-   * If no valid option was selected print the error message and ask again for another input.
+   * Print all the options, read the user answer, if it selected a valid options
+   * store it in entries using header as the key.
+   * If no valid option was selected print the error message and ask again for
+   * another input.
    * 
-   * @param entries - HashMap on where to store the option wanted as the value and the header as the key.
-   * @param header - Use this header as the key of the entries.
-   * @param options - Contain all the different options that the user can choose from.
+   * @param entries  - HashMap on where to store the option wanted as the value
+   *                 and the header as the key.
+   * @param header   - Use this header as the key of the entries.
+   * @param options  - Contain all the different options that the user can choose
+   *                 from.
    * @param errorMsg - If no valid option is entered, print this message.
    */
-  private static void chooseOption(HashMap<String,String> entries, String header, String[] options, String errorMsg) {
+  private static void chooseOption(HashMap<String, String> entries, String header, String[] options, String errorMsg) {
     int input;
     boolean goodOption = false;
 
-    for (int i = 1; i <= options.length; i++) {  //Print venue options
-      System.out.println(i + ": " + options[i-1]);
+    for (int i = 1; i <= options.length; i++) { // Print venue options
+      System.out.println(i + ": " + options[i - 1]);
     }
-    while ( (!goodOption) && (!STDINScanner.isEndOfFileEnter()) ) {
+    while ((!goodOption) && (!STDINScanner.isEndOfFileEnter())) {
       input = scnr.readNextInt();
-      if ( (input >= 1) && (input <= options.length) ) {
-        entries.put(header, options[input-1]);
+      if ((input >= 1) && (input <= options.length)) {
+        entries.put(header, options[input - 1]);
         goodOption = true;
       } else {
         System.out.println(errorMsg);
@@ -428,54 +447,57 @@ public class Admin {
   }
 
   /**
-   * Let the customer create a venue with some minimum requires like venue type, name, capacity, and cost.
+   * Let the customer create a venue with some minimum requires like venue type,
+   * name, capacity, and cost.
    */
   private static Venue createVenue() {
     HashMap<String, String> entries = new HashMap<>();
-    String[] venueTypes = {"Stadium","Arena","Auditorium","Open Air"};
-    String[] venueNames = {"Sun Bowl Stadium","Don Haskins Center","Magnoffin Auditorium","San Jacinto Plaza","Centennial Plaza"};
+    String[] venueTypes = { "Stadium", "Arena", "Auditorium", "Open Air" };
+    String[] venueNames = { "Sun Bowl Stadium", "Don Haskins Center", "Magnoffin Auditorium", "San Jacinto Plaza",
+        "Centennial Plaza" };
     String nameHeader = "Venue Name";
     int capacity = -1;
     int cost = -1;
 
-    //Get venue type
+    // Get venue type
     System.out.println("What Venue is needed to hold the event?");
     chooseOption(entries, VENUETYPEHEADER, venueTypes, "Enter a valid number to choose a venue to hold the event.");
 
-    //Get venue name
+    // Get venue name
     System.out.println("On which venue would you like to hold the event?");
     chooseOption(entries, nameHeader, venueNames, "Enter a valid number to choose a venue to hold the event.");
 
-    //Get venue capacity
+    // Get venue capacity
     System.out.println("What is the capacity of " + entries.get(nameHeader) + "?");
-    while ( (capacity <= 0) && (!STDINScanner.isEndOfFileEnter())) {
+    while ((capacity <= 0) && (!STDINScanner.isEndOfFileEnter())) {
       capacity = scnr.readNextInt();
     }
     entries.put("Capacity", String.valueOf(capacity));
 
-    //Get venue cost
+    // Get venue cost
     System.out.println("What is the cost for renting " + entries.get(nameHeader) + "?");
-    while ( (cost <= 0) && (!STDINScanner.isEndOfFileEnter())) {
+    while ((cost <= 0) && (!STDINScanner.isEndOfFileEnter())) {
       cost = scnr.readNextInt();
     }
     entries.put("Cost", String.valueOf(cost));
 
-    //If at any point the end of file character was given, we don't make the venue
+    // If at any point the end of file character was given, we don't make the venue
     if (STDINScanner.isEndOfFileEnter()) {
       return null;
     }
 
-    //Make venue and set it to event
+    // Make venue and set it to event
     return makeVenue(entries);
   }
 
   /**
    * Use entries to make and return a venue with the respective type.
    * 
-   * @param entries - Map<String,String> with the header of the column names as keys and the line information just read as values
+   * @param entries - Map<String,String> with the header of the column names as
+   *                keys and the line information just read as values
    * @return Venue created using entries.
    */
-  public static Venue makeVenue(Map<String,String> entries) {
+  public static Venue makeVenue(Map<String, String> entries) {
     Venue venue = null;
     int capacity = Integer.parseInt(entries.get("Capacity"));
     int cost = Integer.parseInt(entries.get("Cost"));
@@ -483,9 +505,9 @@ public class Admin {
     int numSeatsUnavailable;
 
     if (entries.containsKey("Pct Seats Unavailable")) {
-      numSeatsUnavailable = Integer.parseInt(entries.get("Pct Seats Unavailable"))*capacity;
+      numSeatsUnavailable = Integer.parseInt(entries.get("Pct Seats Unavailable")) * capacity;
     } else if (entries.containsKey("Seats Unavailable Pct")) {
-      numSeatsUnavailable = Integer.parseInt(entries.get("Seats Unavailable Pct"))*capacity;
+      numSeatsUnavailable = Integer.parseInt(entries.get("Seats Unavailable Pct")) * capacity;
     } else if (entries.containsKey("Num Seats Unavailable")) {
       numSeatsUnavailable = Integer.parseInt(entries.get("Num Seats Unavailable"));
     } else if (entries.containsKey("Seats Unavailable Num")) {
@@ -517,49 +539,55 @@ public class Admin {
   }
 
   /**
-   * Ask the admin for the ticket general price cost and auto generate all the other ticket prices.
+   * Ask the admin for the ticket general price cost and auto generate all the
+   * other ticket prices.
    * 
    * @param event - Event where to store the seats created.
    */
   private static void createSeats(Event event) {
     float genPrice;
 
-    //Make regular seats
+    // Make regular seats
     System.out.println("Enter the price of a general admission ticket: ");
     do {
       System.out.println("Price for a general admission seat is between $0.01 and $1,000.");
       genPrice = scnr.readNextFloat();
-    } while ( (genPrice < (float) 0.0) || (genPrice > (float) 1000.0) );
+    } while ((genPrice < (float) 0.0) || (genPrice > (float) 1000.0));
 
     for (String seatType : Database.getSeatTypes()) {
       switch (seatType) {
         case ("VIP"):
-          //VIP takes 5% of the venue capacity and is 5 times more than the general admission cost.
-          event.makeNSeatsByPct(seatType, String.valueOf(genPrice*5.0), 5);
+          // VIP takes 5% of the venue capacity and is 5 times more than the general
+          // admission cost.
+          event.makeNSeatsByPct(seatType, String.valueOf(genPrice * 5.0), 5);
           break;
         case ("Gold"):
-          //Gold takes 10% of the venue capacity and is 3 times more than the general admission cost.
-          event.makeNSeatsByPct(seatType, String.valueOf(genPrice*3.0), 10);
+          // Gold takes 10% of the venue capacity and is 3 times more than the general
+          // admission cost.
+          event.makeNSeatsByPct(seatType, String.valueOf(genPrice * 3.0), 10);
           break;
         case ("Silver"):
-          //Silver takes 15% of the venue capacity and is 2.5 times more than the general admission cost.
-          event.makeNSeatsByPct(seatType, String.valueOf(genPrice*2.5), 15);
+          // Silver takes 15% of the venue capacity and is 2.5 times more than the general
+          // admission cost.
+          event.makeNSeatsByPct(seatType, String.valueOf(genPrice * 2.5), 15);
           break;
         case ("Bronze"):
-          //Bronze takes 20% of the venue capacity and is 1.5 times more than the general admission cost.
-          event.makeNSeatsByPct(seatType, String.valueOf(genPrice*1.5), 20);
+          // Bronze takes 20% of the venue capacity and is 1.5 times more than the general
+          // admission cost.
+          event.makeNSeatsByPct(seatType, String.valueOf(genPrice * 1.5), 20);
           break;
         case ("General Admission"):
-          //General Admission takes 45% of the venue capacity.
+          // General Admission takes 45% of the venue capacity.
           event.makeNSeatsByPct(seatType, String.valueOf(genPrice), 45);
           break;
         default:
-          System.out.println("Not all seat types options are been accounted for in Admin.getVenueInfo(), " + seatType + " is missing.");
+          System.out.println("Not all seat types options are been accounted for in Admin.getVenueInfo(), " + seatType
+              + " is missing.");
       }
     }
 
-    //Reserved seats takes 5% of the venue capacity.
-    event.setHowManyReservedSeats((5*event.getVenue().getCapacity())/100);
+    // Reserved seats takes 5% of the venue capacity.
+    event.setHowManyReservedSeats((5 * event.getVenue().getCapacity()) / 100);
   }
 
   /**
@@ -577,17 +605,19 @@ public class Admin {
     File logDir = new File("./TicketSummaries");
 
     try {
-      if (!logDir.exists()) {  //If directory doesn't exist, we make it
+      if (!logDir.exists()) { // If directory doesn't exist, we make it
         logDir.mkdirs();
-      } else {    //If directory exist, remove all its files
+      } else { // If directory exist, remove all its files
         for (File file : logDir.listFiles()) {
           Files.delete(Paths.get("./TicketSummaries/" + file.getName()));
         }
       }
 
-      //Move all the ticket summaries created from current directory to TicketSummaries directory
+      // Move all the ticket summaries created from current directory to
+      // TicketSummaries directory
       for (String filename : ticketSummaryFiles) {
-        //Add file to TicketSummaries, if it wasn't success full, we print an error message
+        // Add file to TicketSummaries, if it wasn't success full, we print an error
+        // message
         if (!new File(filename).renameTo(new File("./TicketSummaries/" + filename))) {
           System.err.println("File: " + filename + " couldn't be move to TicketSummaries.");
         }

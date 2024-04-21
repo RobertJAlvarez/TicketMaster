@@ -4,8 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Venue class model a place that can be use to host an event. Every venue have attributes like
- * name, number of seats unavailable, capacity, and cost.
+ * Venue class model a place that can be use to host an event. Every venue have
+ * attributes like name, number of seats unavailable, capacity, and cost.
  * 
  * @author Robert J Alvarez
  * @date September 13th, 2022
@@ -17,12 +17,12 @@ public abstract class Venue {
   private int cost;
 
   /**
-   * Constructor with all parameters. Initialize all attributes. 
+   * Constructor with all parameters. Initialize all attributes.
    * 
-   * @param name - String for name attribute
+   * @param name                - String for name attribute
    * @param numSeatsUnavailable - int for ???
-   * @param capacity - int for capacity attribute
-   * @param cost - int for cost attribute
+   * @param capacity            - int for capacity attribute
+   * @param cost                - int for cost attribute
    */
   protected Venue(String name, int numSeatsUnavailable, int capacity, int cost) {
     this.name = name;
@@ -32,11 +32,12 @@ public abstract class Venue {
   }
 
   /**
-    * Constructor with no parameters. Do nothing.
-    */
-  protected Venue() {}
+   * Constructor with no parameters. Do nothing.
+   */
+  protected Venue() {
+  }
 
-  //Getters
+  // Getters
   public String getName() {
     return name;
   }
@@ -53,7 +54,7 @@ public abstract class Venue {
     return cost;
   }
 
-  //Setters
+  // Setters
   public void setName(String name) {
     this.name = name;
   }
@@ -70,18 +71,21 @@ public abstract class Venue {
     this.cost = cost;
   }
 
-  //methods
+  // methods
   /**
-   * Print all the information of the venue. Name, # seats unavailable, capacity, and cost.
+   * Print all the information of the venue. Name, # seats unavailable, capacity,
+   * and cost.
    */
   public void printInfo() {
     System.out.println("Venue information:");
-    System.out.printf("Name: %s | Number of seat unavailable: %d  | Capacity: %d | cost: $%d.%n", name, numSeatsUnavailable, capacity, cost);
+    System.out.printf("Name: %s | Number of seat unavailable: %d  | Capacity: %d | cost: $%d.%n", name,
+        numSeatsUnavailable, capacity, cost);
   }
 
   /**
-   * Write the header for all the necessary information to replicate the venue only by reading the file.
-   * Last character appended to file was not an special character.
+   * Write the header for all the necessary information to replicate the venue
+   * only by reading the file. Last character appended to file was not an special
+   * character.
    * 
    * @param writer - FileWriter ready to be write on
    */
@@ -94,8 +98,8 @@ public abstract class Venue {
   }
 
   /**
-   * Fill all the columns made by Venue.writeCSVHeader() with the venue information.
-   * Last character appended to file was not an special character.
+   * Fill all the columns made by Venue.writeCSVHeader() with the venue
+   * information. Last character appended to file was not an special character.
    * 
    * @param writer
    */

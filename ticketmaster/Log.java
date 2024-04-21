@@ -11,23 +11,27 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * Log class is complement some java.util.logging.* methods by adding automatic customization to loggers files, write the
- * log information to all files that are of that level and above if they exist, and to move the loggers files into a folder
- * to by the end of the program execution to keep them on record.
+ * Log class is complement some java.util.logging.* methods by adding automatic
+ * customization to loggers files, write the log information to all files that
+ * are of that level and above if they exist, and to move the loggers files into
+ * a folder to by the end of the program execution to keep them on record.
  * 
  * @author Robert J Alvarez
  * @date October 4th, 2022
  */
 public class Log {
-  private static HashMap<Level,Logger> loggers = new HashMap<>();
-  //All possible levels: ALL, CONFIG, FINE, FINER, FINEST, INFO, OFF, SEVERE, WARNING
+  private static HashMap<Level, Logger> loggers = new HashMap<>();
+  // All possible levels: ALL, CONFIG, FINE, FINER, FINEST, INFO, OFF, SEVERE,
+  // WARNING
 
-  private Log() {}
+  private Log() {
+  }
 
-  //methods
+  // methods
   /**
-   * We customize our logger to write to FILENAME getting at least the level options
-   * given by level and up. We also set logger to not output anything to System.out.
+   * We customize our logger to write to FILENAME getting at least the level
+   * options given by level and up. We also set logger to not output anything to
+   * System.out.
    * 
    * @param logger
    * @param level
@@ -40,7 +44,7 @@ public class Log {
       fh.setLevel(level);
       logger.addHandler(fh);
       logger.setLevel(level);
-      logger.setUseParentHandlers(false);  //Don't print to System.out
+      logger.setUseParentHandlers(false); // Don't print to System.out
     } catch (SecurityException | IOException e) {
       System.err.println("Error setting configurations for logger file " + filename);
       System.err.println(e.toString());
@@ -61,7 +65,7 @@ public class Log {
       loggers.put(level, logger);
     }
 
-    //Write information to all the loggers that support the level pass or higher
+    // Write information to all the loggers that support the level pass or higher
     for (Logger log : loggers.values()) {
       log.log(level, str);
     }
@@ -73,15 +77,15 @@ public class Log {
   public static void movLogs() {
     File logDir = new File("./Loggers");
     try {
-      if (!logDir.exists()) {  //If directory doesn't exist, we make it
+      if (!logDir.exists()) { // If directory doesn't exist, we make it
         logDir.mkdirs();
-      } else {    //If directory exist, remove all its files
+      } else { // If directory exist, remove all its files
         for (File file : logDir.listFiles()) {
           Files.delete(Paths.get("./Loggers/" + file.getName()));
         }
       }
 
-      //Move all the Loggers created from current directory to Loggers directory
+      // Move all the Loggers created from current directory to Loggers directory
       String filename;
       for (Level level : loggers.keySet()) {
         filename = level.toString() + "Logger";

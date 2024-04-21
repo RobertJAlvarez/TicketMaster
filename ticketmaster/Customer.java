@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * This class module a user that can buy tickets with seats for different events. Customer class include all important attributes
- * of a user like first and last name, money available, tickets purchased, ticket miner membership, username and password.
+ * This class module a user that can buy tickets with seats for different
+ * events. Customer class include all important attributes of a user like first
+ * and last name, money available, tickets purchased, ticket miner membership,
+ * username and password.
  * 
  * @author Robert J Alvarez
  * @date September 18th, 2022
@@ -18,7 +20,7 @@ public class Customer {
   private String firstName;
   private String lastName;
   private float moneyAvailable;
-  private HashMap<Integer,Ticket> ticketsPurchased;
+  private HashMap<Integer, Ticket> ticketsPurchased;
   private boolean ticketMinerMembership;
   private String username;
   private String password;
@@ -26,17 +28,20 @@ public class Customer {
   private String ticketSummaryFilename;
 
   /**
-   * Constructor which initialize customer names, membership and passwords. It also instantiate the tickets purchased.
+   * Constructor which initialize customer names, membership and passwords. It
+   * also instantiate the tickets purchased.
    * 
-   * @param customerID - int for customer id
-   * @param firstName - String for customer first name
-   * @param lastName - String for customer last name
-   * @param moneyAvailable - float representing amount of money left
-   * @param ticketMinerMembership - boolean with true value if customer has a ticket miner membership
-   * @param username - String for customer username
-   * @param password - String for customer password
+   * @param customerID            - int for customer id
+   * @param firstName             - String for customer first name
+   * @param lastName              - String for customer last name
+   * @param moneyAvailable        - float representing amount of money left
+   * @param ticketMinerMembership - boolean with true value if customer has a
+   *                              ticket miner membership
+   * @param username              - String for customer username
+   * @param password              - String for customer password
    */
-  public Customer(int customerID, String firstName, String lastName, float moneyAvailable, boolean ticketMinerMembership, String username, String password) {
+  public Customer(int customerID, String firstName, String lastName, float moneyAvailable,
+      boolean ticketMinerMembership, String username, String password) {
     this.customerID = customerID;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -55,10 +60,11 @@ public class Customer {
     ticketsPurchased = new HashMap<>();
   }
 
-  //Getters
+  // Getters
   public int getCustomerID() {
     return customerID;
   }
+
   public String getFirstName() {
     return firstName;
   }
@@ -91,7 +97,7 @@ public class Customer {
     return ticketSummaryFilename;
   }
 
-  //Setters
+  // Setters
   public void setCustomerID(int customerID) {
     this.customerID = customerID;
   }
@@ -128,7 +134,7 @@ public class Customer {
     ticketSummaryFilename = filename;
   }
 
-  //Methods
+  // Methods
   /**
    * Given a string we check if it is the same as the customer password
    * 
@@ -146,7 +152,8 @@ public class Customer {
   }
 
   /**
-   * Add ticket to ticketsPurchased where the purchase id is the key and the ticket is the value.
+   * Add ticket to ticketsPurchased where the purchase id is the key and the
+   * ticket is the value.
    * 
    * @param ticket
    */
@@ -159,7 +166,8 @@ public class Customer {
   }
 
   /**
-   * Make a Ticket, call buySeat() to buy an individual seat and return the ticket with all the purchases made.
+   * Make a Ticket, call buySeat() to buy an individual seat and return the ticket
+   * with all the purchases made.
    * 
    * @param event - Event to buy seats for.
    * @return Ticket with the seats purchase made.
@@ -171,7 +179,7 @@ public class Customer {
       ticket.setPurchaseTime();
       ticket.setPurchaseID();
     } else {
-      //Return convenience fee to the customer if it was payed
+      // Return convenience fee to the customer if it was payed
       if (ticket.getConvenienceFeePay() > 0) {
         setMoneyAvailable(getMoneyAvailable() + ticket.getConvenienceFeePay());
       }
@@ -181,7 +189,8 @@ public class Customer {
   }
 
   /**
-   * Make a Ticket, call buySeat() to buy an individual seat and return the ticket with all the purchases made.
+   * Make a Ticket, call buySeat() to buy an individual seat and return the ticket
+   * with all the purchases made.
    * 
    * @param event - Event to buy seats for.
    * @return Ticket with the seats purchase made.
@@ -193,7 +202,7 @@ public class Customer {
       ticket.setPurchaseTime();
       ticket.setPurchaseID();
     } else {
-      //Return convenience fee to the customer if it was payed
+      // Return convenience fee to the customer if it was payed
       if (ticket.getConvenienceFeePay() > 0) {
         setMoneyAvailable(getMoneyAvailable() + ticket.getConvenienceFeePay());
       }
@@ -203,7 +212,8 @@ public class Customer {
   }
 
   /**
-   * Recursive function that allows the customer to buy seats for the event and save them on a ticket.
+   * Recursive function that allows the customer to buy seats for the event and
+   * save them on a ticket.
    * 
    * @param ticket - Ticket to save the information about the purchases made.
    */
@@ -219,7 +229,7 @@ public class Customer {
       System.out.println("Which seat type would you like to buy?");
       seatType = event.getSeatOptionN(scnr.readNextInt());
 
-      //Check that seat type exist
+      // Check that seat type exist
       if (seatType.length() != 0) {
         buyNSeats(ticket, seatType, 1);
       } else {
@@ -227,7 +237,8 @@ public class Customer {
       }
     } while (ticket.getNumberOfSeatsPurchases() < Ticket.getMaxNumberOfSeats());
 
-    //If customer had purchase six seats, we let the user know that 6 purchases is the maximum number per transaction and stop the purchase with only six.
+    // If customer had purchase six seats, we let the user know that 6 purchases is
+    // the maximum number per transaction and stop the purchase with only six.
     if (ticket.getNumberOfSeatsPurchases() >= Ticket.getMaxNumberOfSeats()) {
       System.out.println("I'm sorry but the maximum number of purchases allow per transaction are 6.");
       System.out.println("You can continue buying by completing this transaction and starting a new one.");
@@ -236,26 +247,29 @@ public class Customer {
   }
 
   /**
-   * Check event to see if it have equal or more amount of seats of the type given. If it does and the
-   * customer can afford it, we process the purchases. Otherwise, we don't do anything.
+   * Check event to see if it have equal or more amount of seats of the type
+   * given. If it does and the customer can afford it, we process the purchases.
+   * Otherwise, we don't do anything.
    * 
-   * @param ticket - Save seats created after the purchase into the ticket given.
+   * @param ticket   - Save seats created after the purchase into the ticket
+   *                 given.
    * @param seatType - String with the type of seat to purchase the seats.
-   * @param nSeats - int with the number of seats wanted to be purchase.
+   * @param nSeats   - int with the number of seats wanted to be purchase.
    * @return Ticket with all the transactions made.
    */
   private void buyNSeats(Ticket ticket, String seatType, int nSeats) {
     Event event = ticket.getEvent();
     int nAvailableSeats;
     float seatCost = event.getSeatPrice(seatType);
-    final float originalPrice = seatCost*nSeats;  //Calculate base price
-    final float discount = hasTicketMinerMembership() ? originalPrice/((float) 10.0) : ((float) 0.0); //Calculate discount if any
+    final float originalPrice = seatCost * nSeats; // Calculate base price
+    // Calculate discount if any
+    final float discount = hasTicketMinerMembership() ? originalPrice / ((float) 10.0) : ((float) 0.0);
 
-    //Charge convenience fee if it hasn't been payed
+    // Charge convenience fee if it hasn't been payed
     if (ticket.getConvenienceFeePay() < 0) {
-      if ((getMoneyAvailable() >= Fees.getConvenienceFee()) ) {
-        setMoneyAvailable(getMoneyAvailable() - Fees.getConvenienceFee()); //Update customer available money
-        ticket.setConvenienceFee(Fees.getConvenienceFee());  //Set services pay for the ticket
+      if ((getMoneyAvailable() >= Fees.getConvenienceFee())) {
+        setMoneyAvailable(getMoneyAvailable() - Fees.getConvenienceFee()); // Update customer available money
+        ticket.setConvenienceFee(Fees.getConvenienceFee()); // Set services pay for the ticket
       } else {
         System.out.println("Customer: " + getLastName() + ", " + getFirstName() + " couldn't pay the convenience fee.");
         return;
@@ -264,70 +278,75 @@ public class Customer {
 
     nAvailableSeats = event.getNumberOfSeatsAvailable(seatType);
 
-    //Check that there are enough seats to purchase
+    // Check that there are enough seats to purchase
     if (nAvailableSeats >= nSeats) {
-      //Calculate tax and fees
-      float tax = originalPrice*Tax.getTaxPercentage(event)/((float)100.0); //Get taxes base on event location
+      // Calculate tax and fees
+      float tax = originalPrice * Tax.getTaxPercentage(event) / ((float) 100.0); // Get taxes base on event location
       ticket.addTaxesCollected(tax);
-      float serviceFee = originalPrice*Fees.getServiceFee();  //Service fee is of 0.5%
+      float serviceFee = originalPrice * Fees.getServiceFee(); // Service fee is of 0.5%
       ticket.addServiceFee(serviceFee);
-      float charityFee = originalPrice*Fees.getCharityFee();  //Service fee is of 0.75%
+      float charityFee = originalPrice * Fees.getCharityFee(); // Service fee is of 0.75%
       ticket.addCharityFee(charityFee);
 
-      //Calculate subtotal
+      // Calculate subtotal
       ticket.addToSubtotal(originalPrice - discount);
 
-      //Get total cost
+      // Get total cost
       float total = ticket.getTotalCost();
 
-      //Check that user have enough money to purchase nSeats
+      // Check that user have enough money to purchase nSeats
       if (getMoneyAvailable() >= total) {
-        //Update number of seats
-        event.setNumSeats(seatType, nAvailableSeats-nSeats);
+        // Update number of seats
+        event.setNumSeats(seatType, nAvailableSeats - nSeats);
 
-        //Save the 10% discount from the original price if customer is ticket miner member
+        // Save the 10% discount from the original price if customer is ticket miner
+        // member
         if (hasTicketMinerMembership()) {
-          //Update how much your customer had save
-          setTotalSave(getTotalSave() + originalPrice/((float)10.0));
-          //Update how much the event had lost from discounts
-          event.setTotalDiscounted(event.getTotalDiscounted() + originalPrice/((float)10.0));
+          // Update how much your customer had save
+          setTotalSave(getTotalSave() + originalPrice / ((float) 10.0));
+          // Update how much the event had lost from discounts
+          event.setTotalDiscounted(event.getTotalDiscounted() + originalPrice / ((float) 10.0));
         }
 
-        //Create seats and add them to the ticket
+        // Create seats and add them to the ticket
         Seat seat;
         do {
           seat = new Seat(seatType, seatCost - discount);
-          //Add purchase to ticket
+          // Add purchase to ticket
           ticket.addPurchase(seat);
         } while (--nSeats > 0);
 
-        //Update customer available money
+        // Update customer available money
         setMoneyAvailable(getMoneyAvailable() - total);
       } else {
-        System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase " + nSeats + " " + seatType + " seats.");
+        System.out.println("Customer " + getLastName() + ", " + getFirstName() + " don't have enough money to purchase "
+            + nSeats + " " + seatType + " seats.");
       }
     } else {
-      System.out.println("Event (event id: " + event.getEventID() + ") have less than " + nSeats + " " + seatType + " seats to sell.");
+      System.out.println(
+          "Event (event id: " + event.getEventID() + ") have less than " + nSeats + " " + seatType + " seats to sell.");
     }
   }
 
   /**
-   * Write the header for all the necessary information to replicate the customer only by reading the file.
+   * Write the header for all the necessary information to replicate the customer
+   * only by reading the file.
    * Last character appended to file is a new line character.
    * 
    * @param writer - FileWriter ready to be write on
    */
   public static void writeCSVHeader(FileWriter writer) {
     try {
-      writer.append("ID,First Name,Last Name,Money Available,Concerts Purchased,TicketMiner Membership,Username,Password\n");
+      writer.append(
+          "ID,First Name,Last Name,Money Available,Concerts Purchased,TicketMiner Membership,Username,Password\n");
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   /**
-   * Fill all the columns made by Customer.writeCSVHeader() with the customer information.
-   * Last character appended to file is a new line character.
+   * Fill all the columns made by Customer.writeCSVHeader() with the customer
+   * information. Last character appended to file is a new line character.
    * 
    * @param writer
    */
@@ -347,8 +366,9 @@ public class Customer {
   }
 
   /**
-   * Create a file using customerFirstName_customerLastName_Ticket_Summary.txt as name of the file
-   * and save all the ticket information for all tickets of the user.
+   * Create a file using customerFirstName_customerLastName_Ticket_Summary.txt as
+   * name of the file and save all the ticket information for all tickets of the
+   * user.
    */
   public void writeTicketSummary() {
     setTicketSummaryFilename(getFirstName() + "_" + getLastName() + "_Ticket_Summary.txt");

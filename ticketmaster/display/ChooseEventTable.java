@@ -19,30 +19,31 @@ public class ChooseEventTable implements ActionListener {
     JFrame frame = new JFrame();
     JPanel panel = new JPanel();
     String[][] rec = {
-       { "1", "Steve", "AUS" },
-       { "2", "Virat", "IND" },
-       { "3", "Kane", "NZ" },
-       { "4", "David", "AUS" },
-       { "5", "Ben", "ENG" },
-       { "6", "Eion", "ENG" },
+        { "1", "Steve", "AUS" },
+        { "2", "Virat", "IND" },
+        { "3", "Kane", "NZ" },
+        { "4", "David", "AUS" },
+        { "5", "Ben", "ENG" },
+        { "6", "Eion", "ENG" },
     };
     String[] header = { "Rank", "Player", "Country" };
     table = new JTable(rec, header);
     JScrollPane sp = new JScrollPane(table);
 
     table.setGridColor(Color.orange);
-    table.setShowHorizontalLines(true);       //Show horizontal lines
-    table.setRowSelectionAllowed(true);       //User is allow to select rows
-    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);   //User can only select one row at a time
+    table.setShowHorizontalLines(true); // Show horizontal lines
+    table.setRowSelectionAllowed(true); // User is allow to select rows
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // User can only select one row at a time
 
-    panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "ODI Rankings", TitledBorder.CENTER, TitledBorder.TOP));
+    panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "ODI Rankings",
+        TitledBorder.CENTER, TitledBorder.TOP));
     panel.add(new JScrollPane(table));
 
     frame.add(sp);
     frame.add(panel);
     frame.setSize(550, 400);
     frame.setVisible(true);
- }
+  }
 
   @Override
   public void actionPerformed(ActionEvent e) {

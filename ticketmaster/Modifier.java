@@ -3,7 +3,8 @@ package ticketmaster;
 import java.util.ArrayList;
 
 /**
- * This class provide all the options that a admin can do to modify event characteristics.
+ * This class provide all the options that a admin can do to modify event
+ * characteristics.
  * 
  * @author Robert J Alvarez
  * @date September 23th, 2022
@@ -19,11 +20,11 @@ public class Modifier {
   /**
    * Constructor without parameters. Initialize and populate possibleChanges.
    */
-  public Modifier () {
+  public Modifier() {
     populateChanges();
   }
 
-  //Getters
+  // Getters
   /**
    * If modification number exist, return modification selected.
    * 
@@ -31,7 +32,7 @@ public class Modifier {
    */
   public String getModification(int nModification) {
     if (modificationExist(nModification))
-      return possibleChanges.get(nModification-1);  //Index start at 0, not at 1
+      return possibleChanges.get(nModification - 1); // Index start at 0, not at 1
     return "(modification requested doesn't exist)";
   }
 
@@ -56,7 +57,7 @@ public class Modifier {
     return update;
   }
 
-  //Setters
+  // Setters
   public void setModificationNumber(int nModification) {
     this.nModification = nModification;
   }
@@ -69,12 +70,12 @@ public class Modifier {
     this.update = update;
   }
 
-  //Methods
+  // Methods
   /**
    * Fill all possible changes that can be made to the events.
    */
   private static synchronized void populateChanges() {
-    //Don't populate the possible changes more than onces
+    // Don't populate the possible changes more than onces
     if (!possibleChanges.isEmpty()) {
       return;
     }
@@ -101,7 +102,8 @@ public class Modifier {
    * Check if there is a modification mapped to the number provided.
    * 
    * @param nModification - number of modification selected.
-   * @return true or false depending if a modification is mapped to the number provided.
+   * @return true or false depending if a modification is mapped to the number
+   *         provided.
    */
   public boolean modificationExist(int nModification) {
     return possibleChanges.size() >= nModification;
@@ -111,17 +113,19 @@ public class Modifier {
    * Call modificationExist() with the store number of nModification
    * 
    * @param nModification - number of modification selected.
-   * @return true or false depending if a modification is mapped to the number provided.
+   * @return true or false depending if a modification is mapped to the number
+   *         provided.
    */
   public boolean modificationExist() {
     return modificationExist(nModification);
   }
 
   /**
-   * If an event with the provided id exist and a valid modification number was provided, a string with the
-   * attribute corresponding to the modification selected is returned.
+   * If an event with the provided id exist and a valid modification number was
+   * provided, a string with the attribute corresponding to the modification
+   * selected is returned.
    * 
-   * @param event - Event to get the characteristic form.
+   * @param event         - Event to get the characteristic form.
    * @param nModification - number of modification selected.
    * @return String with the attribute corresponding to the modification selected.
    */
@@ -134,8 +138,8 @@ public class Modifier {
       temp = event.getDate();
     } else if (nModification == 3) {
       temp = event.getDate();
-    } else if (nModification >= 4 && nModification <= 4+Database.getSeatTypes().length) {
-      temp = "" + event.getSeatPrice(Database.getSeatTypes()[nModification-4]); //Convert float to string
+    } else if (nModification >= 4 && nModification <= 4 + Database.getSeatTypes().length) {
+      temp = "" + event.getSeatPrice(Database.getSeatTypes()[nModification - 4]); // Convert float to string
     } else {
       System.out.println("Modify switch statement in Database to handle all modifications.");
     }
@@ -143,7 +147,8 @@ public class Modifier {
   }
 
   /**
-   * Call getEventCharacteristic() with Event and the store number of nModification.
+   * Call getEventCharacteristic() with Event and the store number of
+   * nModification.
    * 
    * @param event - Event to get the characteristic form.
    * @return String with the attribute corresponding to the modification selected.
@@ -153,7 +158,8 @@ public class Modifier {
   }
 
   /**
-   * Use id number and modification selected to update the event attribute to what is in update.
+   * Use id number and modification selected to update the event attribute to what
+   * is in update.
    */
   public void updateEvent() {
     if (nModification == 1) {
@@ -162,20 +168,22 @@ public class Modifier {
       event.setDate(update);
     } else if (nModification == 3) {
       event.setTime(update);
-    } else if (nModification >= 3 && nModification <= 4+Database.getSeatTypes().length) {
-      event.setSeatPrice(Database.getSeatTypes()[nModification-3], Float.parseFloat(update));
+    } else if (nModification >= 3 && nModification <= 4 + Database.getSeatTypes().length) {
+      event.setSeatPrice(Database.getSeatTypes()[nModification - 3], Float.parseFloat(update));
     } else {
       System.out.println("Modify switch statement in Database to handle all modifications.");
     }
 
-    //Warn if new price is higher than next better ticket
-    if ((nModification >= 5) && (nModification <= 4+Database.getSeatTypes().length) &&
-        (Float.parseFloat(getEventCharacteristic(nModification-1)) < (Float.parseFloat(update)))) {
-      System.out.println("WARNING: new " + getModification() + " is, at least, more expensive than " + getModification(nModification-1));
-    //Warn if new price is lower than previous best ticket
-    } else if ((nModification >= 4) && (nModification <= 3+Database.getSeatTypes().length) &&
-               (Float.parseFloat(getEventCharacteristic(nModification+1)) > (Float.parseFloat(update)))) {
-      System.out.println("WARNING: new " + getModification() + " is, at least, cheaper than " + getModification(nModification+1));
+    // Warn if new price is higher than next better ticket
+    if ((nModification >= 5) && (nModification <= 4 + Database.getSeatTypes().length) &&
+        (Float.parseFloat(getEventCharacteristic(nModification - 1)) < (Float.parseFloat(update)))) {
+      System.out.println("WARNING: new " + getModification() + " is, at least, more expensive than "
+          + getModification(nModification - 1));
+      // Warn if new price is lower than previous best ticket
+    } else if ((nModification >= 4) && (nModification <= 3 + Database.getSeatTypes().length) &&
+        (Float.parseFloat(getEventCharacteristic(nModification + 1)) > (Float.parseFloat(update)))) {
+      System.out.println(
+          "WARNING: new " + getModification() + " is, at least, cheaper than " + getModification(nModification + 1));
     }
   }
 
@@ -192,13 +200,14 @@ public class Modifier {
       do {
         System.out.println("(Make sure that the cost is greater than 0)");
         updateF = scnr.readNextFloat();
-      } while (updateF < 0.01);   //Entrance most cost at least a penny
+      } while (updateF < 0.01); // Entrance most cost at least a penny
       update = String.valueOf(updateF);
     }
   }
 
   /**
-   * Use id, modification, and update to make a string to be save in records to save the changes just make.
+   * Use id, modification, and update to make a string to be save in records to
+   * save the changes just make.
    */
   public String getRecord() {
     return "Event ID " + event.getEventID() + " update " + getModification() + " to " + update + "\n";

@@ -9,8 +9,10 @@ import java.util.logging.Level;
 import ticketmaster.display.FileChooser;
 
 /**
- * Database is an class to save all events, customer and tickets purchased. Events, venue (component of an event), and customers
- * are read from csv files. It also contains methods to print events, save tickets, and find and return specifics of each by the use of keys.
+ * Database is an class to save all events, customer and tickets purchased.
+ * Events, venue (component of an event), and customers
+ * are read from csv files. It also contains methods to print events, save
+ * tickets, and find and return specifics of each by the use of keys.
  * 
  * @author Robert J Alvarez
  * @date September 18th, 2022
@@ -19,23 +21,27 @@ public class Database {
   private static HashMap<Integer, Event> events;
   private static HashMap<Integer, Customer> customers;
   private static HashMap<Integer, Ticket> ticketsPurchased;
-  private static HashMap<String,Integer> mapNameToEventID;      //event.getName() as the key
-  private static HashMap<String,Integer> mapNamesToCustomerID;  //customer.getFirstName() + customer.getLastName() as the key
-  //seatTypes MUST BE ORDER IN DESCENDING IMPORTANCE!!!
-  private static final String[] seatTypes = new String[] {"VIP","Gold","Silver","Bronze","General Admission"};
+  private static HashMap<String, Integer> mapNameToEventID; // event.getName() as the key
+  private static HashMap<String, Integer> mapNamesToCustomerID; // customer.getFirstName() + customer.getLastName() as
+                                                                // the key
+  // seatTypes MUST BE ORDER IN DESCENDING IMPORTANCE!!!
+  private static final String[] seatTypes = new String[] { "VIP", "Gold", "Silver", "Bronze", "General Admission" };
   private static final String NEWEVENTFILENAME = "NewEventList.csv";
   private static final String NEWCUSTOMERFILENAME = "NewCustomerList.csv";
   private static final String TICKETFILENAME = "NewTicketList.csv";
   private static boolean hasBeenPopulate = false;
   private static int largestEventID;
-  private static float[] salesTotals = new float[] {(float) 0.0, (float) 0.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
+  // 0: taxes, 1: service, 2: convenience, 3: charity
+  private static float[] salesTotals = new float[] { (float) 0.0, (float) 0.0, (float) 0.0, (float) 0.0 };
 
   /**
-   * Constructor with no parameters. It initiate events, customer, and tickets purchased.
+   * Constructor with no parameters. It initiate events, customer, and tickets
+   * purchased.
    */
-  private Database() {}
+  private Database() {
+  }
 
-  //Getters
+  // Getters
   public static String[] getSeatTypes() {
     return seatTypes;
   }
@@ -72,7 +78,8 @@ public class Database {
   }
 
   public static int getNewEventID() {
-    //Update largestEventID by 1, save the new value on itself, and return the new value
+    // Update largestEventID by 1, save the new value on itself, and return the new
+    // value
     return ++Database.largestEventID;
   }
 
@@ -96,12 +103,12 @@ public class Database {
     return salesTotals[3];
   }
 
-  //Setters
+  // Setters
   public static void setLargestEventID(int largestEventID) {
     Database.largestEventID = largestEventID;
   }
 
-  //Methods
+  // Methods
   public static void addTaxesCollected(float taxes) {
     salesTotals[0] += taxes;
   }
@@ -135,11 +142,13 @@ public class Database {
   }
 
   /**
-   * Call populateDatabase from ReadCSV class with database, filename and the type of object to populate.
+   * Call populateDatabase from ReadCSV class with database, filename and the type
+   * of object to populate.
    */
   public static void populateDatabase() {
     if (hasBeenPopulate) {
-      System.out.println("Information has been already populated into the Database, only admins can modify it after it has been load.");
+      System.out.println(
+          "Information has been already populated into the Database, only admins can modify it after it has been load.");
       return;
     }
 
@@ -152,7 +161,7 @@ public class Database {
     String filename = null;
     final String READ = "About to read ";
 
-    //Populate Events information
+    // Populate Events information
     filename = FileChooser.chooseFile("to populate events");
     Log.logWrite(Level.FINE, READ + filename + " to populate Events and venues");
     ReadCSV.populateDatabase(filename, Event.class.getSimpleName());
@@ -160,7 +169,7 @@ public class Database {
       System.out.println("File given don't contain the required minimum type of headers to create events.");
     }
 
-    //Populate Customer information
+    // Populate Customer information
     filename = FileChooser.chooseFile("to read customer information");
     Log.logWrite(Level.FINE, READ + filename + " to populate Customers.");
     ReadCSV.populateDatabase(filename, Customer.class.getSimpleName());
@@ -168,7 +177,8 @@ public class Database {
       System.out.println("File given don't contain the required minimum type of headers to create customers.");
     }
 
-    //Populate Ticket information, would only read something if the software contain a file generated by a previous run
+    // Populate Ticket information, would only read something if the software
+    // contain a file generated by a previous run
     filename = getNewerFile("", TICKETFILENAME);
     if (filename.length() > 0) {
       Log.logWrite(Level.FINE, READ + filename + " to populate Tickets");
@@ -181,8 +191,10 @@ public class Database {
   /**
    * Given two filenames, it returns the one that was written the last.
    * 
-   * @param originalFilename - String with filename provided that would always exist
-   * @param newFilename - String with filename that is written at the end of every program execution
+   * @param originalFilename - String with filename provided that would always
+   *                         exist
+   * @param newFilename      - String with filename that is written at the end of
+   *                         every program execution
    * @return String with the latest filename
    */
   private static String getNewerFile(String originalFilename, String newFilename) {
@@ -206,8 +218,8 @@ public class Database {
   public static void addEvent(Event event) {
     int id = event.getEventID();
 
-    events.put(id, event);                      //Add event using the id as key
-    mapNameToEventID.put(event.getName(), id);  //Map event name with its ID
+    events.put(id, event); // Add event using the id as key
+    mapNameToEventID.put(event.getName(), id); // Map event name with its ID
   }
 
   /**
@@ -231,14 +243,16 @@ public class Database {
     int id = customer.getCustomerID();
 
     customers.put(id, customer);
-    //Use first name concatenated with the last name for the key
+    // Use first name concatenated with the last name for the key
     mapNamesToCustomerID.put(customer.getUsername(), id);
   }
 
   /**
-   * Given a ticket we add it into ticketsPurchased with the ticket ID as key and the ticket itself as value.
+   * Given a ticket we add it into ticketsPurchased with the ticket ID as key and
+   * the ticket itself as value.
    * 
-   * @param ticket - Ticket to be added into the database, event and customer lists.
+   * @param ticket - Ticket to be added into the database, event and customer
+   *               lists.
    */
   public static void addTicket(Ticket ticket) {
     if (ticket == null) {
@@ -249,21 +263,23 @@ public class Database {
     Event event = ticket.getEvent();
     Customer customer = ticket.getCustomer();
 
-    //Add ticket to event, customer, and database if the purchase was successful. Otherwise, log unsuccessful purchase.
-    if (ticket.getNumberOfSeatsPurchases() > 0) { //If seats were reserve
-      event.addTicket(ticket);                    //Save ticket for the event
-      customer.addTicketPurchased(ticket);        //Save ticket for the customer
-      ticketsPurchased.put(ticket.getPurchaseID(), ticket); //Save ticket on data base
+    // Add ticket to event, customer, and database if the purchase was successful.
+    // Otherwise, log unsuccessful purchase.
+    if (ticket.getNumberOfSeatsPurchases() > 0) { // If seats were reserve
+      event.addTicket(ticket); // Save ticket for the event
+      customer.addTicketPurchased(ticket); // Save ticket for the customer
+      ticketsPurchased.put(ticket.getPurchaseID(), ticket); // Save ticket on data base
       Log.logWrite(Level.INFO, "Seats reserved:\n" + ticket.getRecord());
-    } else {  //No purchases made
-      Log.logWrite(Level.FINE,"No seats were purchased.");
+    } else { // No purchases made
+      Log.logWrite(Level.FINE, "No seats were purchased.");
     }
   }
 
   /**
-   * Given a ticket, use its purchase ID, customer, and event attributes to removes it from the software database base on allFrom.
+   * Given a ticket, use its purchase ID, customer, and event attributes to
+   * removes it from the software database base on allFrom.
    * 
-   * @param ticket - Ticket to be remove from the database.
+   * @param ticket  - Ticket to be remove from the database.
    * @param allFrom - String[] with class names to remove the ticket from them.
    */
   public static void removeTicket(Ticket ticket, String[] allFrom) {
@@ -284,11 +300,14 @@ public class Database {
   }
 
   /**
-   * Use oldName to delete the mapping between oldName and id and now map newName with id.
+   * Use oldName to delete the mapping between oldName and id and now map newName
+   * with id.
    * 
-   * @param oldName - String name of event before it was change, therefore this is the previous key to event id.
-   * @param newName - String name of event after it was change, therefore this is the new key to event id.
-   * @param id - int event id.
+   * @param oldName - String name of event before it was change, therefore this is
+   *                the previous key to event id.
+   * @param newName - String name of event after it was change, therefore this is
+   *                the new key to event id.
+   * @param id      - int event id.
    */
   public static void updateEventNameToIdMap(String oldName, String newName, int id) {
     mapNameToEventID.remove(oldName);
@@ -315,7 +334,8 @@ public class Database {
   }
 
   /**
-   * Write csv files for customers, events, and tickets. Move all ticket summaries into its
+   * Write csv files for customers, events, and tickets. Move all ticket summaries
+   * into its
    * folder and all logs into its folder. Close scanner.
    */
   public static void closeProgram() {
@@ -324,7 +344,7 @@ public class Database {
     Admin.ticketSummary(getCustomer("danielmejia"));
     Admin.ticketSummary(getCustomer("alinouri"));
 
-    Log.logWrite(Level.FINE,"Writing new Customer, Event, and ticket lists.");
+    Log.logWrite(Level.FINE, "Writing new Customer, Event, and ticket lists.");
     saveDatabase();
     Admin.movTicketSummary();
     Log.movLogs();

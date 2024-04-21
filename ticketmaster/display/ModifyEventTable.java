@@ -31,15 +31,15 @@ public class ModifyEventTable {
     JFrame frame = new JFrame();
     JPanel panel = new JPanel();
 
-    //Don't allow cell 0 to be modify
+    // Don't allow cell 0 to be modify
     model = new PremiereTableModel();
 
     table = new JTable(model);
 
     table.setGridColor(Color.orange);
-    table.setShowHorizontalLines(true);       //Show horizontal lines
-    table.setRowSelectionAllowed(true);       //User is allow to select rows
-    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);   //User can only select one row at a time
+    table.setShowHorizontalLines(true); // Show horizontal lines
+    table.setRowSelectionAllowed(true); // User is allow to select rows
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // User can only select one row at a time
     table.getModel().addTableModelListener(new TableModelListener() {
       @Override
       public void tableChanged(TableModelEvent e) {
@@ -53,10 +53,11 @@ public class ModifyEventTable {
       }
     });
 
-    panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "ODI Rankings", TitledBorder.CENTER, TitledBorder.TOP));
+    panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "ODI Rankings",
+        TitledBorder.CENTER, TitledBorder.TOP));
     panel.add(new JScrollPane(table));
 
-    //Set column 2 to have finite possibilities
+    // Set column 2 to have finite possibilities
     TableColumn sportColumn = table.getColumnModel().getColumn(2);
     JComboBox<String> comboBox = new JComboBox<>();
     comboBox.addItem("AUS");
@@ -74,12 +75,12 @@ public class ModifyEventTable {
   static class PremiereTableModel extends AbstractTableModel {
     private final String[] columnNames = { "Rank", "Player", "Country" };
     private final String[][] data = {
-      { "1", "Steve", "AUS" },
-      { "2", "Virat", "IND" },
-      { "3", "Kane", "NZ" },
-      { "4", "David", "AUS" },
-      { "5", "Ben", "ENG" },
-      { "6", "Eion", "ENG" },
+        { "1", "Steve", "AUS" },
+        { "2", "Virat", "IND" },
+        { "3", "Kane", "NZ" },
+        { "4", "David", "AUS" },
+        { "5", "Ben", "ENG" },
+        { "6", "Eion", "ENG" },
     };
 
     @Override

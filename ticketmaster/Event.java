@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 /**
- * Sport is a type of event with attributes of name, date, time, and prices. This class also have setters and getters for all attributes
+ * Sport is a type of event with attributes of name, date, time, and prices.
+ * This class also have setters and getters for all attributes
  * and a printInfo similar to toString.
  * It also have an special option to hold fireworks during the event.
  * 
@@ -29,26 +30,32 @@ public abstract class Event {
   private int reservedSeats;
   private boolean fireworksPlanned;
   private int fireworksCost;
-  private LinkedHashMap<String,String[]> seatsInfo; //key = seatType | value[0] = num of seats available, value[1] = price for each seat
-  private HashMap<Integer,Ticket> ticketsSold;      //key = ticketID | value = Ticket that match the id
+  private LinkedHashMap<String, String[]> seatsInfo; // key = seatType | value[0] = num of seats available, value[1] =
+                                                     // price for each seat
+  private HashMap<Integer, Ticket> ticketsSold; // key = ticketID | value = Ticket that match the id
   private Venue venue;
   private float totalDiscounted;
-  private float[] salesTotals = new float[] {(float) 0.0, (float) 0.0, (float) 0.0, (float) 0.0}; //0: taxes, 1: service, 2: convenience, 3: charity
+  // 0: taxes, 1: service, 2: convenience, 3: charity
+  private float[] salesTotals = new float[] { (float) 0.0, (float) 0.0, (float) 0.0, (float) 0.0 };
 
   /**
-  * Constructor with all parameters.
-  * 
-  * @param eventID - int with ID number identifier of the event
-  * @param name - String for name attribute
-  * @param date - GregorianCalendar for date attribute which contains date and time information of the event
-  * @param fireworksPlanned - boolean to see if fireworks are planned during the event
-  * @param fireworksCost - int with cost of fireworks if they are planned, price should be 0.0 otherwise.
-  */
-  protected Event(int eventID, String name, GregorianCalendar date, boolean fireworksPlanned, int  fireworksCost) {
+   * Constructor with all parameters.
+   * 
+   * @param eventID          - int with ID number identifier of the event
+   * @param name             - String for name attribute
+   * @param date             - GregorianCalendar for date attribute which contains
+   *                         date and time information of the event
+   * @param fireworksPlanned - boolean to see if fireworks are planned during the
+   *                         event
+   * @param fireworksCost    - int with cost of fireworks if they are planned,
+   *                         price should be 0.0 otherwise.
+   */
+  protected Event(int eventID, String name, GregorianCalendar date, boolean fireworksPlanned, int fireworksCost) {
     this.eventID = eventID;
     this.name = name;
     this.date = date;
-    //TODO: Currently all the event are in Texas, but we shouldn't assume that. Unfortunately, this wont be change in future PAs
+    // TODO: Currently all the event are in Texas, but we shouldn't assume that.
+    // Unfortunately, this wont be change in future PAs
     this.state = "Texas";
     this.fireworksPlanned = fireworksPlanned;
     this.fireworksCost = fireworksCost;
@@ -58,14 +65,14 @@ public abstract class Event {
   }
 
   /**
-  * Constructor with no parameters. Initialize seatsInfo and ticketsSold.
-  */
+   * Constructor with no parameters. Initialize seatsInfo and ticketsSold.
+   */
   protected Event() {
     this.seatsInfo = new LinkedHashMap<>();
     this.ticketsSold = new HashMap<>();
   }
 
-  //Getters
+  // Getters
   public int getEventID() {
     return eventID;
   }
@@ -138,7 +145,7 @@ public abstract class Event {
     return salesTotals[3];
   }
 
-  //Setters
+  // Setters
   public void setName(String name) {
     this.name = name;
   }
@@ -198,9 +205,10 @@ public abstract class Event {
   }
 
   /**
-   * Save the seat price given its type. Whatever value it was before gets overwritten.
+   * Save the seat price given its type. Whatever value it was before gets
+   * overwritten.
    * 
-   * @param type - String with the type of seat, e.g., VIP, Gold, etc.
+   * @param type  - String with the type of seat, e.g., VIP, Gold, etc.
    * @param price - float with a float number representing the seat price.
    */
   public void setSeatPrice(String type, float price) {
@@ -213,9 +221,10 @@ public abstract class Event {
   }
 
   /**
-   * Save the number of seats given its type. Whatever value it was before gets overwritten.
+   * Save the number of seats given its type. Whatever value it was before gets
+   * overwritten.
    * 
-   * @param type - String with the type of seat, e.g., VIP, Gold, etc.
+   * @param type   - String with the type of seat, e.g., VIP, Gold, etc.
    * @param nSeats - String with an int number representing the number of seats.
    */
   public void setNumSeats(String type, int nSeats) {
@@ -231,43 +240,48 @@ public abstract class Event {
     this.venue = venue;
   }
 
-  //Methods
+  // Methods
   public void removeTicket(int ticketID) {
     ticketsSold.remove(ticketID);
   }
 
   /**
-   * Given the seat type we would set the price and increase the number of seat available.
-   * If the number of seats haven't been set we start at 0 and then add the number of seats.
-   * Otherwise, we get the number stored and add the number of seats.
+   * Given the seat type we would set the price and increase the number of seat
+   * available. If the number of seats haven't been set we start at 0 and then add
+   * the number of seats. Otherwise, we get the number stored and add the number
+   * of seats.
    * 
    * @param seatType - String with the type of seat, e.g., VIP, Gold.
-   * @param price - String containing a number in float/double format with the price of each seat.
-   * @param nSeats - int with the number of seats to be added.
+   * @param price    - String containing a number in float/double format with the
+   *                 price of each seat.
+   * @param nSeats   - int with the number of seats to be added.
    */
   public void makeNSeatsByNum(String seatType, String price, int nSeats) {
-    //Add key if it didn't exist before
+    // Add key if it didn't exist before
     if (!seatsInfo.containsKey(seatType)) {
-      seatsInfo.put(seatType, new String[] {"0", price});
+      seatsInfo.put(seatType, new String[] { "0", price });
     }
 
-    //Set number of available seats
-    setNumSeats(seatType, Integer.parseInt(seatsInfo.get(seatType)[0]) + nSeats); //Get previous number of seats + nSeats
+    // Set number of available seats
+    setNumSeats(seatType, Integer.parseInt(seatsInfo.get(seatType)[0]) + nSeats); // Get previous number of seats +
+                                                                                  // nSeats
   }
 
   /**
-   * call makeNSeatsByNum but we multiply the pct by the capacity of the venue to give make the nSeats parameter. 
+   * call makeNSeatsByNum but we multiply the pct by the capacity of the venue to
+   * give make the nSeats parameter.
    * 
    * @param seatType - String with the type of seat, e.g., VIP, Gold.
-   * @param price - String containing a number in float/double format with the price of each seat.
-   * @param nSeats - int with the number of seats to be added.
+   * @param price    - String containing a number in float/double format with the
+   *                 price of each seat.
+   * @param nSeats   - int with the number of seats to be added.
    */
   public void makeNSeatsByPct(String seatType, String price, int pct) {
     float p = pct;
-    //Rescale from 0-100 to 0-1
+    // Rescale from 0-100 to 0-1
     if (pct > 1)
       p /= 100;
-    makeNSeatsByNum(seatType, price, (int) (p*getVenue().getCapacity()));
+    makeNSeatsByNum(seatType, price, (int) (p * getVenue().getCapacity()));
   }
 
   /**
@@ -280,8 +294,8 @@ public abstract class Event {
   }
 
   /**
-  * Print ID#, name, date, and time of the event
-  */
+   * Print ID#, name, date, and time of the event
+   */
   protected void printEventInfo() {
     System.out.printf("ID: %3s - Name: %-22s - Date: %-18s", eventID, name, getDate());
   }
@@ -295,8 +309,8 @@ public abstract class Event {
     String nSeats;
     int i = 0;
 
-    for (Map.Entry<String,String[]> entry : seatsInfo.entrySet()) {
-      //Don't print option if there are no more seats available
+    for (Map.Entry<String, String[]> entry : seatsInfo.entrySet()) {
+      // Don't print option if there are no more seats available
       if (entry.getValue()[0].equals("0"))
         continue;
       nSeats = entry.getValue()[0];
@@ -306,34 +320,39 @@ public abstract class Event {
   }
 
   /**
-   * Use option to see what seat type was selected and return a string containing the seat type.
+   * Use option to see what seat type was selected and return a string containing
+   * the seat type.
    * 
    * @param option - int with the option selected by the user.
-   * @return String with the seat type base on option. Empty string if nothing match.
+   * @return String with the seat type base on option. Empty string if nothing
+   *         match.
    */
   public String getSeatOptionN(int option) {
     String[] seatTypes = Database.getSeatTypes();
 
-    if ((option > seatTypes.length) || (option < 1) ) return "";
+    if ((option > seatTypes.length) || (option < 1))
+      return "";
 
     for (String seatType : seatTypes) {
-      if (--option == 0) return seatType;
+      if (--option == 0)
+        return seatType;
     }
 
-    //This point should never be reach
+    // This point should never be reach
     System.err.println("Something went wrong in getSeatOptionN()");
     return "";
   }
 
   /**
-   * Write the header for all the necessary information to replicate the event only by reading the file.
-   * Last character appended to file is a new line character.
+   * Write the header for all the necessary information to replicate the event
+   * only by reading the file. Last character appended to file is a new line
+   * character.
    * 
    * @param writer - FileWriter ready to be write on
    */
   public static void writeCSVHeader(FileWriter writer) {
     try {
-      //Write header of csv file
+      // Write header of csv file
       writer.append("Event ID,Event Type,Name,Date,Time,");
       for (String seatType : Database.getSeatTypes()) {
         writer.append(seatType + " Price," + seatType + " Num,");
@@ -345,13 +364,13 @@ public abstract class Event {
       writer.append("," + "Total Discounted");
       writer.append("\n");
     } catch (IOException e) {
-      e.printStackTrace();  //Writing the file was unsuccessful
+      e.printStackTrace(); // Writing the file was unsuccessful
     }
   }
 
   /**
-   * Fill all the columns made by Event.writeCSVHeader() with the event information.
-   * Last character added to file is an new line character.
+   * Fill all the columns made by Event.writeCSVHeader() with the event
+   * information. Last character added to file is an new line character.
    * 
    * @param writer - FileWriter ready to be write on
    */
@@ -360,11 +379,11 @@ public abstract class Event {
       writer.append(getEventID() + ",");
       writer.append(getClass().getSimpleName() + ",");
       writer.append(getName() + ",");
-      //write date and time using format MM/DD/YYY and hh:mm a
+      // write date and time using format MM/DD/YYY and hh:mm a
       String[] temp = getDate().split(" ");
-      writer.append(temp[0] + ",");                 //MM/DD/YYY
-      writer.append(temp[1] + " " + temp[2] + ","); //hh:mm and AM/PM
-      //Print seat prices and number per type
+      writer.append(temp[0] + ","); // MM/DD/YYY
+      writer.append(temp[1] + " " + temp[2] + ","); // hh:mm and AM/PM
+      // Print seat prices and number per type
       for (String key : seatsInfo.keySet()) {
         writer.append(getSeatPrice(key) + "," + getNumberOfSeatsAvailable(key) + ",");
       }

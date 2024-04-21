@@ -1,3 +1,4 @@
+
 /**
  * Name: Robert Alvarez
  * Date: October 23rd, 2022
@@ -17,21 +18,25 @@ import ticketmaster.Database;
 import ticketmaster.display.Viewer;
 
 /**
- * Ticketmaster have the main method that control the primary behaviors of the program such as reading csv files to
- * populate the database, log user or administrators, and close the program by writing updated csv files and loggers.
+ * Ticketmaster have the main method that control the primary behaviors of the
+ * program such as reading csv files to
+ * populate the database, log user or administrators, and close the program by
+ * writing updated csv files and loggers.
  * 
  * @author Robert J Alvarez
  * @date September 25th, 2022
  */
 public class Ticketmaster {
   /**
-   * Populate the Database, set the logger, and start running the customer/admin option to use the system.
-   * At the end, it make three ticket summaries and close the program by calling closeProgram().
+   * Populate the Database, set the logger, and start running the customer/admin
+   * option to use the system.
+   * At the end, it make three ticket summaries and close the program by calling
+   * closeProgram().
    * 
    * @param args - Array of strings with what was given when the code got compile.
    */
   public static void main(String[] args) {
-    Database.populateDatabase();       //Fill Events, Venues, Customers and Tickets
+    Database.populateDatabase(); // Fill Events, Venues, Customers and Tickets
     Viewer.logUserOrAdmin();
   }
 }

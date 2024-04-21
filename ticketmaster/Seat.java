@@ -1,7 +1,8 @@
 package ticketmaster;
 
 /**
- * Class used to model a seat for an event with a price and category, e.g., VIP, Gold, Silver.
+ * Class used to model a seat for an event with a price and category, e.g., VIP,
+ * Gold, Silver.
  * 
  * @author Robert J Alvarez
  * @date September 16th, 2022
@@ -24,9 +25,10 @@ public class Seat {
   /**
    * Constructor without parameters. Do nothing.
    */
-  public Seat() {}
+  public Seat() {
+  }
 
-  //Getters
+  // Getters
   public String getSeatType() {
     return seatType;
   }
@@ -35,7 +37,7 @@ public class Seat {
     return price;
   }
 
-  //Setters
+  // Setters
   public void setSeatType(String seatType) {
     this.seatType = seatType;
   }
@@ -44,7 +46,7 @@ public class Seat {
     this.price = price;
   }
 
-  //Methods
+  // Methods
   @Override
   public String toString() {
     return getSeatType() + ": $" + getPrice();
