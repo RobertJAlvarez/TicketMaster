@@ -24,7 +24,9 @@ public class Concert extends Event {
   /**
    * Constructor without parameters. Do nothing.
    */
-  public Concert() {}
+  public Concert() {
+    super();
+  }
 
   //Methods
   /**

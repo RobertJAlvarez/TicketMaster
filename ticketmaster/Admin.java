@@ -575,7 +575,6 @@ public class Admin {
    */
   public static void movTicketSummary() {
     File logDir = new File("./TicketSummaries");
-    Set<String> allTicketSummaries = new HashSet<>();
 
     try {
       if (!logDir.exists()) {  //If directory doesn't exist, we make it

@@ -48,7 +48,7 @@ public abstract class Event {
     this.eventID = eventID;
     this.name = name;
     this.date = date;
-    //TODO: Currently all the event are in Texas but we shouldn't assume that. Unfortunately, this wont be change in future PAs
+    //TODO: Currently all the event are in Texas, but we shouldn't assume that. Unfortunately, this wont be change in future PAs
     this.state = "Texas";
     this.fireworksPlanned = fireworksPlanned;
     this.fireworksCost = fireworksCost;
